@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on Pivotal Engineering Journal</title>
+    <link>/categories/golang/</link>
+    <description>Recent content in Golang on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Jan 2016 13:55:53 -0700</lastBuildDate>
+    <atom:link href="/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Intro to the Patch Command</title>
+      <link>/post/intro-to-patch/</link>
+      <pubDate>Tue, 05 Jan 2016 13:55:53 -0700</pubDate>
+      
+      <guid>/post/intro-to-patch/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro-to-the-patch-command:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Intro to the Patch Command&lt;/h2&gt;
+
+&lt;p&gt;Long ago, the patch tool was created to apply diffs of code to codebases. This way when a developer submitted the diff for their new code, someone could assess and then apply the changes to the primary codebase.&lt;/p&gt;
+
+&lt;p&gt;These days, we have version control systems like git and svn to take care of logging and traversing all the code changes submitted.&lt;/p&gt;
+
+&lt;p&gt;So what about the patch command, does it still have a purpose?&lt;/p&gt;
+
+&lt;h2 id=&#34;why:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Why&lt;/h2&gt;
+
+&lt;p&gt;The use case we had was that we needed to put a piece of software that was running on a server into a “debug” mode. The problem was there wasn’t debug mode implemented into its source code. To implement a feature like this would take months and we didn’t have control over the source code for the product.&lt;/p&gt;
+
+&lt;p&gt;The patch command is great for appyling and reverting changes to any text because is uses diffs. This means we can manipulate files whatever way we want, and then return return those files to their original state at the end of our cycle.&lt;/p&gt;
+
+&lt;h2 id=&#34;sample-use-case:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Sample Use Case&lt;/h2&gt;
+
+&lt;p&gt;Here is a simple Go app.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	validate()
+	deploy()
+	smokeTests()
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For the sake of this example, let&amp;rsquo;s say that we&amp;rsquo;re dependant on this app it&amp;rsquo;s has to run before I can test my code. When we run it, it&amp;rsquo;s doing two operations that we might want to remove to speed things up.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ go run src/code.go
+
+Validating...
+Deploying...
+Running Smoke Tests...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In our case, we ran a cycle in our test environments with this code to verify that &lt;code&gt;validate()&lt;/code&gt; and &lt;code&gt;smokeTests()&lt;/code&gt; pass successfully. Then we wanted to trim down our testing cycles so the goal was to remove this functionality for quicker feedback.&lt;/p&gt;
+
+&lt;h3 id=&#34;creating-a-patch-file:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Creating a Patch file&lt;/h3&gt;
+
+&lt;p&gt;First, we&amp;rsquo;ll make a copy of the code and make the changes that we want.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src_altered/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+  //validate() **Disabled**
+  deploy()
+  //smokeTests() **Disabled**
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then we&amp;rsquo;ll get the diff which will serve as our patch file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ diff -ru src src_altered &amp;gt; code.patch; cat code.patch
+
+diff -ru src/code.go src_altered/code.go
+--- src/code.go	2015-11-25 17:55:17.000000000 -0500
++++ src_altered/code.go	2015-11-25 17:48:11.000000000 -0500
+@@ -5,9 +5,9 @@
+ )
+ 
+ func main() {
+-	validate()
++	//validate() **Disabled**
+ 	deploy()
+-	smokeTests()
++	//smokeTests() **Disabled**
+ }
+ 
+ func validate() {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;applying-a-patch:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Applying a Patch&lt;/h3&gt;
+
+&lt;p&gt;Run the patch command with your new patch file as your input (-i). You
+can also add the -b flag if you want a backup of the original file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ patch -p0 -i code.patch
+
+patching file src/code.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The -p flag is required, which specifies how many prefixed path
+segements you want to remove from the path.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	//validate()
+	deploy()
+	//smokeTests()
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;reverting-a-patch:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Reverting a Patch&lt;/h3&gt;
+
+&lt;p&gt;For when we want to put the file to a clean state.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only change is that we&amp;rsquo;ve told patch that we want to reverse (-R).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	validate()
+	deploy()
+	smokeTests()
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;patching-fail-safes:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Patching Fail-Safes&lt;/h3&gt;
+
+&lt;p&gt;Patch works off of diffs so it can figure out if you&amp;rsquo;re trying to patch
+or reverse a file twice so that you don&amp;rsquo;t end up in an unrecoverable
+state.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ patch -p0 -i code.patch
+
+patching file src/code.go
+
+$ patch -p0 -i code.patch
+
+patching file src/code.go
+Reversed (or previously applied) patch detected!  Assume -R? [n] n
+Apply anyway? [n] n
+Skipping patch.
+1 out of 1 hunk ignored -- saving rejects to file src/code.go.rej
+
+$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+
+$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+Unreversed patch detected!  Ignore -R? [n] n
+Apply anyway? [n] n
+Skipping patch.
+1 out of 1 hunk ignored -- saving rejects to file src/code.go.rej
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It also saves a .rej file whenever something goes wrong with any
+operation so you can investigate.&lt;/p&gt;
+
+&lt;h3 id=&#34;more-thanks:37d9d12a99e4538bd90981433bd1c986&#34;&gt;More &amp;amp; Thanks&lt;/h3&gt;
+
+&lt;p&gt;As you can imagine, there is much more to the patch command. There isn&amp;rsquo;t a lot of material out there but I would, as always, start with &lt;a href=&#34;http://www.freebsd.org/cgi/man.cgi?patch&#34;&gt;the man page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I never would have known this command existed if it weren&amp;rsquo;t for &lt;a href=&#34;https://www.linkedin.com/profile/view?id=AAkAAAcAwNABp639qPfhGAX1KVuIkj5ghtUCJmc&#34;&gt;Aaron Jarecki&lt;/a&gt;, so big shoutout goes to him.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>HTTP Trailers</title>
+      <link>/post/http-trailers/</link>
+      <pubDate>Thu, 05 Nov 2015 13:55:53 -0700</pubDate>
+      
+      <guid>/post/http-trailers/</guid>
+      <description>
+
+&lt;h2 id=&#34;motivation:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;Motivation&lt;/h2&gt;
+
+&lt;p&gt;We, the core-services team, are responsible for the MySQL service. This service runs alongside a Cloud Foundry installation and creates MySQL databases for your Cloud Foundry applications to use.&lt;/p&gt;
+
+&lt;p&gt;Operators have been requesting automated database backups so they can restore their MySQL instances in case of failure. A MySQL backup is a tarball containing all the data in the MySQL instance, which can become very large. We ultimately want to upload that file to S3 or another external blobstore so that it will be available to recreate the MySQL instance if it is destroyed.&lt;/p&gt;
+
+&lt;p&gt;When the MySQL server gets a request to take a backup, it can do one of two things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;First generate the backup on local disk and then upload it to our blobstore&lt;/li&gt;
+&lt;li&gt;Generate it and stream it as it&amp;rsquo;s being generated.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The problem with the two-step generate-then-upload approach is that we would have to reserve twice as much space on the MySQL server&amp;rsquo;s file system as we would otherwise need.&lt;/p&gt;
+
+&lt;p&gt;We settled on trying to generate and simultaneously stream the backup.&lt;/p&gt;
+
+&lt;h2 id=&#34;streaming-in-http:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;Streaming in HTTP&lt;/h2&gt;
+
+&lt;p&gt;In HTTP/1.0, you had to specify the length of your response in advance via the Content-Length Header field. HTTP/1.1 removed that limitation, allowing senders to stream content, with the addition of &lt;a href=&#34;http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.6.1&#34;&gt;Chunked Transfer Coding&lt;/a&gt;. According to &lt;a href=&#34;https://en.wikipedia.org/wiki/Chunked_transfer_encoding&#34;&gt;Wikipedia&lt;/a&gt;, this enabled &amp;ldquo;senders [to] begin transmitting dynamically-generated content before knowing the total size of that content.&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;the-problems-with-streaming-in-http:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;The problems with streaming in HTTP&lt;/h2&gt;
+
+&lt;p&gt;The first problem we encountered when trying to stream data as it&amp;rsquo;s generated is how to indicate failure.&lt;/p&gt;
+
+&lt;p&gt;In a traditional HTTP response, if something went wrong during the processing of the request, you would use the HTTP status code of 5xx to indicate a failure.&lt;/p&gt;
+
+&lt;p&gt;An HTTP status code is actually encoded in the &lt;a href=&#34;http://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html#sec6.1&#34;&gt;Status Line&lt;/a&gt; of the raw response, the first line of the response as seen below (HTTP/1.1 200 OK):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-no-language&#34;&gt;$ curl -i --raw http://www.w3.org/Protocols/rfc2616/rfc2616-sec6.html#sec6.1
+
+HTTP/1.1 200 OK
+Date: Thu, 23 Jul 2015 21:41:00 GMT
+Server: Apache/2
+Last-Modified: Wed, 01 Sep 2004 13:24:52 GMT
+ETag: &amp;quot;277f-3e3073913b100&amp;quot;
+Accept-Ranges: bytes
+Content-Length: 10111
+Cache-Control: max-age=21600
+Expires: Fri, 24 Jul 2015 03:41:00 GMT
+P3P: policyref=&amp;quot;http://www.w3.org/2014/08/p3p.xml&amp;quot;
+Content-Type: text/html; charset=iso-8859-1
+
+&amp;lt;RESPONSE BODY&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice that the response body begins after all of the headers, including the status code. This means that by the time you start streaming back data, the status code has already been sent. If an issue occurs in the middle of streaming, there is no way of going back and changing the status code.&lt;/p&gt;
+
+&lt;p&gt;So how do you indicate that there was a failure in the land of streaming responses?&lt;/p&gt;
+
+&lt;h2 id=&#34;enter-http-trailers:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;Enter HTTP Trailers&lt;/h2&gt;
+
+&lt;p&gt;If you had a way of sending metadata at the end of the response, then no matter when an error occurs, you could stop the streaming and send an error description.&lt;/p&gt;
+
+&lt;p&gt;HTTP Trailers are like HTTP Headers sent at the end of an HTTP response. They can be used to send metadata separate from the response body. Trailers are only available when using Chunked Transfer Coding.&lt;/p&gt;
+
+&lt;p&gt;Even though trailers are a part of the official HTTP spec, they are rarely used. According to the Golang documentation, &amp;ldquo;few HTTP clients, servers, or proxies support HTTP trailers.&amp;rdquo;&lt;/p&gt;
+
+&lt;h2 id=&#34;http-1-1-trailer-spec:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;HTTP/1.1 Trailer Spec&lt;/h2&gt;
+
+&lt;p&gt;HTTP Trailers are implemented in two parts. First, you must send a regular HTTP Header listing the trailers that you will eventually send.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-no-language&#34;&gt;Trailer: X-Streaming-Error
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Second, you must send your trailers at the end of your response. A Chunked Transfer Coding response looks like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Chunked-Body = *chunk
+               last-chunk
+               trailer
+               CRLF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Your trailers are sandwiched between the last-chunk you send and the CRLF that indicates the end of the response.&lt;/p&gt;
+
+&lt;h2 id=&#34;implementation:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;Implementation&lt;/h2&gt;
+
+&lt;h4 id=&#34;go-1-4:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;Go 1.4&lt;/h4&gt;
+
+&lt;p&gt;Golang provides the HTTP &lt;a href=&#34;http://golang.org/pkg/net/http/#ResponseWriter&#34;&gt;ResponseWriter&lt;/a&gt; interface for writing the headers and body of an HTTP response. Unfortunately, in Go 1.4, the &lt;code&gt;ResponseWriter&lt;/code&gt; interface does not support writing trailers. &lt;a href=&#34;https://github.com/golang/go/issues/7759&#34;&gt;This issue&lt;/a&gt; has been filed in the golang github repo.&lt;/p&gt;
+
+&lt;p&gt;As described in that issue, we can use the HTTP &lt;code&gt;Hijacker&lt;/code&gt; object as a work-around to take over the connection and write raw HTTP data directly:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func (b *BackupHandler) ServeHTTP(writer http.ResponseWriter, r *http.Request) {
+    trailerKey := http.CanonicalHeaderKey(&amp;quot;X-Streaming-Error&amp;quot;)
+
+    // NOTE: We set this in the Header because of the HTTP spec
+    // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.40
+    // Even though we cannot test it, because the `net/http.Get()` strips
+    // &amp;quot;Trailer&amp;quot; out of the Header
+    writer.Header().Set(&amp;quot;Trailer&amp;quot;, trailerKey)
+
+    err := runBackupProcessAndWriteTo(writer)
+
+    errorString := &amp;quot;&amp;quot;
+    if err != nil {
+        errorString = err.Error()
+    }
+
+    writeTrailer(writer, trailerKey, errorString)
+}
+
+func writeTrailer(writer http.ResponseWriter, key string, value string) {
+    trailers := http.Header{}
+    trailers.Set(key, value)
+
+    writer.(http.Flusher).Flush()
+    conn, buf, _ := writer.(http.Hijacker).Hijack()
+
+    buf.WriteString(&amp;quot;0\r\n&amp;quot;) // eof
+    trailers.Write(buf)
+
+    buf.WriteString(&amp;quot;\r\n&amp;quot;) // end of trailers
+    buf.Flush()
+    conn.Close()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The trailers from the response are stored in the &lt;a href=&#34;http://golang.org/src/net/http/response.go?s=2161:2254&#34;&gt;&lt;code&gt;Response.Trailer&lt;/code&gt;&lt;/a&gt; field, which is of type &lt;code&gt;Header&lt;/code&gt; (just a &lt;code&gt;map[string][]string&lt;/code&gt;). It&amp;rsquo;s important to note that this field will not be populated until you finish reading the entire response body.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;It(&amp;quot;has HTTP 200 status code but writes the error to the trailer&amp;quot;, func() {
+    resp, err := http.Get(backupUrl)    Expect(err).ShouldNot(HaveOccurred())
+
+    Expect(resp.StatusCode).To(Equal(200))
+
+    // NOTE: You must read the body from the response in order to populate the response&#39;s
+    // trailers
+    body, err := ioutil.ReadAll(resp.Body)
+    Expect(err).ShouldNot(HaveOccurred())
+    Expect(body).To(Equal([]byte(&amp;quot;hello&amp;quot;))) // data sent before the error occurred
+
+    t := resp.Trailer.Get(http.CanonicalHeaderKey(&amp;quot;X-Streaming-Error&amp;quot;))
+    Expect(t).To(ContainSubstring(&amp;quot;exit status 1&amp;quot;))
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;go-1-5:fb23379a7294d4396e59cd58c49f7f79&#34;&gt;Go 1.5&lt;/h4&gt;
+
+&lt;p&gt;In &lt;a href=&#34;http://tip.golang.org/doc/go1.5&#34;&gt;Go 1.5&lt;/a&gt;, the ability to write trailers should be supported natively by &lt;a href=&#34;http://tip.golang.org/pkg/net/http/#example_ResponseWriter_trailers&#34;&gt;&lt;code&gt;ResponseWriter&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;mux := http.NewServeMux()
+mux.HandleFunc(&amp;quot;/sendstrailers&amp;quot;, func(w http.ResponseWriter, req *http.Request) {
+    // Before any call to WriteHeader or Write, declare
+    // the trailers you will set during the HTTP
+    // response. These three headers are actually sent in
+    // the trailer.
+    w.Header().Set(&amp;quot;Trailer&amp;quot;, &amp;quot;AtEnd1, AtEnd2&amp;quot;)
+    w.Header().Add(&amp;quot;Trailer&amp;quot;, &amp;quot;AtEnd3&amp;quot;)
+
+    w.Header().Set(&amp;quot;Content-Type&amp;quot;, &amp;quot;text/plain; charset=utf-8&amp;quot;) // normal header
+    w.WriteHeader(http.StatusOK)
+
+    w.Header().Set(&amp;quot;AtEnd1&amp;quot;, &amp;quot;value 1&amp;quot;)
+    io.WriteString(w, &amp;quot;This HTTP response has both headers before this text and trailers at the end.\n&amp;quot;)
+    w.Header().Set(&amp;quot;AtEnd2&amp;quot;, &amp;quot;value 2&amp;quot;)
+    w.Header().Set(&amp;quot;AtEnd3&amp;quot;, &amp;quot;value 3&amp;quot;) // These will appear as trailers.
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Happy Hacking,&lt;/p&gt;
+
+&lt;p&gt;Chris Hendrix + Evan Short on behalf of the CF Core Services team&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

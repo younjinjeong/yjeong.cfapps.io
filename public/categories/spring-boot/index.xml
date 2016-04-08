@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Spring Boot on Pivotal Engineering Journal</title>
+    <link>/categories/spring-boot/</link>
+    <description>Recent content in Spring Boot on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 29 Feb 2016 17:53:56 -0700</lastBuildDate>
+    <atom:link href="/categories/spring-boot/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin, part 3: Data Classes</title>
+      <link>/post/spring-boot-kotlin-data-classes/</link>
+      <pubDate>Mon, 29 Feb 2016 17:53:56 -0700</pubDate>
+      
+      <guid>/post/spring-boot-kotlin-data-classes/</guid>
+      <description>&lt;p&gt;Welcome to the third installment of our Java 8 -&amp;gt; Kotlin conversion for a Spring Boot application. &lt;a href=&#34;/post/spring-boot-configuration-in-kotlin/&#34;&gt;Last time&lt;/a&gt; we saw how converting a configuration class to Kotlin helped clean up some of the boilerplate code required in Java.&lt;/p&gt;
+
+&lt;p&gt;In this third installment, we are going to continue our theme of &amp;ldquo;write less code with Kotlin&amp;rdquo; and look at how &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html&#34;&gt;Kotlin data classes&lt;/a&gt; help us clean up our POJOs data classes.&lt;/p&gt;
+
+&lt;p&gt;Our &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/83883fee6dac3cb06e10bd6a510403cbe3e1ef62/components/email/src/main/java/com/example/email/EmailMessage.java&#34;&gt;starting point&lt;/a&gt; is a plain old Java object (POJO) to hold some data to be sent via RabbitMQ:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.email;
+
+import java.io.Serializable;
+
+public class EmailMessage implements Serializable {
+
+    private final String toAddress;
+    private final String subject;
+    private final String body;
+
+    public EmailMessage(String toAddress, String subject, String body) {
+        this.toAddress = toAddress;
+        this.subject = subject;
+        this.body = body;
+    }
+
+    public String getToAddress() {
+        return toAddress;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getBody() {
+        return body;
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is the &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/f137c5ec25a2a575c30113a3260f55af6d0285ed/components/email/src/main/kotlin/com/example/email/EmailMessage.kt&#34;&gt;same class&lt;/a&gt; implemented as a &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html&#34;&gt;Kotlin data class&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.email
+
+import java.io.Serializable
+
+data class EmailMessage(val toAddress: String, val subject: String, val body: String) : Serializable
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Not only is this code much shorter than it&amp;rsquo;s Java counterpart, it also has more functionality. As a Kotlin data class, this tiny amount of code gets:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;generated implementations for a &lt;code&gt;equals()/hashCode()&lt;/code&gt; pair&lt;/li&gt;
+&lt;li&gt;a default &lt;code&gt;toString()&lt;/code&gt; method&lt;/li&gt;
+&lt;li&gt;a &lt;code&gt;copy()&lt;/code&gt; method that allows for easy altering of individual attributes of the object&lt;/li&gt;
+&lt;li&gt;the ability to &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html#data-classes-and-destructuring-declarations&#34;&gt;destructure&lt;/a&gt; the object in an assignment statement.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Other places this feature will come in handy is with &lt;a href=&#34;https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin#jackson-kotlin-module&#34;&gt;JSON deserialization&lt;/a&gt; and &lt;a href=&#34;https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin#jackson-kotlin-module&#34;&gt;Spring Data JPA classes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As someone evaluating a switch from Java to Kotlin, these data classes are a major reasons for adopting Kotlin in your Spring Boot application. They help you write, and thus maintain, less code and the less code we have to maintain the better in my mind.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin, part 2: Configuration Classes</title>
+      <link>/post/spring-boot-configuration-in-kotlin/</link>
+      <pubDate>Tue, 23 Feb 2016 14:29:50 -0700</pubDate>
+      
+      <guid>/post/spring-boot-configuration-in-kotlin/</guid>
+      <description>&lt;p&gt;In the &lt;a href=&#34;/post/spring-boot-application-with-kotlin/&#34;&gt;first post&lt;/a&gt; of this series, we looked at the conversion of a Spring Boot application class from Java 8 to Kotlin. The nice thing about these migrations is that they can be done incrementally since Kotlin plays very nicely with legacy Java. In fact, it was one of the design considerations for the language.&lt;/p&gt;
+
+&lt;p&gt;In this second post, we will look at the conversion of a configuration class into Kotlin.&lt;/p&gt;
+
+&lt;p&gt;Here is an example of a Spring Boot configuration class as written in Java 8:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing;
+
+import com.example.billing.reocurringPayments.Service;
+import com.example.payments.RecurlyGateway;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+class Configuration {
+    @Bean
+    public com.example.payments.Gateway paymentGateway() {
+        return new RecurlyGateway();
+    }
+
+    @Bean
+    public Service serviceThatMayFail() {
+        return new Service();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is that same configuration class written in Kotlin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import com.example.billing.reocurringPayments.Service
+import com.example.payments.RecurlyGateway
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+@Configuration
+open class Configuration {
+    @Bean
+    open fun paymentGateway() = RecurlyGateway()
+
+    @Bean
+    open fun serviceThatMayFail() = Service()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There aren&amp;rsquo;t a bunch of huge differences but here are some of the smaller differences that stand out to me:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The Configuration class must be declared open. This is because Spring Boot subclasses your configuration class but Kotlin makes them final by default. See &lt;a href=&#34;https://kotlinlang.org/docs/reference/classes.html#inheritance&#34;&gt;here&lt;/a&gt; for details.&lt;/li&gt;
+&lt;li&gt;The @Bean functions must be declared open for the same reason as above.&lt;/li&gt;
+&lt;li&gt;There are no return types on the functions because Kotlin will infer the types. This type inference is one of
+my favorite features of Kotlin.&lt;/li&gt;
+&lt;li&gt;Kotlin has implicit returns (and no braces) for &lt;a href=&#34;https://kotlinlang.org/docs/reference/functions.html#single-expression-functions&#34;&gt;single-expression functions&lt;/a&gt;. When you only have one expression in a function body, Kotlin will automatically assume that you want to return that value so there is no need for an explicit &lt;code&gt;return&lt;/code&gt; or braces. For bodies with multiple expressions, the &lt;code&gt;return&lt;/code&gt; is still mandatory because the compiler may not be able to guess what the return type is for the function.&lt;/li&gt;
+&lt;li&gt;No &lt;code&gt;new&lt;/code&gt; keyword when initializing an object. This coupled with the type inference, implicit returns and single statement/no braces makes for a nice compact configuration class.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Spring configuration classes are a mixed bag for me in Kotlin. The actual code difference is only 4 lines of code (18 vs 14) but the visual noise is significantly reduced in Kotlin. Having to declare both the class and all of the methods as open seems a bit clunky for me but I&amp;rsquo;m willing to overlook it due to the type inference, lack of return for single expression functions and the other improvements that these classes gain from Kotlin.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading. In our next installment, we will take a look at Spring controllers in Kotlin.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin: The Application Class</title>
+      <link>/post/spring-boot-application-with-kotlin/</link>
+      <pubDate>Sat, 13 Feb 2016 09:35:56 -0700</pubDate>
+      
+      <guid>/post/spring-boot-application-with-kotlin/</guid>
+      <description>
+
+&lt;p&gt;After writing a significant amount of Ruby/Rails for many years, lately I have found myself writing a ton of Spring Boot applications. &lt;a href=&#34;http://projects.spring.io/spring-boot/&#34;&gt;Spring Boot&lt;/a&gt; is a great framework for the JVM that focuses on developer productivity by making &amp;ldquo;it easy to create stand-alone, production-grade Spring based Applications that you can &amp;lsquo;just run&amp;rsquo;&amp;rdquo;. It has a lot of the feel of Rails in the &amp;ldquo;convention over configuration&amp;rdquo; department but because I end up using Java 8, I have lost some of the &amp;ldquo;joy&amp;rdquo; that you get when writing in Ruby. Even though Java 8 provides significant improvements over Java 7, I wanted to find out if I could get some more of that joy back by using &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; to write Spring Boot applications.&lt;/p&gt;
+
+&lt;p&gt;Kotlin is a new language from the folks at &lt;a href=&#34;https://www.jetbrains.com/&#34;&gt;JetBrains&lt;/a&gt;, creators of IntelliJ and RubyMine, as a replacement for Java in developing their products. Their goal was to create a more concise JVM based language that helps increase developer productivity, avoid some common pitfalls in Java development and be 100% compatible with existing Java programs. It targets Java 6 as the baseline while still adding some great language features so it is quite useful for Android development as well.&lt;/p&gt;
+
+&lt;p&gt;This post, and all that follow, will use an existing Java 8/Spring Boot &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/tree/running-java&#34;&gt;application&lt;/a&gt; as a starting point for the exploration. This will allow me to see direct comparisons between Java 8 syntax and Kotlin syntax. The journey will allow me to experience first hand what a Spring Boot/Kotlin application might look like as well as learn the language as I go that is a bit more than a &amp;ldquo;Hello World&amp;rdquo; application.
+If you want to follow along as I travel, you can check out the evolving source on &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin&#34;&gt;GitHub here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In addition, these posts are not meant to be a full tutorial on Kotlin and will only cover the language features pertinent to the transformation. If you want a full tutorial, the Kotlin website has a lot of &lt;a href=&#34;https://kotlinlang.org/docs/reference/&#34;&gt;great information&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, if you have any suggestions for improvements in &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin&#34;&gt;the code&lt;/a&gt;, please feel free to submit a GitHub issue or submit a pull request.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-starting-line:f0640ab72d87a1ffd3722283734cb7cc&#34;&gt;The starting line&lt;/h2&gt;
+
+&lt;p&gt;The first thing we need when starting a Spring Boot application is an application class. Here is the &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/running-java/applications/billing/src/main/java/com/example/billing/Application.java&#34;&gt;application class&lt;/a&gt; that I started with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+...
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;No surprises here. We create a static &lt;code&gt;main()&lt;/code&gt; method on the Application class that Spring Boot detects when you run the executable jar file.&lt;/p&gt;
+
+&lt;p&gt;Here is that same application class in Kotlin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+// This class must not be final or Spring Boot is not happy.
+open class Application {
+    companion object {
+        @JvmStatic fun main(args: Array&amp;lt;String&amp;gt;) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first difference you may notice is the lack of semicolons. Yes ladies and gentlemen, no semicolons in Kotlin. While not a huge deal for some, it was a step in the right direction for me.&lt;/p&gt;
+
+&lt;p&gt;The next difference I noticed is the &lt;code&gt;open&lt;/code&gt; keyword in front of the class definition. Classes in Kotlin are final by default, as per Item 17 from &lt;a href=&#34;http://www.oracle.com/technetwork/java/effectivejava-136174.html&#34;&gt;Effective Java&lt;/a&gt;: &lt;em&gt;Design and document for inheritance or else prohibit it&lt;/em&gt;. This is my first experience with friction between Kotlin&amp;rsquo;s &amp;ldquo;enforce good practices&amp;rdquo; and Spring Boot&amp;rsquo;s conventions. The &lt;code&gt;@SpringBootApplication&lt;/code&gt; is a convenience annotation that marks the class with the &lt;code&gt;@Configuration&lt;/code&gt;, &lt;code&gt;@EnableAutoConfiguration&lt;/code&gt; and &lt;code&gt;@ComponentScan&lt;/code&gt; annotations. It is the &lt;code&gt;@Configuration&lt;/code&gt; annotation that forces the use of the &lt;code&gt;open&lt;/code&gt; keyword. Removing the &lt;code&gt;open&lt;/code&gt; keyword causes a runtime error when the application boots:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Configuration class &#39;Application&#39; may not be final. Remove the final modifier to continue.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is easy enough to fix since this application class doesn&amp;rsquo;t contain any configuration information. Instead of using the &lt;code&gt;@SpringBootApplication&lt;/code&gt; annotation you can &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/commit/a9045e1968193fc70b4c43a330fde265b3325f7a&#34;&gt;substitute&lt;/a&gt; the &lt;code&gt;@EnableAutoConfiguration&lt;/code&gt; and &lt;code&gt;@ComponentScan&lt;/code&gt; annotations.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+
+@EnableAutoConfiguration
+@ComponentScan
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+class Application {
+    companion object {
+        @JvmStatic fun main(args: Array&amp;lt;String&amp;gt;) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The final differences that I noticed are in the definition of the &lt;code&gt;main()&lt;/code&gt; method. Kotlin has an idea of &lt;a href=&#34;https://kotlinlang.org/docs/reference/object-declarations.html#companion-objects&#34;&gt;companion objects&lt;/a&gt;. These objects are used in a way similar to static methods in Java but not exactly. That is where the &lt;code&gt;@JvmStatic&lt;/code&gt; annotation comes in. This annotation tells Kotlin to generate an actual Java static method instead of the &amp;ldquo;kinda,sorta&amp;rdquo; one that is the default in Kotlin. This annotation is a great example of the investment in JVM compatibility.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;main()&lt;/code&gt; method is also missing the &lt;code&gt;public&lt;/code&gt; modifier. &lt;a href=&#34;https://kotlinlang.org/docs/reference/visibility-modifiers.html&#34;&gt;Methods are public by default&lt;/a&gt; in Kotlin which reduces a bit of the boilerplate present in Java applications.&lt;/p&gt;
+
+&lt;p&gt;Finally, you will notice that arrays in Kotlin are actual parameterized classes instead of the primitive type that they are in Java. Kotlin also puts the type annotation after the variable is defined. We will get into why this is important in future posts.&lt;/p&gt;
+
+&lt;p&gt;One final gotcha with the Kotlin application class is that you have to tell Spring Boot where to find the application class. In Gradle, it is as easy as this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;springBoot {
+    mainClass = &#39;com.example.billing.Application&#39;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Update - Feb, 16 2016: You do not need to tell Spring Boot where the application class is any longer. I got this from an early JetBrains blog post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;an-alternate-application-class:f0640ab72d87a1ffd3722283734cb7cc&#34;&gt;An alternate application class&lt;/h1&gt;
+
+&lt;p&gt;Kotlin also allows functions to be defined outside of classes so we can re-write the application class as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+import org.springframework.context.annotation.ComponentScan
+
+@EnableAutoConfiguration
+@ComponentScan
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+class Application
+
+fun main(args: Array&amp;lt;String&amp;gt;) {
+    SpringApplication.run(Application::class.java, *args)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we do this, the &lt;code&gt;main()&lt;/code&gt; method is defined on a class called &lt;code&gt;ApplicationKt&lt;/code&gt;, named after the file &lt;code&gt;Application.kt&lt;/code&gt;, and this slightly changes the &lt;code&gt;build.gradle&lt;/code&gt; entry:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;springBoot {
+    mainClass = &#39;com.example.billing.ApplicationKt&#39;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Update - Feb, 16 2016: You do not need to tell Spring Boot where the application class is any longer. I got this from an early JetBrains blog post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;This definition simplifies the signature of the &lt;code&gt;main()&lt;/code&gt; method a bit. Gone are the annotations and the explicit companion object so the code is a little less cluttered.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m not sure which one I prefer better. Using the companion object is more explicit about which class contains the &lt;code&gt;main()&lt;/code&gt; method but the above definition is more succinct. Here we trade less code for an implicit understanding that an ApplicationKt class gets generated by the compiler. Over time, I&amp;rsquo;m thinking the abbreviated application class will grow on me.&lt;/p&gt;
+
+&lt;h1 id=&#34;closing-thoughts:f0640ab72d87a1ffd3722283734cb7cc&#34;&gt;Closing thoughts&lt;/h1&gt;
+
+&lt;p&gt;In my mind, Kotlin is a step in the right direction as a &amp;ldquo;better Java&amp;rdquo;. It seems to me that the language designers did what they could to remain compatible with existing Java programs while not being handcuffed by the legacy of Java. The lack of semi colons may seem trivial but will add up in large codebases and the enforcement of best practices at the language level will also help large codebases.&lt;/p&gt;
+
+&lt;p&gt;Yes there are some slight gotchas when it comes to smoothly integrating with Spring Boot but those are outweighed by the benefits of the new syntax and language constructs.&lt;/p&gt;
+
+&lt;p&gt;In our next installment, we will take a look at Java Spring Boot configuration classes and compare them to their Kotlin brethren. I&amp;rsquo;m hoping that we will continue to see gains from Kotlin that will outweigh the friction with Spring Boot.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

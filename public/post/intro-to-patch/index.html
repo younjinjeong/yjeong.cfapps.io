@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Intro to the Patch Command &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Intro to the Patch Command
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">Quick intro on how to use the patch command to edit, and revert, the text of multiple files.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Tue, Jan 5, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/dwayneforde">Dwayne Forde</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/patch">Patch</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/golang">Golang</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/intro-to-patch.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="dwayneforde ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<h2 id="intro-to-the-patch-command:37d9d12a99e4538bd90981433bd1c986">Intro to the Patch Command</h2>
+
+<p>Long ago, the patch tool was created to apply diffs of code to codebases. This way when a developer submitted the diff for their new code, someone could assess and then apply the changes to the primary codebase.</p>
+
+<p>These days, we have version control systems like git and svn to take care of logging and traversing all the code changes submitted.</p>
+
+<p>So what about the patch command, does it still have a purpose?</p>
+
+<h2 id="why:37d9d12a99e4538bd90981433bd1c986">Why</h2>
+
+<p>The use case we had was that we needed to put a piece of software that was running on a server into a “debug” mode. The problem was there wasn’t debug mode implemented into its source code. To implement a feature like this would take months and we didn’t have control over the source code for the product.</p>
+
+<p>The patch command is great for appyling and reverting changes to any text because is uses diffs. This means we can manipulate files whatever way we want, and then return return those files to their original state at the end of our cycle.</p>
+
+<h2 id="sample-use-case:37d9d12a99e4538bd90981433bd1c986">Sample Use Case</h2>
+
+<p>Here is a simple Go app.</p>
+
+<pre><code class="language-go">$ cat src/code.go
+
+package main
+
+import (
+	&quot;fmt&quot;
+)
+
+func main() {
+	validate()
+	deploy()
+	smokeTests()
+}
+
+func validate() {
+	fmt.Println(&quot;Validating...&quot;)
+}
+
+func deploy() {
+	fmt.Println(&quot;Deploying...&quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&quot;Running Smoke Tests...&quot;)
+}
+</code></pre>
+
+<p>For the sake of this example, let&rsquo;s say that we&rsquo;re dependant on this app it&rsquo;s has to run before I can test my code. When we run it, it&rsquo;s doing two operations that we might want to remove to speed things up.</p>
+
+<pre><code>$ go run src/code.go
+
+Validating...
+Deploying...
+Running Smoke Tests...
+</code></pre>
+
+<p>In our case, we ran a cycle in our test environments with this code to verify that <code>validate()</code> and <code>smokeTests()</code> pass successfully. Then we wanted to trim down our testing cycles so the goal was to remove this functionality for quicker feedback.</p>
+
+<h3 id="creating-a-patch-file:37d9d12a99e4538bd90981433bd1c986">Creating a Patch file</h3>
+
+<p>First, we&rsquo;ll make a copy of the code and make the changes that we want.</p>
+
+<pre><code class="language-go">$ cat src_altered/code.go
+
+package main
+
+import (
+	&quot;fmt&quot;
+)
+
+func main() {
+  //validate() **Disabled**
+  deploy()
+  //smokeTests() **Disabled**
+}
+
+func validate() {
+	fmt.Println(&quot;Validating...&quot;)
+}
+
+func deploy() {
+	fmt.Println(&quot;Deploying...&quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&quot;Running Smoke Tests...&quot;)
+}
+</code></pre>
+
+<p>Then we&rsquo;ll get the diff which will serve as our patch file.</p>
+
+<pre><code>$ diff -ru src src_altered &gt; code.patch; cat code.patch
+
+diff -ru src/code.go src_altered/code.go
+--- src/code.go	2015-11-25 17:55:17.000000000 -0500
++++ src_altered/code.go	2015-11-25 17:48:11.000000000 -0500
+@@ -5,9 +5,9 @@
+ )
+ 
+ func main() {
+-	validate()
++	//validate() **Disabled**
+ 	deploy()
+-	smokeTests()
++	//smokeTests() **Disabled**
+ }
+ 
+ func validate() {
+</code></pre>
+
+<h3 id="applying-a-patch:37d9d12a99e4538bd90981433bd1c986">Applying a Patch</h3>
+
+<p>Run the patch command with your new patch file as your input (-i). You
+can also add the -b flag if you want a backup of the original file.</p>
+
+<pre><code>$ patch -p0 -i code.patch
+
+patching file src/code.go
+</code></pre>
+
+<p>The -p flag is required, which specifies how many prefixed path
+segements you want to remove from the path.</p>
+
+<pre><code class="language-go">$ cat src/code.go
+
+package main
+
+import (
+	&quot;fmt&quot;
+)
+
+func main() {
+	//validate()
+	deploy()
+	//smokeTests()
+}
+
+func validate() {
+	fmt.Println(&quot;Validating...&quot;)
+}
+
+func deploy() {
+	fmt.Println(&quot;Deploying...&quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&quot;Running Smoke Tests...&quot;)
+}
+</code></pre>
+
+<h3 id="reverting-a-patch:37d9d12a99e4538bd90981433bd1c986">Reverting a Patch</h3>
+
+<p>For when we want to put the file to a clean state.</p>
+
+<pre><code>$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+</code></pre>
+
+<p>The only change is that we&rsquo;ve told patch that we want to reverse (-R).</p>
+
+<pre><code class="language-go">$ cat src/code.go
+
+package main
+
+import (
+	&quot;fmt&quot;
+)
+
+func main() {
+	validate()
+	deploy()
+	smokeTests()
+}
+
+func validate() {
+	fmt.Println(&quot;Validating...&quot;)
+}
+
+func deploy() {
+	fmt.Println(&quot;Deploying...&quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&quot;Running Smoke Tests...&quot;)
+}
+</code></pre>
+
+<h3 id="patching-fail-safes:37d9d12a99e4538bd90981433bd1c986">Patching Fail-Safes</h3>
+
+<p>Patch works off of diffs so it can figure out if you&rsquo;re trying to patch
+or reverse a file twice so that you don&rsquo;t end up in an unrecoverable
+state.</p>
+
+<pre><code class="language-bash">$ patch -p0 -i code.patch
+
+patching file src/code.go
+
+$ patch -p0 -i code.patch
+
+patching file src/code.go
+Reversed (or previously applied) patch detected!  Assume -R? [n] n
+Apply anyway? [n] n
+Skipping patch.
+1 out of 1 hunk ignored -- saving rejects to file src/code.go.rej
+
+$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+
+$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+Unreversed patch detected!  Ignore -R? [n] n
+Apply anyway? [n] n
+Skipping patch.
+1 out of 1 hunk ignored -- saving rejects to file src/code.go.rej
+</code></pre>
+
+<p>It also saves a .rej file whenever something goes wrong with any
+operation so you can investigate.</p>
+
+<h3 id="more-thanks:37d9d12a99e4538bd90981433bd1c986">More &amp; Thanks</h3>
+
+<p>As you can imagine, there is much more to the patch command. There isn&rsquo;t a lot of material out there but I would, as always, start with <a href="http://www.freebsd.org/cgi/man.cgi?patch">the man page</a>.</p>
+
+<p>I never would have known this command existed if it weren&rsquo;t for <a href="https://www.linkedin.com/profile/view?id=AAkAAAcAwNABp639qPfhGAX1KVuIkj5ghtUCJmc">Aaron Jarecki</a>, so big shoutout goes to him.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

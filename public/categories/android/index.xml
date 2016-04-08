@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on Pivotal Engineering Journal</title>
+    <link>/categories/android/</link>
+    <description>Recent content in Android on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 11 Nov 2015 14:39:05 -0800</lastBuildDate>
+    <atom:link href="/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Setting up Kotlin with Android and tests</title>
+      <link>/post/setting-up-kotlin-with-android-and-tests/</link>
+      <pubDate>Wed, 11 Nov 2015 14:39:05 -0800</pubDate>
+      
+      <guid>/post/setting-up-kotlin-with-android-and-tests/</guid>
+      <description>
+
+&lt;p&gt;I recently heard about &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; with the release of their 1.0 Beta last week. Kotlin is a modern programming language that runs in the JVM and is interoperable with Java. Kotlin can also be used to create Android apps.&lt;/p&gt;
+
+&lt;p&gt;I was curious, so I decided to set up a small Android app using Kotlin and try out some different methods of testing.&lt;/p&gt;
+
+&lt;h2 id=&#34;setting-up-the-app:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Setting up the app&lt;/h2&gt;
+
+&lt;p&gt;Setting up a hello word Android app in Kotlin was actually quite easy!  The Kotlin plugin for IntelliJ / Android Studo has a tool for converting your Java code to Kotlin, so you can get started really quickly! I was able to follow this &lt;a href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-android.html&#34;&gt;tutorial&lt;/a&gt; to get my Android app set up.&lt;/p&gt;
+
+&lt;p&gt;Two points to watch out for:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Make sure you have installed the Kotlin plugins in Android Studio before you start&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;I had to highlight the text of my java file before selecting &amp;ldquo;Convert Java File to Kotlin File&amp;rdquo; in order to get the converter to work.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;android-instrumentation-tests:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Android instrumentation tests&lt;/h2&gt;
+
+&lt;p&gt;I started by writing a simple Android Instrumentation test in Java (you can freely mix Java files and Kotlin files in your project and it seems to work fine).  Once that was working, I converted it to Kotlin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivityTest : ActivityInstrumentationTestCase2&amp;lt;MainActivity&amp;gt;(MainActivity::class.java) {
+   private var mainActivity: Activity? = null
+
+   @Throws(Exception::class)
+   override fun setUp() {
+       super.setUp()
+       mainActivity = activity
+   }
+
+   fun test_itDisplaysHelloWorld() {
+       val textView = mainActivity!!.findViewById(R.id.main_text) as TextView
+       val actual = textView.text.toString()
+       Assert.assertEquals(&amp;quot;Hello World!&amp;quot;, actual)
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only trouble I had was that after I converted the file, the Android Studio test runner configuration was broken.  To fix it I had to edit my run configuration in Android Studio by navigating to &lt;code&gt;Run -&amp;gt; Edit Configurations -&amp;gt; Android Tests&lt;/code&gt; and setting the instrumentation runner to &lt;code&gt;android.test.InstrumentationTestRunner&lt;/code&gt;.  After that, lo and behold, the test worked fine in Kotlin!&lt;/p&gt;
+
+&lt;h2 id=&#34;robolectric-tests:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Robolectric tests&lt;/h2&gt;
+
+&lt;p&gt;After my resounding success at getting the Android Instrumentation Tests to work, I decided to try my luck at Robolectric.  It turns out, Robolectric pretty much Just Worked too.  Here&amp;rsquo;s a Robolectric test written in Kotlin, equivalent to the instrumentation test above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@RunWith(RobolectricGradleTestRunner::class)
+@Config(constants = BuildConfig::class)
+class ExampleRobolectricTest {
+
+    @Test
+    fun itShouldDisplayHelloWorld() {
+        val activity = Robolectric.setupActivity(MainActivity::class.java)
+        val textView = activity.findViewById(R.id.main_text) as TextView
+
+        assertThat(textView.text).isEqualTo(&amp;quot;Hello World!&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;unit-tests-with-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Unit tests with Spek&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://jetbrains.github.io/spek/&#34;&gt;Spek&lt;/a&gt; is a testing framwork written in Kotlin with a pretty, rspec-like syntax. I would love to be able to write my Android tests using something like Spek, so I decided to try!&lt;/p&gt;
+
+&lt;h3 id=&#34;bad-news-1-android-instrumentation-tests-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Bad news #1: Android Instrumentation tests + Spek&lt;/h3&gt;
+
+&lt;p&gt;Spek requires your tests to inherit from a base class called &lt;code&gt;Spek&lt;/code&gt;.  Android instrumentation tests require your tests to inherit from &lt;code&gt;InstrumentationTestCase&lt;/code&gt;.  As far as I can tell, this is a deal-breaker for using the two systems together, for the moment.&lt;/p&gt;
+
+&lt;h3 id=&#34;bad-news-2-robolectric-tests-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Bad news #2: Robolectric tests + Spek&lt;/h3&gt;
+
+&lt;p&gt;Robolectric doesn&amp;rsquo;t specifically require your tests to inherit from any particular class, which theoretically opens the door to using it together with Spek.  However, naively combining them doesn&amp;rsquo;t work as expected, as the test runner cannot find any tests.  I think the reason for this is that Robolectric relies on using the RobolectricTestRunner, which extends the &lt;code&gt;BlockJUnit4ClassRunner&lt;/code&gt; (which identifies tests based on annotations), while Spek runs with it&amp;rsquo;s own &lt;code&gt;JUnitClassRunner&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the future I may look into writing a RobolectricSpek test runner, but for now, it looks like these two systems do not play nicely together.&lt;/p&gt;
+
+&lt;h3 id=&#34;finally-the-good-news:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Finally, the good news&lt;/h3&gt;
+
+&lt;p&gt;Although Spek does not seem to be compatible with either Robolectric or Android instrumentation tests, it actually works fine as a replacement for vanilla JUnit tests.  I think this kind of test is of dubious utility in a typical Android project, since there&amp;rsquo;s usually not a lot of code that can be tested purely with JUnit, but if you have these kinds of tests, you could easily convert them to use Spek.  Here&amp;rsquo;s a sample test I wrote in my hello world app:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;import org.jetbrains.spek.api.Spek
+import kotlin.test.assertEquals
+
+class ExampleUnitTest : Spek() {
+    init {
+        given(&amp;quot;Two numbers&amp;quot;) {
+            val firstNumber = 3
+            val secondNumber = 5
+            on(&amp;quot;adding the numbers&amp;quot;) {
+                val result = firstNumber + secondNumber
+                it(&amp;quot;should return the correct sum&amp;quot;) {
+                    assertEquals(8, result)
+                }
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;conclusion:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Kotlin seems like a promising new language with a lot of features that make it nicer to use than Java.  Setting up a &amp;ldquo;Hello World&amp;rdquo; Android app was extremely simple, and getting tests to run with Robolectric or the Android instrumentation runner was no problem.  I look forward to trying it out more in the future!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

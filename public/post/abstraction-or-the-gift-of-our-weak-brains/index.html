@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Abstraction, or, The Gift of Our Weak Brains &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Abstraction, or, The Gift of Our Weak Brains
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">Our brains are naturally limited. This can be a curse, or it can be a gift, depending on how you look at it.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Fri, Dec 18, 2015 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/flavorjones">Mike Dalessio</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/agile">Agile</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/humans">Humans</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/abstraction-or-the-gift-of-our-weak-brains.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="flavorjones ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<p><strong>TL;DR</strong>:</p>
+
+<ul>
+<li>Intelligent developers can, at times, fail to seek out better abstractions in their code.</li>
+<li>But empathy for our peers drives us towards finding abstractions.</li>
+<li>Better abstractions lead to better outcomes, and clearer problem-solving.</li>
+<li>There exist practices to ensure that empathy is top of mind, and to remind us to work towards better abstractions in our code.</li>
+</ul>
+
+<h2 id="nasa-s-voyager-legacy-code-like-you-ve-never-seen:987aad797c32cfa9d58a0abc21b9e382">NASA&rsquo;s Voyager: Legacy Code Like You&rsquo;ve Never Seen</h2>
+
+
+<figure class="right small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/voyager-1-10.jpg" />
+    
+    
+</figure>
+
+
+<p>Recently, NASA put a call out for FORTRAN developers to <a href="http://www.theregister.co.uk/2015/10/31/brush_up_on_your_fortran/">continue work on the Voyager spacecraft software</a>. Everyone on the original team has retired from NASA at this point, meaning that the code running Voyager is literally two human generations old.</p>
+
+<p>What kind of problems do you think exist around such extreme legacy code? In an <a href="http://www.popularmechanics.com/space/a17991/voyager-1-voyager-2-retiring-engineer/">interview with Popular Mechanics</a>, the program manager for the Voyager program said:</p>
+
+<blockquote>
+<p>&hellip; it&rsquo;s time to turn back to old documents to figure out the logic
+behind some of the engineering decisions. Dodd says it&rsquo;s easy to
+find the engineering decisions, but harder to find the
+reasoning. This means combing through <strong>secondary documents and
+correspondence</strong> hoping to find the solution, trying to get in another
+engineer&rsquo;s head.</p>
+</blockquote>
+
+<p>Holy cow.</p>
+
+<p>I mean, I realize that the solution had severe constraints placed on it (miniscule processing power, and 64KB of RAM). But the situation being described sounds like it&rsquo;s orthogonal to those constraints.</p>
+
+<blockquote>
+<p><em>&ldquo;trying to get in another engineer&rsquo;s head.&rdquo;</em></p>
+</blockquote>
+
+<p>Think about that for a moment. Not &ldquo;trying to understand the code&rdquo;, not &ldquo;trying to understand the implementation&rdquo;, but <strong>&ldquo;trying to understand how the author was reasoning about the universe at the time.&rdquo;</strong></p>
+
+<p>Wouldn&rsquo;t it have been easier if the relevant abstractions had been captured when that code was written?</p>
+
+<h2 id="tale-of-a-prodigy:987aad797c32cfa9d58a0abc21b9e382">Tale of a Prodigy</h2>
+
+<p>There&rsquo;s a famous story about <a href="https://en.wikipedia.org/wiki/John_von_Neumann">John von Neumann</a> and the <a href="http://mathworld.wolfram.com/TwoTrainsPuzzle.html">&ldquo;Two Trains Puzzle&rdquo;</a>.</p>
+
+<p>This particular puzzle is a math problem, involving two trains travelling towards each other, and a fly that&rsquo;s whizzing back and forth between their windshields: How far does the fly travel before it gets squashed?</p>
+
+<p>The hard way to solve this problem is to <a href="http://mathworld.wolfram.com/TwoTrainsPuzzle.html">generate an infinite series</a> representing the fly&rsquo;s path, and to compute its sum. Most humans aren&rsquo;t capable of doing this calculation in their head; but there&rsquo;s a shortcut to the solution, which some people will find obvious once they realize that:</p>
+
+<ol>
+<li>you know the <strong>total time</strong> the fly is traveling (based on the trains&rsquo; relative speeds);</li>
+<li>and you&rsquo;re given the <strong>fly&rsquo;s speed</strong>.</li>
+</ol>
+
+<p>A simple velocity calculation later, and you have the answer.</p>
+
+
+<figure class="left small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/von-neumann.jpg" />
+    
+    
+</figure>
+
+
+<p>According to <u><a href="https://www.jstor.org/stable/2319080">The Legend of von Neumann</a></u>, here&rsquo;s what happened when the puzzle was posed to Von Neumann:</p>
+
+<blockquote>
+<p>&hellip; he solved it in an instant, and thereby disappointed the
+questioner: &ldquo;Oh, you must have heard the trick before!&rdquo; &ldquo;What
+trick?&rdquo; asked von Neumann, &ldquo;All I did was sum the geometric series.&rdquo;</p>
+</blockquote>
+
+<p>Von Neumann was a remarkable math prodigy who was famous for his <a href="https://en.wikipedia.org/wiki/John_von_Neumann#Cognitive_abilities">extraordinary cognitive abilities</a>, so perhaps it&rsquo;s unsurprising that he was able to compute an infinite series so quickly.</p>
+
+<p>If you&rsquo;re paying attention, though, it should be very surprising that such an extraordinary intellect didn&rsquo;t see and use the shortcut to solve the problem.</p>
+
+<p><strong>Why didn&rsquo;t Von Neumann see and use the shortcut?</strong> Was it easier for him to do the calculation than to search for an unnecessary (to him) abstraction?</p>
+
+<h2 id="the-history-of-science-is-a-history-of-abstractions:987aad797c32cfa9d58a0abc21b9e382">The History of Science is a History of Abstractions</h2>
+
+<p>Recently, <a href="http://www.ribbonfarm.com/author/brian/">Brian Skinner</a> wrote an <a href="http://www.ribbonfarm.com/2015/10/29/quasiparticles-and-the-miracle-of-emergence/">amazing post</a> about how many of our scientific observations are a direct result of humans seeking to find intuitive abstractions to explain complex phenomena:</p>
+
+
+<figure class="right small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/free-electrons.png" />
+    
+    
+</figure>
+
+
+<blockquote>
+<p>As an extreme example, consider that human thinking struggles to
+describe even individual atoms with real precision. How is it, then,
+that we can possibly have good science about things that are made up
+of many atoms, like magnets or tornadoes or eukaryotic cells or
+planets or animals? It seems like a miracle that the natural world
+can contain patterns and objects that lie within our understanding,
+because the <strong>individual constituents of those objects are usually
+far too complex for us to parse</strong>.</p>
+</blockquote>
+
+<p>In that post, Brian differentiates between how humans <em>choose to reason</em> about electrons in an electric circuit, versus how electrons <em>actually</em> behave.</p>
+
+<p>The key point being that electron behavior is actually so complicated, involving complex interactions between quantum probabilities, electromagnetic interactions, and macroscopic electric fields, that human brains are piteously underpowered to calculate what&rsquo;s going on in an individual atom.</p>
+
+<p>The result, though, is that we model the <em>aggregate</em> behavior of all the electrons in the circuit, instead of modelling <em>each and every</em> electron. And that statistical abstraction is a model that works amazingly well in a wide range of circumstances.</p>
+
+
+<figure class="left small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/star-trek-aliens1.jpg" />
+    
+    
+</figure>
+
+
+<p><strong>Imagine an alien race with the cognitive faculties to reason about individual electron trajectories</strong>. Would those aliens fall back to the same abstraction? Or would they simply continue, as Von Neumann did, to do the calculations the hard way?</p>
+
+<h2 id="the-impact-of-ability-on-developing-abstraction:987aad797c32cfa9d58a0abc21b9e382">The Impact of Ability on Developing Abstraction</h2>
+
+<p>These stories anecdotally support a hypothesis: Humans develop the proper abstraction only when they hit the limit of their computational power.</p>
+
+<ul>
+<li>NASA computer scientists (perhaps some of the smartest, most exacting and meticulous people assembled since the Manhattan Project)  write code that is so inscrutable that modern-day maintainers are forced to read the authors&rsquo; mail to figure out what the hell the software was intended to do.</li>
+<li>John von Neumann didn&rsquo;t bother to look for a more elegant solution, because he was able to brute force an infinite series so easily.</li>
+<li>When science exceeds the physiological limits of our brains&rsquo; capabilities, scientists seek and find appropriate abstractions that allow civilization to advance.</li>
+</ul>
+
+
+<figure class="right small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/Ren%c3%a9_Magritte_The_Human_Condition.jpg" />
+    
+    
+</figure>
+
+
+<p>I can only hold one or two things in mind at a time. Maybe three, tops. I want to think deeply about a thing until I&rsquo;m done, and then move on. Ask anyone who&rsquo;s tried to have a conversation with me when I have two or three things already in my head &ndash; I&rsquo;m a total basket case.</p>
+
+<p>Some people appear to be able to hold much more state in their brain than I can. It&rsquo;s the only way I can explain spaghetti code with light test coverage. When I ask myself, &ldquo;How can anyone understand this?&rdquo;, the answer is usually, &ldquo;Because the author must have more prodigious computing power in their brain than I do.&rdquo; (Maybe I&rsquo;m being generous, but that&rsquo;s another blog post.)</p>
+
+<p>And that&rsquo;s OK. <strong>Except for when you have to deal with other people.</strong> Which is probably most of the time. Whoops.</p>
+
+<h2 id="complexity-without-empathy-considered-harmful:987aad797c32cfa9d58a0abc21b9e382">Complexity Without Empathy Considered Harmful</h2>
+
+<p>How are you, as one of the best and brightest, preparing for the inevitable day when someone less talented than you has to modify the software you wrote?</p>
+
+<p>Let&rsquo;s be honest and empathize that most people who currently have the title of &ldquo;software developer&rdquo; are not going to have the time, patience, or talent to wade through spaghetti code with dependencies pointed in the wrong direction, with poorly-named variables, and with poor test coverage.</p>
+
+
+<figure class="left small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/summer.jpg" />
+    
+    
+</figure>
+
+
+<p>Worse, though, is the example being set for people who are new to the craft. There&rsquo;s a self-perpetuating cycle here, particularly given that very few developers have any sort of exposure to the &ldquo;<a href="/post/welcome/">team sport</a>&rdquo; that is growing and maintaining large software systems. <strong>If all I see when I look around is poorly-abstracted software, then are you surprised when I generate code of the same quality?</strong></p>
+
+<p>(This, by the way, is why I feel strongly that most colleges and universities are cheating their CS grads by not preparing them for a career working in large, complex teams on large, complex projects. Again, this is for another blog post.)</p>
+
+<h2 id="how-to-do-better:987aad797c32cfa9d58a0abc21b9e382">How To Do Better</h2>
+
+<p>Obviously, there are smart people who <strong>do</strong> seek and find proper abstractions. Most of them (at least the ones I know personally)  share a common value: <strong>empathy</strong>. They all have empathy for their current teammates and future developers.</p>
+
+
+<figure class="right small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/knuth.jpg" />
+    
+    
+</figure>
+
+
+<p>This empathy for fellow developers can emerge in a number of ways. Perhaps the best known manifestation is <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Knuth</a>&rsquo;s <a href="http://www.literateprogramming.com/knuthweb.pdf">&ldquo;Literate Programming&rdquo;</a>:</p>
+
+<blockquote>
+<p>Let us change our traditional attitude to the construction of
+programs: Instead of imagining that our main task is to instruct a
+computer what to do, <strong>let us concentrate rather on explaining to
+human beings what we want a computer to do</strong>.</p>
+</blockquote>
+
+
+<figure class="left small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/hal-abelson.jpg" />
+    
+    
+</figure>
+
+
+<p>Which is simply a restatement of <a href="https://groups.csail.mit.edu/mac/users/hal/hal.html">Hal Abelson</a>&rsquo;s famous quote:</p>
+
+<blockquote>
+<p>“Programs must be written for people to read, and only incidentally
+for machines to execute.”</p>
+</blockquote>
+
+<p>My own personal interpretation of Literate Programming is: prefer self-explanatory code over comments. I often urge my pairs to write tests and implementations as if it were English, and in so doing help drive out the right abstractions.</p>
+
+<p>That tactic is actually a variation on an idea presented in Eric Evans&rsquo;s <a href="https://en.wikipedia.org/wiki/Domain-driven_design">&ldquo;Domain Driven Design&rdquo;</a> philosophy, which is to use the language of the domain to articulate requirements as well as implement the code. As explained in his <a href="http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215">book of the same name</a>:</p>
+
+<blockquote>
+<p>A domain model &hellip; is not just the knowledge in a domain expert&rsquo;s
+head; it is a <strong>rigorously organized and selective abstraction of
+that knowledge</strong>. &hellip; The model is the backbone of a language used
+by all team members.</p>
+</blockquote>
+
+<h2 id="engineering-practices-to-encourage-empathy-and-abstraction:987aad797c32cfa9d58a0abc21b9e382">Engineering Practices to Encourage Empathy and Abstraction</h2>
+
+<p>At Pivotal, as in any <a href="https://en.wikipedia.org/wiki/Extreme_programming">XP shop</a>, empathy takes form in our engineering practices.</p>
+
+<p><strong>We test-drive</strong>, which forces us to think deeply about the proper abstractions in the code as we&rsquo;re writing it. Testing first generally drives out better design; and allows us to safely introduce or change the abstractions later.</p>
+
+<p><strong>We pair program</strong>, which forces us to explain, before the code gets committed, the reasoning and intentions behind the code. Explaining it to the person sitting next to you is the first step towards explaining it to future readers of your code.</p>
+
+<p><strong>We rotate frequently between teams</strong>, meaning that we&rsquo;re almost always teaching someone the domain, the architecture, and the codebase. As a result, we are incentivized to make sure the code is understandable and abstracted correctly; and we feel acute pain around explaining poorly abstracted code.</p>
+
+<p>Generally speaking, these practices lower the threshold at which our brains might otherwise naturally seek for better abstractions. This is good!</p>
+
+<h2 id="if-you-re-reading-this-it-s-for-you:987aad797c32cfa9d58a0abc21b9e382">If You&rsquo;re Reading This, It&rsquo;s For You</h2>
+
+<p>These practices may be more important for people with greater computational abilities. <strong>This is actually the reverse of most people&rsquo;s intuition</strong>, which is (derogatorily) that Smart People don&rsquo;t need to follow the same practices as Ordinary People.</p>
+
+<p>Don&rsquo;t fall into this trap around testing and abstractions. If you think you&rsquo;re so smart, then consider Abstraction to be an act of <a href="https://en.wikipedia.org/wiki/Noblesse_oblige"><em>noblesse oblige</em></a> for the rest of us, and challenge yourself to find better abstractions than the next guy or girl.</p>
+
+<h2 id="and-a-warning:987aad797c32cfa9d58a0abc21b9e382">&hellip; And A Warning</h2>
+
+<p>
+<figure class="right small">
+    
+        <img src="/images/abstraction-or-the-gift-of-our-weak-brains/forever-productive-alone.jpg" />
+    
+    
+</figure>
+</p>
+
+<p><strong>You get to choose what you spend your brain&rsquo;s CPU cycles on.</strong> Well-abstracted code is easier to reason about and safer to change. If your brain is occupied with poorly-abstracted details, you&rsquo;re going to miss opportunities for creative problem solving, and you won&rsquo;t get the flashes of insight that can be critical to solving problems well.</p>
+
+<p><strong>Smart people who claim to not need practices are often productive &hellip; alone.</strong> But software (and life) is a <a href="/post/welcome/">team sport</a>. So even if you won&rsquo;t find good abstractions for your own sake, do it for your fellow developers. They&rsquo;ll thank you for it.</p>
+
+<p>Our brains are naturally limited. This can be a curse, or it can be a gift, depending on how you look at it.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

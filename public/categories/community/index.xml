@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Community on Pivotal Engineering Journal</title>
+    <link>/categories/community/</link>
+    <description>Recent content in Community on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Jan 2016 07:00:00 -0800</lastBuildDate>
+    <atom:link href="/categories/community/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Pivotal Data Open Source in 2016: community, community, community!
+</title>
+      <link>/post/data-open-source-community-2016/</link>
+      <pubDate>Fri, 29 Jan 2016 07:00:00 -0800</pubDate>
+      
+      <guid>/post/data-open-source-community-2016/</guid>
+      <description>&lt;p&gt;When it comes to Open Source, it wouldn’t be too much of a stretch to say that 2015 was a &lt;a href=&#34;https://www.youtube.com/watch?v=XxXgAPANmWw&#34;&gt;defining year&lt;/a&gt; for Pivotal Data. Almost a year ago, on February 17th 2015, we &lt;a href=&#34;https://www.youtube.com/watch?v=dTG5TAbzUAY&#34;&gt;announced&lt;/a&gt; our overarching strategy to complete the transition towards Pivotal becoming a quintessential Open Source company. We called it a New Approach to Big Data and we gave ourselves slightly less than a year to deliver on that promise. What happened in the rest of 2015 was nothing short of amazing. In 7 month from strategy to execution we open sourced our entire portfolio of Data products (Pivotal Gemfire, Pivotal HAWQ and Pivotal Greenplum) and jump started an industry collaboration on standardizing  Big Data platforms via &lt;a href=&#34;http://odpi.org&#34;&gt;ODPi&lt;/a&gt; collaborative project. But most importantly we put a very strong foundation in place to start growing amazing communities around our newly minted open source projects.&lt;/p&gt;
+
+&lt;p&gt;It is on that foundation that we intend to build in 2016. And we’re kicking it off in style.&lt;/p&gt;
+
+&lt;p&gt;In the month of January alone we already had 6 virtual community events showcasing contributions coming from a wide spectrum of community members. We plan to have a robust schedule of these events for the rest of 2016 and if you are interested in presenting at one of those please let us know – we’d love to feature your work. Of course, while virtual events are fun and they have an advantage of allowing participants not to wear pants (trust me – I know from experience) nothing beats the excitement of hanging out with your fellow hackers face to face.  To that end, we will be hosting up to a dozen events a month  (check out our &lt;a href=&#34;https://calendar.google.com/calendar/embed?src=pivotal.io_u8kgvuahjkboh1gnfhv5ts2v9c%40group.calendar.google.com&amp;amp;ctz=America/Los_Angeles&#34;&gt;Pivotal Data Communities Public Calendar&lt;/a&gt;) and it goes without saying that we would love if you would love to participate in one of our events, or consider hosting an event and inviting us to present. . In addition to meetups our first conference style gathering of users and hackers is scheduled to be a &lt;a href=&#34;http://geodesummit.com/&#34;&gt;Geode Summit&lt;/a&gt;. Make sure to register now, but also keep an eye on future announcements. We definitely are thinking of similar events for our other communities. Finally, we feel that a little bit of a competitive spirit is always a good thing especially among Open Source hackers. In 2015 we ran our first contest around &lt;a href=&#34;http://ambitious-apps.devpost.com/&#34;&gt;Apache Geode (incubating)&lt;/a&gt; and had one lucky team take home not only the glory of winning, but also the fortune of Apple Watch &amp;amp; Apache Geode hoodie. For 2016 we were kicking around this idea of a contest around creating a true self conscious AI, but since Google &lt;a href=&#34;http://www.wired.com/2016/01/in-a-huge-breakthrough-googles-ai-beats-a-top-player-at-the-game-of-go/&#34;&gt;beat&lt;/a&gt; us all to it we’re open to other suggestions.&lt;/p&gt;
+
+&lt;p&gt;At this point, I can hear you asking “but Roman, how do I get a hold of you guys to discuss this awesome idea of mine?”. Nothing could be simpler. First of all, all of our open source projects have open community mailing lists. Dropping a note to a community mailing list is the easiest way to get the conversation going and you can find instructions on how to subscribe, post and browse archives at each project’s website: &lt;a href=&#34;http://geode.incubator.apache.org/community/&#34;&gt;Apache Geode (incubating)&lt;/a&gt;, &lt;a href=&#34;http://hawq.incubator.apache.org/#mailing-lists&#34;&gt;Apache HAWQ (incubating)&lt;/a&gt;, &lt;a href=&#34;http://madlib.incubator.apache.org/community.html&#34;&gt;Apache MADlib (incubating)&lt;/a&gt;, &lt;a href=&#34;http://greenplum.org/#mailing-lists&#34;&gt;Greenplum Database&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We are also very likely to run into each other at one of the big, established gatherings of open source developers. As I am writing this, a whole bunch of us are converging on Brussels to kick off 2016 at the grand daddy of all open source conferences: &lt;a href=&#34;http://fosdem.org/&#34;&gt;FOSDEM&lt;/a&gt;. At FOSDEM you can find us at &lt;a href=&#34;http://fosdem2016.pgconf.eu/&#34;&gt;FOSDEM PGDay&lt;/a&gt;, &lt;a href=&#34;http://www.apache.org/&#34;&gt;Apache Software Foundation&lt;/a&gt; booth and most importantly a &lt;a href=&#34;https://fosdem.org/2016/schedule/track/hpc,_big_data_and_data_science/&#34;&gt;HPC, Big Data and Data Science devroom&lt;/a&gt;. To show our appreciation for all of our community members we are also hosting a dinner on Saturday, Feb 30 at 7pm in this lovely place called &lt;a href=&#34;http://www.mirabelle.be/&#34;&gt;La Mirabelle&lt;/a&gt;. There we will be toasting our latest addition to Pivotal Open Source family: &lt;a href=&#34;https://github.com/greenplum-db/gporca&#34;&gt;Orca&lt;/a&gt;. Orca is a &lt;a href=&#34;http://pivotal.io/big-data/white-paper/orca-a-modular-query-optimizer-architecture-for-big-data&#34;&gt;modular query optimizer for big data&lt;/a&gt; and we are really excited to share this breakthrough research in databases with all of you.&lt;/p&gt;
+
+&lt;p&gt;With that, I really hope see all of you soon. Drop by. Say hi. It’ll be a fun 2016!&lt;/p&gt;
+
+&lt;p&gt;Roman Shaposhnik,
+Director of Open Source Strategy at Pivotal&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

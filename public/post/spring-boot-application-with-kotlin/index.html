@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> The Journey of a Spring Boot application from Java 8 to Kotlin: The Application Class &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            The Journey of a Spring Boot application from Java 8 to Kotlin: The Application Class
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">The first steps along the path of converting a fully functional Java 8/Spring Boot/Spring Cloud application to Kotlin.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Sat, Feb 13, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/mikegehard">Mike Gehard</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/spring-boot">Spring Boot</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/kotlin">Kotlin</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/spring-boot-application-with-kotlin.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="mikegehard ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<p>After writing a significant amount of Ruby/Rails for many years, lately I have found myself writing a ton of Spring Boot applications. <a href="http://projects.spring.io/spring-boot/">Spring Boot</a> is a great framework for the JVM that focuses on developer productivity by making &ldquo;it easy to create stand-alone, production-grade Spring based Applications that you can &lsquo;just run&rsquo;&rdquo;. It has a lot of the feel of Rails in the &ldquo;convention over configuration&rdquo; department but because I end up using Java 8, I have lost some of the &ldquo;joy&rdquo; that you get when writing in Ruby. Even though Java 8 provides significant improvements over Java 7, I wanted to find out if I could get some more of that joy back by using <a href="https://kotlinlang.org/">Kotlin</a> to write Spring Boot applications.</p>
+
+<p>Kotlin is a new language from the folks at <a href="https://www.jetbrains.com/">JetBrains</a>, creators of IntelliJ and RubyMine, as a replacement for Java in developing their products. Their goal was to create a more concise JVM based language that helps increase developer productivity, avoid some common pitfalls in Java development and be 100% compatible with existing Java programs. It targets Java 6 as the baseline while still adding some great language features so it is quite useful for Android development as well.</p>
+
+<p>This post, and all that follow, will use an existing Java 8/Spring Boot <a href="https://github.com/mikegehard/user-management-evolution-kotlin/tree/running-java">application</a> as a starting point for the exploration. This will allow me to see direct comparisons between Java 8 syntax and Kotlin syntax. The journey will allow me to experience first hand what a Spring Boot/Kotlin application might look like as well as learn the language as I go that is a bit more than a &ldquo;Hello World&rdquo; application.
+If you want to follow along as I travel, you can check out the evolving source on <a href="https://github.com/mikegehard/user-management-evolution-kotlin">GitHub here</a>.</p>
+
+<p>In addition, these posts are not meant to be a full tutorial on Kotlin and will only cover the language features pertinent to the transformation. If you want a full tutorial, the Kotlin website has a lot of <a href="https://kotlinlang.org/docs/reference/">great information</a>.</p>
+
+<p>Finally, if you have any suggestions for improvements in <a href="https://github.com/mikegehard/user-management-evolution-kotlin">the code</a>, please feel free to submit a GitHub issue or submit a pull request.</p>
+
+<h2 id="the-starting-line:f0640ab72d87a1ffd3722283734cb7cc">The starting line</h2>
+
+<p>The first thing we need when starting a Spring Boot application is an application class. Here is the <a href="https://github.com/mikegehard/user-management-evolution-kotlin/blob/running-java/applications/billing/src/main/java/com/example/billing/Application.java">application class</a> that I started with:</p>
+
+<pre><code>package com.example.billing;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+...
+
+</code></pre>
+
+<p>No surprises here. We create a static <code>main()</code> method on the Application class that Spring Boot detects when you run the executable jar file.</p>
+
+<p>Here is that same application class in Kotlin:</p>
+
+<pre><code>package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+// This class must not be final or Spring Boot is not happy.
+open class Application {
+    companion object {
+        @JvmStatic fun main(args: Array&lt;String&gt;) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
+}
+
+</code></pre>
+
+<p>The first difference you may notice is the lack of semicolons. Yes ladies and gentlemen, no semicolons in Kotlin. While not a huge deal for some, it was a step in the right direction for me.</p>
+
+<p>The next difference I noticed is the <code>open</code> keyword in front of the class definition. Classes in Kotlin are final by default, as per Item 17 from <a href="http://www.oracle.com/technetwork/java/effectivejava-136174.html">Effective Java</a>: <em>Design and document for inheritance or else prohibit it</em>. This is my first experience with friction between Kotlin&rsquo;s &ldquo;enforce good practices&rdquo; and Spring Boot&rsquo;s conventions. The <code>@SpringBootApplication</code> is a convenience annotation that marks the class with the <code>@Configuration</code>, <code>@EnableAutoConfiguration</code> and <code>@ComponentScan</code> annotations. It is the <code>@Configuration</code> annotation that forces the use of the <code>open</code> keyword. Removing the <code>open</code> keyword causes a runtime error when the application boots:</p>
+
+<pre><code>org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Configuration class 'Application' may not be final. Remove the final modifier to continue.
+</code></pre>
+
+<p>This is easy enough to fix since this application class doesn&rsquo;t contain any configuration information. Instead of using the <code>@SpringBootApplication</code> annotation you can <a href="https://github.com/mikegehard/user-management-evolution-kotlin/commit/a9045e1968193fc70b4c43a330fde265b3325f7a">substitute</a> the <code>@EnableAutoConfiguration</code> and <code>@ComponentScan</code> annotations.</p>
+
+<pre><code>package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+
+@EnableAutoConfiguration
+@ComponentScan
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+class Application {
+    companion object {
+        @JvmStatic fun main(args: Array&lt;String&gt;) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
+}
+
+</code></pre>
+
+<p>The final differences that I noticed are in the definition of the <code>main()</code> method. Kotlin has an idea of <a href="https://kotlinlang.org/docs/reference/object-declarations.html#companion-objects">companion objects</a>. These objects are used in a way similar to static methods in Java but not exactly. That is where the <code>@JvmStatic</code> annotation comes in. This annotation tells Kotlin to generate an actual Java static method instead of the &ldquo;kinda,sorta&rdquo; one that is the default in Kotlin. This annotation is a great example of the investment in JVM compatibility.</p>
+
+<p>The <code>main()</code> method is also missing the <code>public</code> modifier. <a href="https://kotlinlang.org/docs/reference/visibility-modifiers.html">Methods are public by default</a> in Kotlin which reduces a bit of the boilerplate present in Java applications.</p>
+
+<p>Finally, you will notice that arrays in Kotlin are actual parameterized classes instead of the primitive type that they are in Java. Kotlin also puts the type annotation after the variable is defined. We will get into why this is important in future posts.</p>
+
+<p>One final gotcha with the Kotlin application class is that you have to tell Spring Boot where to find the application class. In Gradle, it is as easy as this:</p>
+
+<pre><code>springBoot {
+    mainClass = 'com.example.billing.Application'
+}
+</code></pre>
+
+<p><em>Update - Feb, 16 2016: You do not need to tell Spring Boot where the application class is any longer. I got this from an early JetBrains blog post.</em></p>
+
+<h1 id="an-alternate-application-class:f0640ab72d87a1ffd3722283734cb7cc">An alternate application class</h1>
+
+<p>Kotlin also allows functions to be defined outside of classes so we can re-write the application class as:</p>
+
+<pre><code>package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+import org.springframework.context.annotation.ComponentScan
+
+@EnableAutoConfiguration
+@ComponentScan
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+class Application
+
+fun main(args: Array&lt;String&gt;) {
+    SpringApplication.run(Application::class.java, *args)
+}
+
+</code></pre>
+
+<p>If we do this, the <code>main()</code> method is defined on a class called <code>ApplicationKt</code>, named after the file <code>Application.kt</code>, and this slightly changes the <code>build.gradle</code> entry:</p>
+
+<pre><code>springBoot {
+    mainClass = 'com.example.billing.ApplicationKt'
+}
+</code></pre>
+
+<p><em>Update - Feb, 16 2016: You do not need to tell Spring Boot where the application class is any longer. I got this from an early JetBrains blog post.</em></p>
+
+<p>This definition simplifies the signature of the <code>main()</code> method a bit. Gone are the annotations and the explicit companion object so the code is a little less cluttered.</p>
+
+<p>I&rsquo;m not sure which one I prefer better. Using the companion object is more explicit about which class contains the <code>main()</code> method but the above definition is more succinct. Here we trade less code for an implicit understanding that an ApplicationKt class gets generated by the compiler. Over time, I&rsquo;m thinking the abbreviated application class will grow on me.</p>
+
+<h1 id="closing-thoughts:f0640ab72d87a1ffd3722283734cb7cc">Closing thoughts</h1>
+
+<p>In my mind, Kotlin is a step in the right direction as a &ldquo;better Java&rdquo;. It seems to me that the language designers did what they could to remain compatible with existing Java programs while not being handcuffed by the legacy of Java. The lack of semi colons may seem trivial but will add up in large codebases and the enforcement of best practices at the language level will also help large codebases.</p>
+
+<p>Yes there are some slight gotchas when it comes to smoothly integrating with Spring Boot but those are outweighed by the benefits of the new syntax and language constructs.</p>
+
+<p>In our next installment, we will take a look at Java Spring Boot configuration classes and compare them to their Kotlin brethren. I&rsquo;m hoping that we will continue to see gains from Kotlin that will outweigh the friction with Spring Boot.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

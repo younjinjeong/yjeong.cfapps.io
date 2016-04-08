@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cf Cli on Pivotal Engineering Journal</title>
+    <link>/categories/cf-cli/</link>
+    <description>Recent content in Cf Cli on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 20 Oct 2015 20:54:48 -0600</lastBuildDate>
+    <atom:link href="/categories/cf-cli/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Using the Cloud Foundry Firehose Plugin</title>
+      <link>/post/Firehose-Plugin/</link>
+      <pubDate>Tue, 20 Oct 2015 20:54:48 -0600</pubDate>
+      
+      <guid>/post/Firehose-Plugin/</guid>
+      <description>
+
+&lt;h2 id=&#34;firehose-at-your-fingertips:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;Firehose at your fingertips&lt;/h2&gt;
+
+&lt;p&gt;On the Logging and Metrics team, we recently found ourselves in a need to debug the CF Firehose more easily and we wanted to share that tool with all CF operators out there. In case you don&amp;rsquo;t know what the Firehose is, let me tell you: It is undoubtedly the most powerful feature added to the CF logging system in the last 2 years. That&amp;rsquo;s why its typically also restricted to be used by just the admin users. You know the saying &amp;lsquo;With great power comes great bragging rights&amp;rdquo; (or something like that).&lt;/p&gt;
+
+&lt;h3 id=&#34;what-is-the-firehose:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;What is the firehose?&lt;/h3&gt;
+
+&lt;p&gt;In all seriousness, the Firehose can be very useful. It is a stream of all application logs and all component metrics from the CF components. Unfortunately, so far it has been really difficult to access (you had to write some code in go to get access to that stream). But with our brand new Firehose CLI plugin, all you have to do is install the plugin from the plugin repository and you are good to go.&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;center visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/loggregator/diagram.gif&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/loggregator/diagram.gif&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;h3 id=&#34;how-can-i-obtain-admin-access:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;How can I obtain admin access?&lt;/h3&gt;
+
+&lt;p&gt;As mentioned earlier, you need either admin access or some special permission to access the Firehose. Fortunately, the Loggregator &lt;a href=&#34;https://github.com/cloudfoundry/loggregator/#configuring-the-firehose&#34;&gt;README&lt;/a&gt; provides good details on how to set this up.&lt;/p&gt;
+
+&lt;h3 id=&#34;how-do-i-install-the-plugin:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;How do I install the plugin?&lt;/h3&gt;
+
+&lt;p&gt;Installing, the plugin is really simple.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Login to the CF CLI with your admin creds&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cf api &amp;lt;your_cf_api_url&amp;gt;
+cf login
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Add the plugin repository&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Install the plugin&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;cf install-plugin &amp;quot;Firehose Plugin&amp;quot; -r CF-Community
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;how-do-i-use-the-firehose-plugin:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;How do I use the Firehose plugin?&lt;/h3&gt;
+
+&lt;p&gt;There are two ways of using the plugin. There is an interactive mode and non-interactive mode.&lt;/p&gt;
+
+&lt;p&gt;The interactive mode requires some user input and will look something like below. You may select the type of messages you&amp;rsquo;d like to have streaming on your terminal by selecting an index. If you are curious as to why it doesn&amp;rsquo;t start with 1, look &lt;a href=&#34;https://github.com/cloudfoundry/dropsonde-protocol/blob/master/events/envelope.proto#L13&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;https://github.com/cloudfoundry/firehose-plugin/blob/master/firehose/client.go#L85&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-no-language&#34;&gt;$ cf nozzle
+What type of firehose messages do you want to see?
+Please enter one of the following choices:
+    hit &#39;enter&#39; for all messages
+    2 for HttpStart
+    3 for HttpStop
+    4 for HttpStartStop
+    5 for LogMessage
+    6 for ValueMetric
+    7 for CounterEvent
+    8 for Error
+    9 for ContainerMetric
+  &amp;gt; 5
+Starting the nozzle
+Hit Ctrl+c to exit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can also use the &lt;code&gt;--filter&lt;/code&gt; flag to have the plugin operate without user interaction. For example, if you want to filter the log stream to contain just counter events then you can run the command like this &lt;code&gt;cf nozzle --filter CounterEvent&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want all logs and not automatically enter interactive mode, you can pass in the &lt;code&gt;--no-filter&lt;/code&gt; flag. This is the same as hitting enter in the interactive mode.&lt;/p&gt;
+
+&lt;h3 id=&#34;share-the-load:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;Share the load&lt;/h3&gt;
+
+&lt;p&gt;So the Firehose has this nifty feature where the logs can be distributed across various sessions in order to reduce load. All you need to do is use the same subscription ID for each session. So what that means is, if you have two terminal windows open and you run the following command &lt;code&gt;cf nozzle --no-filter --subscription-id zaphod&lt;/code&gt; the load would be split evenly among the two sessions. Although having two heads didn&amp;rsquo;t seem to help Zaphod anyways.&lt;/p&gt;
+
+&lt;h3 id=&#34;don-t-panic:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;Don&amp;rsquo;t Panic&lt;/h3&gt;
+
+&lt;p&gt;In case you get any errors, just hold on to your towel.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Error&lt;/th&gt;
+&lt;th&gt;Solution&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Unauthorized error: You are not authorized. Error: Invalid authorization&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Just regenerate your auth-token like so: &lt;code&gt;cf oauth-token&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Unable to recognize filter HtttpStarrrt&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Check your spelling&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Invalid filter choice&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;Check your index choice. Enter a number from 2 through 9&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;how-we-use-this-plugin:e6d881032b6de5db24c59b1920a4ff8d&#34;&gt;How we use this plugin?&lt;/h3&gt;
+
+&lt;p&gt;We use &lt;code&gt;cf nozzle -n&lt;/code&gt; primarily for debugging and acceptance purposes. It&amp;rsquo;s a quick way to look for expected component and application logs. Recently, our PM used this tool to look for logs originating from the DEA after pushing an app to PCF. Before this tool, he would have had to&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Setup his GOPATH and &lt;code&gt;go get&lt;/code&gt; the &lt;a href=&#34;https://github.com/cloudfoundry/noaa&#34;&gt;NOAA&lt;/a&gt; library.&lt;/li&gt;
+&lt;li&gt;Set up the environment variables CF_ACCESS_TOKEN and DOPPLER_ADDR.&lt;/li&gt;
+&lt;li&gt;Follow instructions to build and run the firehose sample.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

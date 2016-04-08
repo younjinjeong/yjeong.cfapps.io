@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Pivotal Engineering Journal</title>
+    <link>/categories/java/</link>
+    <description>Recent content in Java on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Mar 2016 13:16:51 -0500</lastBuildDate>
+    <atom:link href="/categories/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>&#34;Some Blog Post&#34; or, How I Learned to Stop Worrying and Like Red Junit Tests</title>
+      <link>/post/some-blog-post-or-how-i-learned-to-stop-worrying-and-like-red-junit-tests/</link>
+      <pubDate>Thu, 24 Mar 2016 13:16:51 -0500</pubDate>
+      
+      <guid>/post/some-blog-post-or-how-i-learned-to-stop-worrying-and-like-red-junit-tests/</guid>
+      <description>
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/test_failure_disaster.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/test_failure_disaster.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Let me throw this scenario at you: A test is failing. You didn&amp;rsquo;t write it, and the error is really weird. The test name doesn&amp;rsquo;t tell you what the code is supposed to do, but whatever it is, your code isn&amp;rsquo;t doing that.&lt;/p&gt;
+
+&lt;p&gt;That&amp;rsquo;s pretty much worst case scenario for test failures, and it happened to me earlier today.&lt;/p&gt;
+
+&lt;p&gt;I don&amp;rsquo;t blame the people who wrote the test. It&amp;rsquo;s tricky to figure out how to write a good test in Java. Seriously! There&amp;rsquo;s no &lt;code&gt;describe&lt;/code&gt; blocks or &lt;code&gt;it&lt;/code&gt;s like in &lt;a href=&#34;http://jasmine.github.io/2.4/introduction.html&#34;&gt;jasmine&lt;/a&gt; and &lt;a href=&#34;http://rspec.info/&#34;&gt;rspec&lt;/a&gt;. How do you even structure a test? I&amp;rsquo;m not really a fan of Java (Who needs type safety anyway?), but I&amp;rsquo;ve learned a few things in the two years I&amp;rsquo;ve been here at Pivotal Labs that let me hate it a lot less.&lt;/p&gt;
+
+&lt;h2 id=&#34;test-name-structure:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;Test Name Structure&lt;/h2&gt;
+
+&lt;p&gt;Okay, for starters, you can take advantage of the test method name.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Test
+public void updateCalendar() {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;should become&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Test
+public void updateCalendar_whenThereIsAnEvent_savesTheEvent() {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first time I saw that I was mindblown. It&amp;rsquo;s so simple, but so great! Someone probably told you that method names should never be that long, but I&amp;rsquo;m just going to let you in on a little secret: tests are special, and it&amp;rsquo;s worth it, believe me.&lt;/p&gt;
+
+&lt;p&gt;This opens you up to having more than one test for one method, and lets your tests be smaller. So instead of a bunch of assertions and a bunch of setup, you can have just a tiny bit of setup that corresponds to that &lt;code&gt;whenThereIsAnEvent&lt;/code&gt; and one or two assertions that correspond to the last phrase (&lt;code&gt;savesTheEvent&lt;/code&gt;). It&amp;rsquo;s not quite as nice as real describe blocks, but it&amp;rsquo;s serviceable.&lt;/p&gt;
+
+&lt;p&gt;Now when your test is failing, there&amp;rsquo;s not a lot of code to look at, and the test tells you what it&amp;rsquo;s about. Already this code is going to be so much easier to fix.&lt;/p&gt;
+
+&lt;p&gt;You might be thinking, &amp;ldquo;Wait, I&amp;rsquo;m writing more than one test per method? Where does it end? How many tests do I write?&amp;rdquo; I&amp;rsquo;ll get to that. It&amp;rsquo;s at the very end though, so if you&amp;rsquo;re holding your breath, you might need to scroll down.&lt;/p&gt;
+
+&lt;h2 id=&#34;empty-assertions:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;Empty Assertions&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/empty_assertions.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/empty_assertions.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;This code looks fine, right?:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;assertThat(savedUser.getName()).isEqualTo(user.getName());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It looks fine, but under the surface it might actually have a horrible disease: &lt;em&gt;Emptiassertionitis&lt;/em&gt;. If &lt;code&gt;user.name&lt;/code&gt; was never set, this is actually&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;assertThat(savedUser.getName()).isEqualTo(null); 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Oh no, that&amp;rsquo;s not what you meant at all! So, to avoid that, I recommend always inlining this kind of thing.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;assertThat(savedUser.getName()).isEqualTo(&amp;quot;Some Name&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&amp;ldquo;But Tira, that isn&amp;rsquo;t dry!&amp;rdquo; Nope, it isn&amp;rsquo;t. Because this is a test, and tests are special. Tests don&amp;rsquo;t need to be dry, at least not as much as they need to be transparent. If your test data is meaningful and your test failures are obvious, that&amp;rsquo;s a pretty good test in my book.&lt;/p&gt;
+
+&lt;h2 id=&#34;weird-null-pointers:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;Weird Null Pointers&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/e_is_for_exception.jpg&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/e_is_for_exception.jpg&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Okay, this is really specific to Java. You know how there is &lt;code&gt;int&lt;/code&gt; and &lt;code&gt;Integer&lt;/code&gt; and &lt;code&gt;long&lt;/code&gt; and &lt;code&gt;Long&lt;/code&gt; and so on? Well, it turns out that when you try to set one of the lowercase ones to &lt;code&gt;null&lt;/code&gt;, you get a null pointer exception. It makes sense; the whole point of the wrapper classes is to make the primitives into nullable &lt;code&gt;Object&lt;/code&gt;s. But still, every time I see a null pointer exception being thrown from an innocent-looking line like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;calendarDay.setEventCount(eventCount); // calendarDay is not null
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I have to do a double take. If I&amp;rsquo;m a little drowsy, sometimes it&amp;rsquo;s three or four takes before I realize what&amp;rsquo;s going on.&lt;/p&gt;
+
+&lt;p&gt;As people who write tests, we run into this weird little issue a lot. We don&amp;rsquo;t want to set up all the data that isn&amp;rsquo;t relevant to the test we&amp;rsquo;re writing. We shouldn&amp;rsquo;t have to set it up. But, doing this minimal setup means things are often null that wouldn&amp;rsquo;t be otherwise. Just make them nullable and move on.&lt;/p&gt;
+
+&lt;p&gt;If the thing isn&amp;rsquo;t valid as &lt;code&gt;null&lt;/code&gt;, consider a &lt;code&gt;@NotNull&lt;/code&gt; validation.&lt;/p&gt;
+
+&lt;h2 id=&#34;helpful-test-data:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;Helpful Test Data&lt;/h2&gt;
+
+&lt;p&gt;You may think that test data doesn&amp;rsquo;t matter. It can be anything. But I&amp;rsquo;m here to tell you that it can matter. It can &lt;em&gt;be something&lt;/em&gt;.
+When I think about setting up test data, I think about what kind of failure messages it will produce. Your test data can tell you what to do next, or it can confuse you.
+Here we have ordinary test data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;User user = User.builder()
+.id(&amp;quot;10&amp;quot;)
+.age(10) // not the only field with this value
+.name(&amp;quot;Ghengis Khan&amp;quot;) // Joke name
+.email(&amp;quot;email&amp;quot;)  // The value is the same as name of the field
+.build();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This test data can actually be a real problem when you have &lt;em&gt;Emptiassertionitis&lt;/em&gt;-style tests:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;assertThat(find(&amp;quot;.my-form&amp;quot;).getText()).contains(user.getEmail());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;See how that user&amp;rsquo;s email is the same as the field name? There&amp;rsquo;s probably a &lt;code&gt;&amp;lt;label&amp;gt;email&amp;lt;/label&amp;gt;&lt;/code&gt; on the page, so our assertion passes even when the user&amp;rsquo;s email is not being rendered.
+If instead you make that into &lt;code&gt;&amp;quot;some-email@example.com&amp;quot;&lt;/code&gt;, you&amp;rsquo;ll get a nice error that tells you exactly what to fix.
+The same thing goes for that &lt;code&gt;id&lt;/code&gt; field. Make the &lt;code&gt;id&lt;/code&gt; field into &lt;code&gt;&amp;quot;some-id-1&amp;quot;&lt;/code&gt; and your error message will point you at the &lt;code&gt;id&lt;/code&gt; field, without being confused for &lt;code&gt;age&lt;/code&gt;. It&amp;rsquo;s okay sometimes to use fun names, but when you&amp;rsquo;re deciding between something clever and something clear, go for clear. There&amp;rsquo;s plenty of other stuff to be creative with when you&amp;rsquo;re writing code. And when you aren&amp;rsquo;t going for the clever approach, &amp;ldquo;Some&amp;rdquo; is a wonderful word for filling in test data. It won&amp;rsquo;t be confused for real values, and it won&amp;rsquo;t get mixed up with form fields:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;User user = User.builder()
+.id(&amp;quot;some-id-1&amp;quot;)
+.age(10)
+.name(&amp;quot;Some Name&amp;quot;)
+.email(&amp;quot;some-email@example.com&amp;quot;)
+.build();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Wow! This test data is so boring, but so helpful!&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/something_is_blue.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;h2 id=&#34;mockito-how-to-when:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;Mockito: How to &lt;code&gt;when&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;A lot of times I see mocks set up like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;when(magician.putInHat(magicObject)).thenReturn(123);
+assertThat(whatever.doThing()).isEqualTo(123);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s all well and dandy in the sense that you&amp;rsquo;re testing everything you wanted to test. &lt;code&gt;putInHat&lt;/code&gt; is being called correctly with magicObject. Its return value is coming back and being used as the result of &lt;code&gt;doThing&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But what about when this test is failing? What if you pass in the wrong &lt;code&gt;MagicObject&lt;/code&gt; to &lt;code&gt;putInHat&lt;/code&gt;?&lt;/p&gt;
+
+&lt;p&gt;You get &lt;code&gt;&amp;quot;it is not true that null is equal to 123&amp;quot;&lt;/code&gt;. I mean, I think we can all agree that null is not equal to 123, but this failure doesn&amp;rsquo;t exactly make it obvious that &lt;code&gt;putInHat&lt;/code&gt; is betraying you and returning &lt;code&gt;null&lt;/code&gt;. It would never do that in real life, but of course it&amp;rsquo;s a mock because this is a unit test. So how can we get a better test failure?&lt;/p&gt;
+
+&lt;p&gt;Swap in a &lt;code&gt;Matcher&lt;/code&gt; and a &lt;code&gt;verify&lt;/code&gt;, for all the same test coverage goodness but with twice the fun:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;when(magician.putInHat(any(MagicObject.class)).thenReturn(123);
+assertThat(whatever.doThing()).isEqualTo(123);
+verify(magician).putInHat(magicObject);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It&amp;rsquo;s one extra line of code, but now our failure message looks like this:
+&lt;code&gt;&amp;quot;expected putInHat to have been called with MagicObject@2456 but actual calls were MagicObject@1234&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Abracadabra, that&amp;rsquo;s way more helpful.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-to-mock:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;What to Mock&lt;/h2&gt;
+
+&lt;p&gt;You want to write pure unit tests. That means you mock everything that isn&amp;rsquo;t the object you&amp;rsquo;re testing. Right? Wrong. I mean, kind of, but not quite. You could mock everything but please don&amp;rsquo;t. Mock things with behavior. Don&amp;rsquo;t mock Models.&lt;/p&gt;
+
+&lt;p&gt;Consider the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Test 
+public void addOne_returnsTheIncrementedValue(){
+  valuable.setValue(10);
+  assertThat(incrementer.addOne(valuable)).isEqualTo(11);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Imagine that incrementer is working as expected, but this test is failing. It says&lt;code&gt;&amp;quot;it is not true that null is equal to 11&amp;quot;&lt;/code&gt;. Why? because &lt;code&gt;valuable&lt;/code&gt; is a mock object. Sure, you could say &lt;code&gt;when(valuable.getValue()).thenReturn(10)&lt;/code&gt; and your test would work, but it&amp;rsquo;s just really weird and harder to use than newing up an instance of the real thing.&lt;/p&gt;
+
+&lt;h2 id=&#34;how-many-tests-do-i-write:8ae03c7a1b57337c01821bfe9847dcf9&#34;&gt;How Many Tests do I write?&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/too_many_tests.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/tira/too_many_tests.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;When I was first getting into writing unit tests, I kept hearing about how I needed to test edge cases. So I wrote code with all these null checks and exception handling, and almost none of it was necessary and all of it was ugly. Don&amp;rsquo;t think about edge cases. Think about real cases.&lt;/p&gt;
+
+&lt;p&gt;Write one test for each side of a control flow. So if you have an &lt;code&gt;if&lt;/code&gt; in your method, you should have two tests for that method.&lt;/p&gt;
+
+&lt;p&gt;If there is an &lt;code&gt;if&lt;/code&gt; with an &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; or &lt;code&gt;||&lt;/code&gt;, you should have 3 tests.&lt;/p&gt;
+
+&lt;p&gt;If there are two objects you have to set up to test all of a method&amp;rsquo;s behavior, consider whether you can separate that into two tests as well.&lt;/p&gt;
+
+&lt;p&gt;The goal is to have simple, meaningful, descriptive tests. Think of tests as comments with proof. Their whole purpose is to communicate to the next developer what the code is doing and why.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin, part 3: Data Classes</title>
+      <link>/post/spring-boot-kotlin-data-classes/</link>
+      <pubDate>Mon, 29 Feb 2016 17:53:56 -0700</pubDate>
+      
+      <guid>/post/spring-boot-kotlin-data-classes/</guid>
+      <description>&lt;p&gt;Welcome to the third installment of our Java 8 -&amp;gt; Kotlin conversion for a Spring Boot application. &lt;a href=&#34;/post/spring-boot-configuration-in-kotlin/&#34;&gt;Last time&lt;/a&gt; we saw how converting a configuration class to Kotlin helped clean up some of the boilerplate code required in Java.&lt;/p&gt;
+
+&lt;p&gt;In this third installment, we are going to continue our theme of &amp;ldquo;write less code with Kotlin&amp;rdquo; and look at how &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html&#34;&gt;Kotlin data classes&lt;/a&gt; help us clean up our POJOs data classes.&lt;/p&gt;
+
+&lt;p&gt;Our &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/83883fee6dac3cb06e10bd6a510403cbe3e1ef62/components/email/src/main/java/com/example/email/EmailMessage.java&#34;&gt;starting point&lt;/a&gt; is a plain old Java object (POJO) to hold some data to be sent via RabbitMQ:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.email;
+
+import java.io.Serializable;
+
+public class EmailMessage implements Serializable {
+
+    private final String toAddress;
+    private final String subject;
+    private final String body;
+
+    public EmailMessage(String toAddress, String subject, String body) {
+        this.toAddress = toAddress;
+        this.subject = subject;
+        this.body = body;
+    }
+
+    public String getToAddress() {
+        return toAddress;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getBody() {
+        return body;
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is the &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/f137c5ec25a2a575c30113a3260f55af6d0285ed/components/email/src/main/kotlin/com/example/email/EmailMessage.kt&#34;&gt;same class&lt;/a&gt; implemented as a &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html&#34;&gt;Kotlin data class&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.email
+
+import java.io.Serializable
+
+data class EmailMessage(val toAddress: String, val subject: String, val body: String) : Serializable
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Not only is this code much shorter than it&amp;rsquo;s Java counterpart, it also has more functionality. As a Kotlin data class, this tiny amount of code gets:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;generated implementations for a &lt;code&gt;equals()/hashCode()&lt;/code&gt; pair&lt;/li&gt;
+&lt;li&gt;a default &lt;code&gt;toString()&lt;/code&gt; method&lt;/li&gt;
+&lt;li&gt;a &lt;code&gt;copy()&lt;/code&gt; method that allows for easy altering of individual attributes of the object&lt;/li&gt;
+&lt;li&gt;the ability to &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html#data-classes-and-destructuring-declarations&#34;&gt;destructure&lt;/a&gt; the object in an assignment statement.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Other places this feature will come in handy is with &lt;a href=&#34;https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin#jackson-kotlin-module&#34;&gt;JSON deserialization&lt;/a&gt; and &lt;a href=&#34;https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin#jackson-kotlin-module&#34;&gt;Spring Data JPA classes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As someone evaluating a switch from Java to Kotlin, these data classes are a major reasons for adopting Kotlin in your Spring Boot application. They help you write, and thus maintain, less code and the less code we have to maintain the better in my mind.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

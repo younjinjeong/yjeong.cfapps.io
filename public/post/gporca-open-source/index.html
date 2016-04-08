@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> GPORCA, A Modular Query Optimizer, Is Now Open-Source &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            GPORCA, A Modular Query Optimizer, Is Now Open-Source
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">GPORCA has achieved an overall 5X performance improvement across all 99 industry standard benchmark queries. Now we call on the community to help take the project to the next level.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Thu, Jan 28, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/addisonhuddy">Addison Huddy</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/big-data">Big Data</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/databases">Databases</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/query-optimization">Query Optimization</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/sql">SQL</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/gporca-open-source.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="addisonhuddy ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<h1 id="gporca-a-cost-based-query-optimizer-is-now-open-source:c0657d5419a8e9dbf76f780caab6c155">GPORCA, A Cost-Based Query Optimizer, Is Now Open Source</h1>
+
+<p>Pick your favorite Big Data statistic; we all know that the growth of data has been astounding. What hasn’t kept up is our ability to process this data.  Even the newest big data technologies such as <a href="http://spark.apache.org/">Apache Spark™</a> are using <a href="https://databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html">rule-based</a> approaches to query optimization, which often miss potential faster execution plans.</p>
+
+<p>This is why the Pivotal R&amp;D team poured years of work into developing a new query optimizer called GPORCA. Improving the intelligence of query planning was a missed chance in database engineering with huge opportunity for further improving performance.</p>
+
+<p>The truth is, the industry can’t wait for a war over performance to play out between the many new data technologies. By collaborating with leading developers, it will be possible to benefit all users of different database technologies and advance innovation in the industry faster. That is why Pivotal is announcing that the GPORCA query optimizer is now open source and available under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>.</p>
+
+<p>Currently it is possible to run GPORCA with open source projects <a href="http://greenplum.org/">Greenplum Database</a> and <a href="http://hawq.incubator.apache.org/">Apache HAWQ (incubating)</a>. We call on the database engineering community to help us increase the portability of GPORCA to work with even more data management platforms.</p>
+
+<h1 id="why-should-i-care:c0657d5419a8e9dbf76f780caab6c155">Why Should I Care?</h1>
+
+<p>Historically, every database has shipped with its own optimizer. That means every software developer spent valuable R&amp;D cycles building one, and maintaining it. This is not a scalable solution, nor does it foster collaborative research.</p>
+
+<p>GPORCA is built as an external plugin, which makes it the perfect test bed for database research that can benefit a wide variety of databases.</p>
+
+<p>Furthermore, GPORCA isn’t just a tool for research and development. It is an enterprise-grade, query optimizer that is handling some of the most demanding SQL workloads at truly Big Data scale.</p>
+
+<h1 id="what-is-gporca:c0657d5419a8e9dbf76f780caab6c155">What Is GPORCA?</h1>
+
+<p>GPORCA is a modular, cost-based query optimizer based on 30 years of <a href="https://d1fto35gcfffzn.cloudfront.net/big-data/white-paper/SIGMODHAWQAdvantages.pdf">database research</a>. Simply put, it takes in a parsed query statement and returns what it considers to be the fastest execution plan for the database. It combines the query with metadata (e.g. statistics, schemas, etc.) and information about the database cluster to generate the execution plan. GPORCA is portable and modular because it can work with more than one database and can easily support new database operators.</p>
+
+<h2 id="what-can-gporca-do:c0657d5419a8e9dbf76f780caab6c155">What Can GPORCA Do?</h2>
+
+<p>At Pivotal, we are constantly benchmarking our database products to ensure they are getting faster. Currently GPORCA is achieving an overall 5X improvement compared to Pivotal Greenplum’s legacy planner across all 99 of the industry’s most trusted benchmark queries. Some of the very complex queries are up to 1000x faster!</p>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/gporca/gporcaPerf.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>Three features of GPORCA are primarily responsible for these performance gains: Dynamic Partition Elimination, SubQuery Unnesting, and Common Table Expression. To read more about these three features, please check <a href="https://blog.pivotal.io/big-data-pivotal/products/greenplum-database-adds-the-pivotal-query-optimizer">this blog post</a> published in 2015.</p>
+
+<p>GPORCA achieves its portability and modularity by running outside the core database system. Furthermore, the primary optimization techniques are componentized, allowing new operators, transformation, statistical/cost models and other techniques to be added with ease.</p>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/gporca/gporcaArch.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>For a more technical deep-dive into GPORCA, we encourage you to take a look at the <a href="http://pivotal.io/big-data/white-paper/orca-a-modular-query-optimizer-architecture-for-big-data">white paper</a>.</p>
+
+<h1 id="what-can-t-gporca-do:c0657d5419a8e9dbf76f780caab6c155">What Can’t GPORCA Do?</h1>
+
+<p>As are many things in life, writing a modular query optimizer is about finding balance.  The original design for GPORCA optimized for analytical queries on data warehouses.  We focused on queries that typically would take a few hours, and made them run in a few minutes. For these long running queries, the time needed to compute an optimal plan is small compared with the duration of the query itself.  However, for shorter queries, the time needed to find an optimal plan becomes more important for overall execution time, so this is an area that needs future development effort. This is all about finding balance and bottlenecks.</p>
+
+<p>Furthermore, GPORCA is not feature complete compared to the current planner in GPDB and HAWQ, which is a modified version of the Postgres planner designed to work on MPP databases. When GPORCA encounters an operator it does not currently support, it falls back to the legacy planner.</p>
+
+<h1 id="where-is-gporca-going:c0657d5419a8e9dbf76f780caab6c155">Where Is GPORCA Going?</h1>
+
+<p>GPORCA needs to become feature complete, matching PostgreSQL’s current support and beyond. Support for external parameters, cubes, multiple grouping sets, inverse distribution functions, ordered aggregates, and indexed expressions is all on the GPORCA roadmap.</p>
+
+<p>With parity and better performance for shorter running queries comes the ultimate goal of GPORCA. We hope one day, GPORCA is the defacto query optimizer in PostgreSQL.</p>
+
+<h1 id="why-does-gporca-need-you:c0657d5419a8e9dbf76f780caab6c155">Why Does GPORCA  Need YOU?</h1>
+
+<p>GPORCA is organized as a sub-project of <a href="http://greenplum.org/">Greenplum Database</a>. However, GPORCA is designed to be database agnostic. The contributor team here at Pivotal primarily uses the Greenplum Database as a test bed and to ensure that the GPORCA API is easy to implement.</p>
+
+<p>Here’s how to  get started with GPORCA and the GPORCA community:</p>
+
+<ol>
+<li><p>Head over to <a href="https://github.com/greenplum-db/gpos">github</a> and check out the GPOS README. After that, you will need to compile both GPORCA and GPDB.</p></li>
+
+<li><p>Once GPDB is up and running with GPORCA, <code>set optimizer=on;</code> will turn on GPORCA.</p></li>
+
+<li><p>Run explain analyze with GPORCA on and off to see if GPORCA calculates a better query plan.</p></li>
+
+<li><p>Subscribe to the GPDB developer mailing list: <a href="mailto:gpdb-users+subscribe@greenplum.org">gpdb-users+subscribe@greenplum.org</a></p></li>
+
+<li><p>Get involved in the discussions on github.</p></li>
+
+<li><p>Collaborate on stories in <a href="https://www.pivotaltracker.com/n/projects/1523545">Pivotal Tracker</a></p></li>
+
+<li><p>Sign the <a href="https://github.com/greenplum-db/greenplum-db.github.io/wiki/Greenplum-Database-project-contributions-FAQ#q-do-i-need-to-sign-anything-in-order-to-contribute-code-to-greenplum-database">ICLA/CCLA</a> and start sending us <a href="https://github.com/greenplum-db/greenplum-db.github.io/wiki/Merging-Pull-Requests">pull requests</a>!</p></li>
+</ol>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

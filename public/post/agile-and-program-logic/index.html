@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Agile and Program Logic &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Agile and Program Logic
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">On some of the differences and similarities in perspective between Agile/TDD
+programmers and developers of program-logic tools.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Sat, Oct 17, 2015 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/totherme">Gareth Smith</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/agile">Agile</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/agile-and-program-logic.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="totherme ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<p>I just started at Pivotal a couple of months ago. Before that, I worked on
+formal methods, program logic, and semantics. My <a href="http://www.resourcereasoning.com/people.html">old
+colleagues</a> in academia and my
+new colleagues in industry are all aiming at the same thing &ndash; we want to build
+awesome software. In this post I want to talk about some of our differences in
+perspective; and how that affects the sorts of tools that my old colleagues
+produce, and the sorts of tools my new colleagues are likely to want to use.</p>
+
+<p>Here&rsquo;s the most important bit of this blog post. I think that if you want to
+make awesome software (which is reliable, and which does something that&rsquo;s
+useful to someone), you need to do three things:</p>
+
+<dl>
+<dt>Discovery</dt>
+<dd>Figure out what you want</dd>
+<dt>Implementation</dt>
+<dd>Write code that does what you said you wanted</dd>
+<dt>Cost</dt>
+<dd>Manage <em>Discovery</em> and <em>Implementation</em> within the constraints of your local
+economics<sup class="footnote-ref" id="fnref:593f78287bfed9eb47252e554d38176c:1"><a rel="footnote" href="#fn:593f78287bfed9eb47252e554d38176c:1">1</a></sup>.</dd>
+</dl>
+
+<p>Academic computer scientists - quite rightly - tend to focus on
+<em>Implementation</em>. There are good reasons for this - success in <em>Implementation</em>
+is relatively easy to measure, even if you&rsquo;re developing a small prototype in
+isolation from the market it&rsquo;s ultimately aimed at. On the other hand, I think
+Agile/TDD (Test Driven Development) is really good at <em>Discovery</em>. When I
+was living in academia I often found myself arguing that formal methods and
+proof-based techniques were better at <em>Implementation</em> than TDD can ever
+be<sup class="footnote-ref" id="fnref:593f78287bfed9eb47252e554d38176c:2"><a rel="footnote" href="#fn:593f78287bfed9eb47252e554d38176c:2">2</a></sup>.  This might be true<sup class="footnote-ref" id="fnref:593f78287bfed9eb47252e554d38176c:3"><a rel="footnote" href="#fn:593f78287bfed9eb47252e554d38176c:3">3</a></sup>, but it misses the point. The
+point is that it doesn&rsquo;t matter how good an engineer is at <em>Implementation</em> if
+they have no plan for <em>Discovery</em>. For the rest of this post, I&rsquo;m going to
+explore the strategy we use at Pivotal for <em>Discovery</em> and what that might
+mean for academic toolsmiths who want us to use their methods and tools when we
+come to do <em>Implementation</em>.  Many of the things I mention here will also turn
+out to be quite handy for managing <em>Cost</em> as well, but to do that justice will
+require another post.</p>
+
+<h2 id="agile-tdd-at-pivotal:593f78287bfed9eb47252e554d38176c">Agile/TDD at Pivotal</h2>
+
+
+<figure class="left small">
+    
+        <img src="/images/pairing.jpg" />
+    
+    
+</figure>
+
+
+<p>There are <a href="https://en.wikipedia.org/wiki/Extreme_programming">lot</a>
+<a href="https://en.wikipedia.org/wiki/Test-driven_development">of</a>
+<a href="https://www.destroyallsoftware.com/screencasts">places</a> to read about
+Agile/TDD online, and you&rsquo;ve almost certainly read this sort of thing before.
+I&rsquo;m repeating it here for easy context, and because I don&rsquo;t want to describe
+and evangelise some TDD theory that no-one practices &ndash; I want to describe what
+I actually do every day. If you don&rsquo;t currently do these things and you want to
+give them a try, that&rsquo;s awesome. But in the context of this post it&rsquo;s more
+important to describe to my old colleagues what sort of process their tools are
+going to need to slot in to if they want me to use them.</p>
+
+<p>So here we go:</p>
+
+<p>Every new feature, every bugfix, every change to our codebase is a story in our
+tracker. These stories are prioritized by the Product Manager (PM). Our
+engineers work in pairs. Each pair uses a single machine at a given time with
+two monitors, keyboards and mice. Each pair picks the highest priority task
+from the tracker, and makes it happen. To make a story happen, you write a
+test, make it pass, push to master, repeat. The master branch of our git repo
+contains all the things all of us are currently working on, and all the tests
+always pass.</p>
+
+<p>Let&rsquo;s look in to some of that in more detail.</p>
+
+<h3 id="imaginary-case-study-the-machine-that-goes-ping:593f78287bfed9eb47252e554d38176c">Imaginary Case Study: The Machine That Goes Ping</h3>
+
+
+<figure class="right small">
+    
+        <img src="/images/ping-machine.jpg" />
+    
+    
+</figure>
+
+
+<p>Suppose we&rsquo;re building a client-server application for some customer. The
+customer has asked for a whole bunch of things, and (with more or less help
+from our PM, depending on various factors) has written up a bunch of stories in
+our tracker. There might be a story called &ldquo;introduce ping button&rdquo;. This story
+will have some &ldquo;acceptance criteria&rdquo; attached. The idea is that once the
+engineers think they&rsquo;ve finished the story the PM should be able to read the
+acceptance criteria; try out the new functionality; and decide whether the
+engineers did their job right, or whether they need another go. For this story,
+our acceptance criteria might look something like this:</p>
+
+<ol>
+<li>start the server in one terminal with <code>servergui</code></li>
+<li>start client in another terminal with <code>appclient --connect localhost</code></li>
+<li>press ping button on server</li>
+<li>I expect to see &ldquo;Ping!&rdquo; on the client term.</li>
+</ol>
+
+<p>This is an informal description of what the customer thought they wanted. There
+are various problems with it as a specification. For example, do we expect the
+ping message to propagate to all clients currently connected, or only to some
+of them? Which ones? If a client isn&rsquo;t connected during the broadcast, do we
+expect the message to be stored, and delivered when the client eventually
+connects? The Agile/TDD process will help us clear all this up.</p>
+
+<p>The first thing the pair of engineers working on this story will do is write an
+integration test. This test should be as simple as possible a formalization of
+the loose informal specification in the story. For example:</p>
+
+<pre><code>Describe(&quot;Pinger&quot;, func() {
+  var server Server
+  var client Client
+  var testLogger Logger
+
+  BeforeEach(func() {
+    server = NewServer(....)
+    testLogger = TestLogger{}
+    client = NewClient(.... testLogger ... )
+    client.Connect(server.Address())
+  })
+
+  It(&quot;Can ping the client&quot;, func() {
+    server.Ping()
+    Eventually(testLogger).Should(Say(&quot;Ping!&quot;))
+  })
+})
+</code></pre>
+
+<p>I&rsquo;ve written this example test in <a href="https://golang.org/">go</a> (missing a few
+details about how we actually start our imaginary server and so on), following
+the patterns encouraged by the testing library
+<a href="https://github.com/onsi/ginkgo">ginkgo</a>. We will see as tests get more
+complicated that the strings in the blocks labelled <code>Describe</code>, <code>It</code>, and
+similar encourage us to write our tests in a specification-like way. We
+describe things, and properties of things. Later we will see how to describe
+context-specific properties of things, and organize our properties into
+hierarchies of contexts. For now, notice that this test describes exactly what
+the customer asked for &ndash; what they thought they wanted &ndash; and makes no attempt
+to guess what extra things they might want. This test deliberately says nothing
+about multiple clients, or offline clients.</p>
+
+<p>The pair of engineers working on this story are now free to make this test pass
+any way they like &ndash; so long as the code they write is test-driven with
+unittests.</p>
+
+<h3 id="clarifying-the-spec:593f78287bfed9eb47252e554d38176c">Clarifying the Spec</h3>
+
+
+<figure class="left small">
+    
+        <img src="/images/magnifying-code.jpg" />
+    
+    
+</figure>
+
+
+<p>For our narrative, let us assume that while the engineers were writing the test
+above, they realised that it would pass even if the server never attempts to
+send messages to more than one client. On this occasion, the engineers decide
+to ask the PM for clarification. The PM replies &ldquo;Oh yes &ndash; I think we want a
+proper broadcast message there, not just a message to a single random client&rdquo;.
+In the ensuing conversation, the PM and the engineers could choose to finish
+this story quickly with just the one integration test, and to open a new story
+for making our ping into a broadcast message&hellip; Or they could choose to update
+the existing story (which is still &ldquo;in-flight&rdquo;) to reflect their new shared
+understanding of the problem. In our example, they choose the second option:
+the PM updates the acceptance criteria to mention multiple clients, and the
+engineers make a note to write a second integration test once they have the
+first one passing.</p>
+
+<p>With the new test added, the tests for this story now look like this:</p>
+
+<pre><code>Describe(&quot;Pinger&quot;, func() {
+  var server Server
+  var client Client
+  var testLogger Logger
+
+  BeforeEach(func() {
+    server = NewServer(....)
+    testLogger = TestLogger{}
+    client = NewClient(.... testLogger ... )
+    client.Connect(server.Address())
+  })
+
+  It(&quot;can ping the client&quot;, func() {
+    server.Ping()
+    Eventually(testLogger).Should(Say(&quot;Ping!&quot;))
+  })
+
+  Context(&quot;when there are multiple clients&quot;, func() {
+    var secondClient Client
+    var secondLogger Logger
+
+    BeforeEach(func() {
+      secondLogger = Logger{}
+      secondClient = NewClient( ... secondLogger ... )
+      secondClient.Connect(server.Address())
+    })
+
+    It(&quot;pings all of them&quot;, func() {
+      server.Ping()
+      Eventually(testLogger).Should(Say(&quot;Ping!&quot;))
+      Eventually(secondLogger).Should(Say(&quot;Ping!&quot;))
+    })
+  })
+})
+</code></pre>
+
+<p>The engineers make this test pass (with unittests for every change they make on
+the way), mark the story as finished, and move on to something else. Job done.</p>
+
+<h3 id="changing-your-mind:593f78287bfed9eb47252e554d38176c">Changing Your Mind</h3>
+
+
+<figure class="right small">
+    
+        <img src="/images/change-mind.jpg" />
+    
+    
+</figure>
+
+
+<p>The PM is now free to bring the current version of the software to the client,
+to see what they think. The client might be entirely happy with what the team
+gives them, or they might realise they actually wanted something a little
+different, or a little more tightly specified than what they first asked for.
+This is totally fine. In our story, let us imagine that the client realised
+they wanted the ping message to eventually reach even offline clients &ndash; the
+next time they connect. The client can request a new story: &ldquo;enable offline
+pinging&rdquo;</p>
+
+<ol>
+<li>start the server in one terminal with <code>servergui</code></li>
+<li>press the ping button on the server gui</li>
+<li>start client in another terminal with <code>appclient --connect localhost</code></li>
+<li>I expect to see &ldquo;Ping!&rdquo; on the client term.</li>
+</ol>
+
+<p>The PM will prioritise this story, and it will eventually be picked up by a
+pair of engineers who might update the tests in the following way:</p>
+
+<pre><code>Describe(&quot;Pinger&quot;, func() {
+  var server Server
+  var client Client
+  var testLogger Logger
+
+  BeforeEach(func() {
+    server = NewServer(....)
+    testLogger = TestLogger{}
+    client = NewClient(.... testLogger ... )
+    client.Connect(server.Address())
+  })
+
+  It(&quot;can ping the client&quot;, func() {
+    server.Ping()
+    Eventually(testLogger).Should(Say(&quot;Ping!&quot;))
+  })
+
+  Context(&quot;when there are multiple clients&quot;, func() {
+    var secondClient Client
+    var secondLogger Logger
+
+    BeforeEach(func() {
+      secondLogger = Logger{}
+      secondClient = NewClient( ... secondLogger ... )
+    })
+
+    It(&quot;pings both of them&quot;, func() {
+      secondClient.Connect(server.Address())
+      server.Ping()
+      Eventually(testLogger).Should(Say(&quot;Ping!&quot;))
+      Eventually(secondLogger).Should(Say(&quot;Ping!&quot;))
+    })
+
+    Context(&quot;when the second client connects after the ping has been sent&quot;, func() {
+      It(&quot;pings the second client when it does connect&quot;, func() {
+        server.Ping()
+        Eventually(testLogger).Should(Say(&quot;Ping!&quot;))
+        secondClient.Connect(server.Address())
+        Eventually(secondLogger).Should(Say(&quot;Ping!&quot;))
+      })
+    })
+  })
+})
+</code></pre>
+
+<p>Notice that the new test (which we may view as a partial specification)
+composes perfectly with the existing tests. We didn&rsquo;t waste any effort when we
+were working on the first thing the client thought they wanted. When the client
+changed/clarified their mind, we were able to evolve the code we&rsquo;d already
+written into what they now realised they wanted. For this to work we absolutely
+need a very local kind of expressivity in our specification language. We want
+to be able to write large numbers of tiny partial-specifications, and we want
+them to trivially compose.</p>
+
+<h2 id="formal-methods:593f78287bfed9eb47252e554d38176c">Formal Methods</h2>
+
+<p>So what can formal methods research do for us?</p>
+
+<p>I&rsquo;m going to guess some answers to this question biased heavily by my
+experience with <a href="http://www0.cs.ucl.ac.uk/staff/p.ohearn/papers/Marktoberdorf11LectureNotes.pdf">separation
+logic</a>,
+but I hope some ideas may be more generally applicable.</p>
+
+<h3 id="tools:593f78287bfed9eb47252e554d38176c">Tools</h3>
+
+
+<figure class="left small">
+    
+        <img src="/images/infer.png" />
+    
+    
+</figure>
+
+
+<p>Recently, Facebook open-sourced the <a href="http://fbinfer.com/">Infer</a> tool. This is
+a separation-logic based shape-analysis tool, which can detect things like
+memory leaks, buffer overruns, null pointer accesses and so on. My imperfect
+understanding of their use of that tool is that it runs in their CI after code
+has been pushed to their version-control system, and often provides useful
+input to the code-review process which (at Facebook) happens after the code has
+been written, but before it gets into production. This seems to be (<em>very</em>)
+loosely analogous to the time when the PM checks the acceptance criteria in the
+Pivotal process. FB-Pivotal process differences aside, having a broad-sweep
+static analysis as powerful as Infer in the CI is an awesome and beautiful
+thing. But I think we can do better.</p>
+
+<h3 id="locality:593f78287bfed9eb47252e554d38176c">Locality</h3>
+
+
+<figure class="right small">
+    
+        <img src="/images/east-london-massive.png" />
+    
+    
+</figure>
+
+
+<p>Separation logic people like to talk about &ldquo;local specifications&rdquo;. They write
+specifications that talk about the state of the program-memory before and after
+running whatever piece of code they&rsquo;re talking about. By &ldquo;local&rdquo; they mean that
+they only talk about the bits of memory that the program cares about (needs to
+read from or write to). Advantages of local separation logic specifications are
+that they compose neatly, and they reduce the amount of effort (mental for a
+human, computational for a tool) needed to prove that a given program does as
+it claims to.</p>
+
+<p>I&rsquo;ve just claimed that Pivotal people care about &ldquo;local partial
+specifications&rdquo;. By this, I mean specifications that trivially compose, and
+which say the absolute minimum needed to describe a single feature.</p>
+
+<p>Tools like Infer do a great job of allowing engineers to reap some of the
+benefits of separation-logic reasoning without needing to learn separation
+logic themselves. I&rsquo;d like to explore if we can do even better by exploiting
+the similarities in our ideas of what &ldquo;local&rdquo; means. To start the ball rolling,
+here are some tests it might be fun to be able to write:</p>
+
+<pre><code>Expect(foo()).DoesNotLeakMemory()
+
+Expect(foo()).CannotCrash()
+
+Expect(foo()).CannotCrash(SoLongAs(bar)) // Where `bar` is a boolean expression
+</code></pre>
+
+<p>The first two aren&rsquo;t necessarily very interesting (Infer will already do this
+for your whole codebase, so why bother for just one function?) except that they
+naturally lead to the third. An Infer-like tool could use the boolean
+expression <code>bar</code> to infer the footprint of the function <code>foo</code>, and then attempt
+to prove memory-safety given that footprint as a precondition. I think this
+barely scratches the surface of what might be possible.</p>
+
+<p>Recall the list of three things I claimed you need to build awesome software
+(right at the top of this page). Wouldn&rsquo;t it be great if engineers working on
+<em>Discovery</em> and academics working on <em>Implementation</em> had independently
+stumbled on the same idea of &ldquo;locality&rdquo;? If so, then that commonality might be
+interesting in its own right; but perhaps it could also be exploited by
+academic toolsmiths to produce some awesome new tools that fit well into our
+processes here in industry.</p>
+
+<h2 id="coming-soon:593f78287bfed9eb47252e554d38176c">Coming Soon</h2>
+
+<p>In this post I was aiming to make the connection between the TDD virtue of
+small tests, and the separation logic concept of locality. If this sort of
+cross-over between formal methods and Agile interests you, then drop me a line,
+or keep an eye on this blog. Next up, I&rsquo;d like to write about <a href="http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html">property-based
+testing</a> (which is
+also available <a href="https://golang.org/pkg/testing/quick/">to Go programmers</a> out
+of the box) and how that may or may not fit into my day to day workflow.</p>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:593f78287bfed9eb47252e554d38176c:1"><p>Of course your local economic constraints could be very
+    different to someone else&rsquo;s. You might be working in Silicon Valley on
+    a VC funded project, looking to demonstrate market value by selling app
+    subscriptions; or you might be working for a European government on a
+    publicly funded project, looking to demonstrate public value by
+    improving the quality of life of your citizens without making any
+    money; or you might be working on an open source project fueled by
+    volunteer time, looking to improve your reputational value by doing
+    something people think is cool.</p>
+ <a class="footnote-return" href="#fnref:593f78287bfed9eb47252e554d38176c:1"><sup>[return]</sup></a></li>
+
+<li id="fn:593f78287bfed9eb47252e554d38176c:2"><p>Or at least at verifying that you did your <em>Implementation</em> work right
+    when you wrote the code. <a href="https://en.wikipedia.org/wiki/Refinement_(computing)#Program_refinement">Some formal
+    methods</a>
+    will tell you how to write the code such that it does the right thing,
+    while others will only reassure you that the code you were writing
+    anyway was good code.</p>
+ <a class="footnote-return" href="#fnref:593f78287bfed9eb47252e554d38176c:2"><sup>[return]</sup></a></li>
+<li id="fn:593f78287bfed9eb47252e554d38176c:3">Or it might not. It&rsquo;s beyond the scope of this little blog post.
+ <a class="footnote-return" href="#fnref:593f78287bfed9eb47252e554d38176c:3"><sup>[return]</sup></a></li>
+</ol>
+</div>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

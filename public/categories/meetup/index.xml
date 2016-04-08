@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Meetup on Pivotal Engineering Journal</title>
+    <link>/categories/meetup/</link>
+    <description>Recent content in Meetup on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Jan 2016 16:54:32 +0100</lastBuildDate>
+    <atom:link href="/categories/meetup/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PostgreSQL Meetup in Berlin, 2016-01-26</title>
+      <link>/post/PostgreSQL-Meetup-in-Berlin-2016-01-26/</link>
+      <pubDate>Fri, 29 Jan 2016 16:54:32 +0100</pubDate>
+      
+      <guid>/post/PostgreSQL-Meetup-in-Berlin-2016-01-26/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://www.meetup.com/&#34;&gt;Meetups&lt;/a&gt; serve two main purposes: listen to good talks, and meet other people who share a common interest in a topic.&lt;/p&gt;
+
+&lt;h2 id=&#34;meet-other-people:ceea94d8b83f713ab2cd99a1a56c34a1&#34;&gt;Meet other people.&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/PostgreSQL-Meetup-2016-01-26/entrance.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/PostgreSQL-Meetup-2016-01-26/entrance.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Berlin has a very active &lt;a href=&#34;http://www.meetup.com/&#34;&gt;Meetup&lt;/a&gt; scene - and &lt;a href=&#34;http://www.meetup.com/PostgreSQL-Meetup-Berlin/&#34;&gt;PostgreSQL&lt;/a&gt; is no exception. &lt;a href=&#34;http://www.meetup.com/PostgreSQL-Meetup-Berlin/events/227391375/&#34;&gt;This time&lt;/a&gt;, &amp;ldquo;meet other people&amp;rdquo; was hosted by Pivotal, and took place in the &lt;a href=&#34;http://www.emc.com/de-de/index.htm&#34;&gt;EMC Berlin&lt;/a&gt; office. Pizza and beverages help starting a conversation on different &lt;a href=&#34;https://www.postgresql.org/&#34;&gt;PostgreSQL&lt;/a&gt; topics, which kept going after the talks. Finally security asked us to leave the office, because they wanted to lock the office.&lt;/p&gt;
+
+&lt;h2 id=&#34;talks:ceea94d8b83f713ab2cd99a1a56c34a1&#34;&gt;Talks&lt;/h2&gt;
+
+&lt;p&gt;Two speakers presented PostgreSQL related topics:&lt;/p&gt;
+
+&lt;h3 id=&#34;andres-freund:ceea94d8b83f713ab2cd99a1a56c34a1&#34;&gt;Andres Freund:&lt;/h3&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/PostgreSQL-Meetup-2016-01-26/Andres_Freund.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/PostgreSQL-Meetup-2016-01-26/Andres_Freund.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Andres Freund from &lt;a href=&#34;https://www.citusdata.com/&#34;&gt;Citus Data&lt;/a&gt; talked about &lt;a href=&#34;http://anarazel.de/talks/berlin-meetup-2016-01-26/io.pdf&#34;&gt;Performance Optimization&lt;/a&gt; for a PostgreSQL database. The focus was on &lt;a href=&#34;http://www.postgresql.org/docs/current/static/kernel-resources.html&#34;&gt;Shared Memory&lt;/a&gt; settings, and how to streamline the performance and avoid hickups in the I/O.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://anarazel.de/talks/berlin-meetup-2016-01-26/io.pdf&#34;&gt;The slide deck can be found here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;oleksandr-shulgin-streaming-huge-databases-using-logical-decoding:ceea94d8b83f713ab2cd99a1a56c34a1&#34;&gt;Oleksandr Shulgin: Streaming huge databases using logical decoding&lt;/h3&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/PostgreSQL-Meetup-2016-01-26/Oleksandr_Shulgin.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/PostgreSQL-Meetup-2016-01-26/Oleksandr_Shulgin.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;&lt;a href=&#34;https://www.zalando.de/&#34;&gt;Zalando&lt;/a&gt; is a heavy user of PostgreSQL and a regular contributor of tools to the PostgreSQL ecosystem. Also they are an early adaptor of upcoming PostgreSQL releases and do quite a lot of beta testing.&lt;/p&gt;
+
+&lt;p&gt;Oleksandr shows how the &lt;a href=&#34;http://www.postgresql.org/docs/9.4/static/logicaldecoding-explanation.html&#34;&gt;Logical Decoding&lt;/a&gt;, which is new in PostgreSQL 9.4, can be used to feed data into a standby system.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.slideshare.net/AlexanderShulgin3/streaming-huge-databases-using-logical-decoding&#34;&gt;The slide deck can be found here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

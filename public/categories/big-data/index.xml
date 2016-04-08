@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Big Data on Pivotal Engineering Journal</title>
+    <link>/categories/big-data/</link>
+    <description>Recent content in Big Data on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 29 Jan 2016 07:00:00 -0800</lastBuildDate>
+    <atom:link href="/categories/big-data/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Pivotal Data Open Source in 2016: community, community, community!
+</title>
+      <link>/post/data-open-source-community-2016/</link>
+      <pubDate>Fri, 29 Jan 2016 07:00:00 -0800</pubDate>
+      
+      <guid>/post/data-open-source-community-2016/</guid>
+      <description>&lt;p&gt;When it comes to Open Source, it wouldn’t be too much of a stretch to say that 2015 was a &lt;a href=&#34;https://www.youtube.com/watch?v=XxXgAPANmWw&#34;&gt;defining year&lt;/a&gt; for Pivotal Data. Almost a year ago, on February 17th 2015, we &lt;a href=&#34;https://www.youtube.com/watch?v=dTG5TAbzUAY&#34;&gt;announced&lt;/a&gt; our overarching strategy to complete the transition towards Pivotal becoming a quintessential Open Source company. We called it a New Approach to Big Data and we gave ourselves slightly less than a year to deliver on that promise. What happened in the rest of 2015 was nothing short of amazing. In 7 month from strategy to execution we open sourced our entire portfolio of Data products (Pivotal Gemfire, Pivotal HAWQ and Pivotal Greenplum) and jump started an industry collaboration on standardizing  Big Data platforms via &lt;a href=&#34;http://odpi.org&#34;&gt;ODPi&lt;/a&gt; collaborative project. But most importantly we put a very strong foundation in place to start growing amazing communities around our newly minted open source projects.&lt;/p&gt;
+
+&lt;p&gt;It is on that foundation that we intend to build in 2016. And we’re kicking it off in style.&lt;/p&gt;
+
+&lt;p&gt;In the month of January alone we already had 6 virtual community events showcasing contributions coming from a wide spectrum of community members. We plan to have a robust schedule of these events for the rest of 2016 and if you are interested in presenting at one of those please let us know – we’d love to feature your work. Of course, while virtual events are fun and they have an advantage of allowing participants not to wear pants (trust me – I know from experience) nothing beats the excitement of hanging out with your fellow hackers face to face.  To that end, we will be hosting up to a dozen events a month  (check out our &lt;a href=&#34;https://calendar.google.com/calendar/embed?src=pivotal.io_u8kgvuahjkboh1gnfhv5ts2v9c%40group.calendar.google.com&amp;amp;ctz=America/Los_Angeles&#34;&gt;Pivotal Data Communities Public Calendar&lt;/a&gt;) and it goes without saying that we would love if you would love to participate in one of our events, or consider hosting an event and inviting us to present. . In addition to meetups our first conference style gathering of users and hackers is scheduled to be a &lt;a href=&#34;http://geodesummit.com/&#34;&gt;Geode Summit&lt;/a&gt;. Make sure to register now, but also keep an eye on future announcements. We definitely are thinking of similar events for our other communities. Finally, we feel that a little bit of a competitive spirit is always a good thing especially among Open Source hackers. In 2015 we ran our first contest around &lt;a href=&#34;http://ambitious-apps.devpost.com/&#34;&gt;Apache Geode (incubating)&lt;/a&gt; and had one lucky team take home not only the glory of winning, but also the fortune of Apple Watch &amp;amp; Apache Geode hoodie. For 2016 we were kicking around this idea of a contest around creating a true self conscious AI, but since Google &lt;a href=&#34;http://www.wired.com/2016/01/in-a-huge-breakthrough-googles-ai-beats-a-top-player-at-the-game-of-go/&#34;&gt;beat&lt;/a&gt; us all to it we’re open to other suggestions.&lt;/p&gt;
+
+&lt;p&gt;At this point, I can hear you asking “but Roman, how do I get a hold of you guys to discuss this awesome idea of mine?”. Nothing could be simpler. First of all, all of our open source projects have open community mailing lists. Dropping a note to a community mailing list is the easiest way to get the conversation going and you can find instructions on how to subscribe, post and browse archives at each project’s website: &lt;a href=&#34;http://geode.incubator.apache.org/community/&#34;&gt;Apache Geode (incubating)&lt;/a&gt;, &lt;a href=&#34;http://hawq.incubator.apache.org/#mailing-lists&#34;&gt;Apache HAWQ (incubating)&lt;/a&gt;, &lt;a href=&#34;http://madlib.incubator.apache.org/community.html&#34;&gt;Apache MADlib (incubating)&lt;/a&gt;, &lt;a href=&#34;http://greenplum.org/#mailing-lists&#34;&gt;Greenplum Database&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;We are also very likely to run into each other at one of the big, established gatherings of open source developers. As I am writing this, a whole bunch of us are converging on Brussels to kick off 2016 at the grand daddy of all open source conferences: &lt;a href=&#34;http://fosdem.org/&#34;&gt;FOSDEM&lt;/a&gt;. At FOSDEM you can find us at &lt;a href=&#34;http://fosdem2016.pgconf.eu/&#34;&gt;FOSDEM PGDay&lt;/a&gt;, &lt;a href=&#34;http://www.apache.org/&#34;&gt;Apache Software Foundation&lt;/a&gt; booth and most importantly a &lt;a href=&#34;https://fosdem.org/2016/schedule/track/hpc,_big_data_and_data_science/&#34;&gt;HPC, Big Data and Data Science devroom&lt;/a&gt;. To show our appreciation for all of our community members we are also hosting a dinner on Saturday, Feb 30 at 7pm in this lovely place called &lt;a href=&#34;http://www.mirabelle.be/&#34;&gt;La Mirabelle&lt;/a&gt;. There we will be toasting our latest addition to Pivotal Open Source family: &lt;a href=&#34;https://github.com/greenplum-db/gporca&#34;&gt;Orca&lt;/a&gt;. Orca is a &lt;a href=&#34;http://pivotal.io/big-data/white-paper/orca-a-modular-query-optimizer-architecture-for-big-data&#34;&gt;modular query optimizer for big data&lt;/a&gt; and we are really excited to share this breakthrough research in databases with all of you.&lt;/p&gt;
+
+&lt;p&gt;With that, I really hope see all of you soon. Drop by. Say hi. It’ll be a fun 2016!&lt;/p&gt;
+
+&lt;p&gt;Roman Shaposhnik,
+Director of Open Source Strategy at Pivotal&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>GPORCA, A Modular Query Optimizer, Is Now Open-Source</title>
+      <link>/post/gporca-open-source/</link>
+      <pubDate>Thu, 28 Jan 2016 07:00:00 -0800</pubDate>
+      
+      <guid>/post/gporca-open-source/</guid>
+      <description>
+
+&lt;h1 id=&#34;gporca-a-cost-based-query-optimizer-is-now-open-source:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;GPORCA, A Cost-Based Query Optimizer, Is Now Open Source&lt;/h1&gt;
+
+&lt;p&gt;Pick your favorite Big Data statistic; we all know that the growth of data has been astounding. What hasn’t kept up is our ability to process this data.  Even the newest big data technologies such as &lt;a href=&#34;http://spark.apache.org/&#34;&gt;Apache Spark™&lt;/a&gt; are using &lt;a href=&#34;https://databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html&#34;&gt;rule-based&lt;/a&gt; approaches to query optimization, which often miss potential faster execution plans.&lt;/p&gt;
+
+&lt;p&gt;This is why the Pivotal R&amp;amp;D team poured years of work into developing a new query optimizer called GPORCA. Improving the intelligence of query planning was a missed chance in database engineering with huge opportunity for further improving performance.&lt;/p&gt;
+
+&lt;p&gt;The truth is, the industry can’t wait for a war over performance to play out between the many new data technologies. By collaborating with leading developers, it will be possible to benefit all users of different database technologies and advance innovation in the industry faster. That is why Pivotal is announcing that the GPORCA query optimizer is now open source and available under the &lt;a href=&#34;http://www.apache.org/licenses/LICENSE-2.0&#34;&gt;Apache License v2.0&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Currently it is possible to run GPORCA with open source projects &lt;a href=&#34;http://greenplum.org/&#34;&gt;Greenplum Database&lt;/a&gt; and &lt;a href=&#34;http://hawq.incubator.apache.org/&#34;&gt;Apache HAWQ (incubating)&lt;/a&gt;. We call on the database engineering community to help us increase the portability of GPORCA to work with even more data management platforms.&lt;/p&gt;
+
+&lt;h1 id=&#34;why-should-i-care:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;Why Should I Care?&lt;/h1&gt;
+
+&lt;p&gt;Historically, every database has shipped with its own optimizer. That means every software developer spent valuable R&amp;amp;D cycles building one, and maintaining it. This is not a scalable solution, nor does it foster collaborative research.&lt;/p&gt;
+
+&lt;p&gt;GPORCA is built as an external plugin, which makes it the perfect test bed for database research that can benefit a wide variety of databases.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, GPORCA isn’t just a tool for research and development. It is an enterprise-grade, query optimizer that is handling some of the most demanding SQL workloads at truly Big Data scale.&lt;/p&gt;
+
+&lt;h1 id=&#34;what-is-gporca:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;What Is GPORCA?&lt;/h1&gt;
+
+&lt;p&gt;GPORCA is a modular, cost-based query optimizer based on 30 years of &lt;a href=&#34;https://d1fto35gcfffzn.cloudfront.net/big-data/white-paper/SIGMODHAWQAdvantages.pdf&#34;&gt;database research&lt;/a&gt;. Simply put, it takes in a parsed query statement and returns what it considers to be the fastest execution plan for the database. It combines the query with metadata (e.g. statistics, schemas, etc.) and information about the database cluster to generate the execution plan. GPORCA is portable and modular because it can work with more than one database and can easily support new database operators.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-can-gporca-do:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;What Can GPORCA Do?&lt;/h2&gt;
+
+&lt;p&gt;At Pivotal, we are constantly benchmarking our database products to ensure they are getting faster. Currently GPORCA is achieving an overall 5X improvement compared to Pivotal Greenplum’s legacy planner across all 99 of the industry’s most trusted benchmark queries. Some of the very complex queries are up to 1000x faster!&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/gporca/gporcaPerf.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Three features of GPORCA are primarily responsible for these performance gains: Dynamic Partition Elimination, SubQuery Unnesting, and Common Table Expression. To read more about these three features, please check &lt;a href=&#34;https://blog.pivotal.io/big-data-pivotal/products/greenplum-database-adds-the-pivotal-query-optimizer&#34;&gt;this blog post&lt;/a&gt; published in 2015.&lt;/p&gt;
+
+&lt;p&gt;GPORCA achieves its portability and modularity by running outside the core database system. Furthermore, the primary optimization techniques are componentized, allowing new operators, transformation, statistical/cost models and other techniques to be added with ease.&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/gporca/gporcaArch.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;For a more technical deep-dive into GPORCA, we encourage you to take a look at the &lt;a href=&#34;http://pivotal.io/big-data/white-paper/orca-a-modular-query-optimizer-architecture-for-big-data&#34;&gt;white paper&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&#34;what-can-t-gporca-do:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;What Can’t GPORCA Do?&lt;/h1&gt;
+
+&lt;p&gt;As are many things in life, writing a modular query optimizer is about finding balance.  The original design for GPORCA optimized for analytical queries on data warehouses.  We focused on queries that typically would take a few hours, and made them run in a few minutes. For these long running queries, the time needed to compute an optimal plan is small compared with the duration of the query itself.  However, for shorter queries, the time needed to find an optimal plan becomes more important for overall execution time, so this is an area that needs future development effort. This is all about finding balance and bottlenecks.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, GPORCA is not feature complete compared to the current planner in GPDB and HAWQ, which is a modified version of the Postgres planner designed to work on MPP databases. When GPORCA encounters an operator it does not currently support, it falls back to the legacy planner.&lt;/p&gt;
+
+&lt;h1 id=&#34;where-is-gporca-going:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;Where Is GPORCA Going?&lt;/h1&gt;
+
+&lt;p&gt;GPORCA needs to become feature complete, matching PostgreSQL’s current support and beyond. Support for external parameters, cubes, multiple grouping sets, inverse distribution functions, ordered aggregates, and indexed expressions is all on the GPORCA roadmap.&lt;/p&gt;
+
+&lt;p&gt;With parity and better performance for shorter running queries comes the ultimate goal of GPORCA. We hope one day, GPORCA is the defacto query optimizer in PostgreSQL.&lt;/p&gt;
+
+&lt;h1 id=&#34;why-does-gporca-need-you:c0657d5419a8e9dbf76f780caab6c155&#34;&gt;Why Does GPORCA  Need YOU?&lt;/h1&gt;
+
+&lt;p&gt;GPORCA is organized as a sub-project of &lt;a href=&#34;http://greenplum.org/&#34;&gt;Greenplum Database&lt;/a&gt;. However, GPORCA is designed to be database agnostic. The contributor team here at Pivotal primarily uses the Greenplum Database as a test bed and to ensure that the GPORCA API is easy to implement.&lt;/p&gt;
+
+&lt;p&gt;Here’s how to  get started with GPORCA and the GPORCA community:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Head over to &lt;a href=&#34;https://github.com/greenplum-db/gpos&#34;&gt;github&lt;/a&gt; and check out the GPOS README. After that, you will need to compile both GPORCA and GPDB.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Once GPDB is up and running with GPORCA, &lt;code&gt;set optimizer=on;&lt;/code&gt; will turn on GPORCA.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Run explain analyze with GPORCA on and off to see if GPORCA calculates a better query plan.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Subscribe to the GPDB developer mailing list: &lt;a href=&#34;mailto:gpdb-users+subscribe@greenplum.org&#34;&gt;gpdb-users+subscribe@greenplum.org&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Get involved in the discussions on github.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Collaborate on stories in &lt;a href=&#34;https://www.pivotaltracker.com/n/projects/1523545&#34;&gt;Pivotal Tracker&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Sign the &lt;a href=&#34;https://github.com/greenplum-db/greenplum-db.github.io/wiki/Greenplum-Database-project-contributions-FAQ#q-do-i-need-to-sign-anything-in-order-to-contribute-code-to-greenplum-database&#34;&gt;ICLA/CCLA&lt;/a&gt; and start sending us &lt;a href=&#34;https://github.com/greenplum-db/greenplum-db.github.io/wiki/Merging-Pull-Requests&#34;&gt;pull requests&lt;/a&gt;!&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

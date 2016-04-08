@@ -1,0 +1,591 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Science on Pivotal Engineering Journal</title>
+    <link>/categories/data-science/</link>
+    <description>Recent content in Data Science on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 20 Mar 2016 18:00:17 -0700</lastBuildDate>
+    <atom:link href="/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Building machine learning models at scale for data parallel problems on Pivotal&#39;s MPP databases</title>
+      <link>/post/running-sklearn-models-at-scale-on-mpp/</link>
+      <pubDate>Sun, 20 Mar 2016 18:00:17 -0700</pubDate>
+      
+      <guid>/post/running-sklearn-models-at-scale-on-mpp/</guid>
+      <description>
+
+&lt;p&gt;This is joint work with Heikki Linnakangas and Ivan Novick of Pivotal.&lt;/p&gt;
+
+&lt;h2 id=&#34;in-database-machine-learning-at-scale-on-mpp-databases:436c2189cb909e233e0a25ef849eb12d&#34;&gt;In-database machine learning at scale on MPP databases&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://greenplum.org/&#34;&gt;Greenplum&lt;/a&gt; and &lt;a href=&#34;http://hawq.incubator.apache.org/&#34;&gt;HAWQ&lt;/a&gt; are Pivotal&amp;rsquo;s MPP databases with strong analytical capabilities that make them well suited for data science problems at massive scale.  Using in-database machine learning libraries like &lt;a href=&#34;http://madlib.net&#34;&gt;MADlib&lt;/a&gt; and procedural languages like PL/Python and PL/R which enable data scientists to harness the vast ecosystem of machine learning libraries in Python and R, data scientists can build models on massive datasets. In parallelizing machine learning models, there are two flavors of problems that data scientists encounter:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Embarassingly parallel problems or data parallel problems.&lt;/li&gt;
+&lt;li&gt;Model parallel problems and task parallelism&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Data_parallelism&#34;&gt;Data-parallel problems&lt;/a&gt; are those that typically involve building the same machine learning model on different subsets of the full-dataset or for instance, running a grid-search on model parameters, using the same input dataset. These are relatively easy to parallelize on Greenplum and other MPP databases like &lt;a href=&#34;http://hawq.incubator.apache.org/&#34;&gt;HAWQ&lt;/a&gt; using User Defined Functions (UDFs) in PL/Python, PL/R or any other procedural languages supported by these platforms. More information on this can be found here: &lt;a href=&#34;http://www.slideshare.net/SrivatsanRamanujam/all-thingspythonpivotal&#34;&gt;All things Python @ Pivotal&lt;/a&gt; (slides 22-30) and here: &lt;a href=&#34;https://github.com/vatsan/gp_xgboost_gridsearch&#34;&gt;gp-xgboost-gridsearch&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Model parallel problems or &lt;a href=&#34;https://en.wikipedia.org/wiki/Task_parallelism&#34;&gt;task parallel&lt;/a&gt; problems typically involve building a machine learning model on a dataset that cannot fit into memory, on a distributed cluster. The &lt;a href=&#34;http://madlib.incubator.apache.org/&#34;&gt;MADlib library&lt;/a&gt; (slides 31-52 in &lt;a href=&#34;http://www.slideshare.net/SrivatsanRamanujam/all-thingspythonpivotal&#34;&gt;All things Python @ Pivotal&lt;/a&gt;) explicitly parallelize such models by splitting them into sub-tasks that can be simultaneously executed on multiple nodes of a cluster and combining the results from these sub-tasks to fit the original model.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://madlib.incubator.apache.org/&#34;&gt;MADlib&lt;/a&gt; has a very rich collection of machine learning algorithms implemented in-database and is highly performant on large scale datasets. Currently incubating under the &lt;a href=&#34;http://www.apache.org/&#34;&gt;ASF&lt;/a&gt;, new modules are being added with every monthly release of MADlib and the algorithmic breadth has been steadily increasing. Often though, data scientists would love to tap into the vast ocean of machine learning models in other open source projects in Python or R. For instance, &lt;a href=&#34;http://scikit-learn.org/stable/&#34;&gt;scikit-learn&lt;/a&gt; is a popular library of machine learning algorithms in Python, likewise, there are too many libraries to name in R. Being able to tap into these libraries when the model of choice is not available in MADlib, would greatly increase the productivity of data scientists. Data scientists and engineers write User Defined Functions (UDFs) in PL/Python or PL/R, which import these third party libraries and invoke them on an inputs (typically a &lt;code&gt;float8[]&lt;/code&gt; or a &lt;code&gt;text[]&lt;/code&gt;) that&amp;rsquo;s passed to them. We&amp;rsquo;ve previously spoken at length about the power of procedural languages in blogs such as &lt;a href=&#34;https://blog.pivotal.io/data-science-pivotal/products/how-to-scale-native-cc-applications-on-pivotals-mpp-platform-edge-detection-example-part-2&#34;&gt;1&lt;/a&gt;, &lt;a href=&#34;https://blog.pivotal.io/data-science-pivotal/products/twitter-nlp-example-how-to-scale-part-of-speech-tagging-with-mpp-part-2&#34;&gt;2&lt;/a&gt; or meet-up talks such as &lt;a href=&#34;https://www.youtube.com/watch?v=bgOftbw8xRk&#34;&gt;3&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;One limitation while working on data-parallel problems is the &lt;code&gt;max_field_size&lt;/code&gt; limit of Greenplum/Postgres which disallows UDFs from accepting inputs that exceed 1 GB (ex: a float8[]). Greenpl/HAWQ like Postgres have a &lt;a href=&#34;http://www.postgresql.org/about/&#34;&gt;max field size of 1 GB&lt;/a&gt;. While your database table itself could be of the order of hundreds of terabytes in size, no single field (cell) can exceed 1 GB in size. Each row of data could be composed of several hundred columns and collectively a row of data could be really large, but no single column&amp;rsquo;s value, in a given row can exceed 1 GB. This of course is present for performance reasons, but this not a tunable configuration setting.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(http://www.postgresql.org/about/)
+Limit Value
+Maximum Database Size Unlimited
+Maximum Table Size  32 TB
+Maximum Row Size  1.6 TB
+Maximum Field Size  1 GB
+Maximum Rows per Table  Unlimited
+Maximum Columns per Table 250 - 1600 depending on column types
+Maximum Indexes per Table Unlimited
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For data science problems, one may often have to work with datasets that are represented as matrices (or large linear arrays) that may well exceed the max_field_size limit. For instance, in the example here: &lt;a href=&#34;https://github.com/vatsan/gp_xgboost_gridsearch&#34;&gt;gp_xgboost_gridsearch&lt;/a&gt;, several &lt;a href=&#34;https://github.com/dmlc/xgboost&#34;&gt;XGBoost&lt;/a&gt; models are built in parallel for every possible combination of the input parameters. If the input dataset exceeds 1 GB in size, these UDFs would error out due to the violation of the &lt;code&gt;max_fieldsize_limit&lt;/code&gt;.  This limitation prevents users from harnessing the full power of the MPP cluster even when segment hosts typically have a lot more memory than the max_field_size limit. Typically, our customers have clusters with anywhere from 4 to 16 nodes (or more), with each node having upto 8 segments. These beefy machines also have a lot of RAM ranging from 64 GB to 256 GB.&lt;/p&gt;
+
+&lt;p&gt;Granted, in a multi-user environment, one has to be mindful of not eating into shared RAM to avoid slowing down or preventing other users from executing their queries. However, it would be useful to have the ability to build machine learning models using popular Python &amp;amp; R libraries, that could well exceed the max_fieldsize_limit.&lt;/p&gt;
+
+&lt;p&gt;In this blog, we&amp;rsquo;ll demonstrate how to work around the max_fieldsize_limit to write UDFs in PL/Python, that harness popular machine learning libraries like scikit-learn, for training models in parallel, on datasets several tens to hundreds of gigabytes in size.&lt;/p&gt;
+
+&lt;h2 id=&#34;demonstrating-the-limitation-introduced-by-the-max-field-size-limit-of-1-gb:436c2189cb909e233e0a25ef849eb12d&#34;&gt;Demonstrating the limitation introduced by the &lt;code&gt;max_field_size&lt;/code&gt; limit of 1 GB&lt;/h2&gt;
+
+&lt;h4 id=&#34;1-create-a-table-with-rows-containing-a-field-close-to-max-fieldsize-1-gb:436c2189cb909e233e0a25ef849eb12d&#34;&gt;1. Create a table with rows containing a field close to max_fieldsize (~ 1 GB)&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;-- An array of 120000000 float8(8 bytes) types = 960 MB
+--1) Define UDF to generate large arrays
+create or replace function gen_array(x int)
+returns float8[]
+as
+$$
+    from random import random
+    return [random() for _ in range(x)]
+$$language plpythonu;
+
+--2) Create a table
+drop table if exists cellsize_test;
+create table cellsize_test
+as
+(
+    select
+        1 as row,
+        y,
+        gen_array(120000000) as arr
+    from
+        generate_series(1, 3) y
+) distributed by (row);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;2-attempt-to-pass-an-input-1-gb-to-a-udf-to-demonstrate-how-it-fails-due-the-violation-of-max-fieldsize-limit:436c2189cb909e233e0a25ef849eb12d&#34;&gt;2. Attempt to pass an input &amp;gt; 1 GB to a UDF to demonstrate how it fails due the violation of max_fieldsize_limit&lt;/h4&gt;
+
+&lt;p&gt;We first define a User Defined Aggregate (UDA) that concatenates successive rows of data consisting of arrays and returns a large linear array. We could think of this as unstacking a matrix into a collection of row vectors, so that we could pass it into a PL/Python UDF&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;--1) Define a UDA to concatenate arrays
+DROP AGGREGATE IF EXISTS array_agg_array(anyarray) CASCADE;
+CREATE ORDERED AGGREGATE array_agg_array(anyarray)
+(
+    SFUNC = array_cat,
+    STYPE = anyarray
+);
+
+--2) Define a UDF to consume a really large array and return its size
+create or replace function consume_large_array(x float8[])
+returns text
+as
+$$
+    return &#39;size of x:{0}&#39;.format(len(x))
+$$language plpythonu;
+
+--3) Invoke the UDF &amp;amp; UDA to demonstrate failure due to max_fieldsize_limit
+select
+    row,
+    consume_large_array(arr)
+from
+(
+
+    select
+        row,
+        array_agg_array(arr) as arr
+    from
+        cellsize_test
+    group by
+        row
+)q;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This results in the following error, which confirms the limitation we previously described.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;DatabaseError: Execution failed on sql &#39;
+--1) Define a UDA to concatenate arrays
+DROP AGGREGATE IF EXISTS array_agg_array(anyarray) CASCADE;
+CREATE ORDERED AGGREGATE array_agg_array(anyarray)
+(
+    SFUNC = array_cat,
+    STYPE = anyarray
+);
+
+
+--2) Define a UDF to consume a really large array and return its size
+create or replace function consume_large_array(x float8[])
+returns text
+as
+$$
+    return &#39;size of x:{0}&#39;.format(len(x))
+$$language plpythonu;
+
+--3) Invoke the UDF &amp;amp; UDA to demonstrate failure due to max_fieldsize_limit
+select
+    row,
+    consume_large_array(arr)
+from
+(
+
+    select
+        row,
+        array_agg_array(arr) as arr
+    from
+        cellsize_test
+    group by
+        row
+)q;&#39;: array size exceeds the maximum allowed (134217727)  (seg42 slice1 sdw1:40000 pid=25165)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now we will demonstrate how to work-around the max_field_size limit by making using of the static &amp;amp; global dictionaries available in PL/Python and PL/R UDFs.&lt;/p&gt;
+
+&lt;h4 id=&#34;3-using-the-global-dictionary-gd-demonstrate-how-to-use-a-udf-that-processes-inputs-exceeding-max-field-size:436c2189cb909e233e0a25ef849eb12d&#34;&gt;3. Using the global dictionary &lt;code&gt;GD&lt;/code&gt;, demonstrate how to use a UDF that processes inputs exceeding max_field_size&lt;/h4&gt;
+
+&lt;p&gt;All PL/Python UDFs have two dictionaries, &lt;a href=&#34;http://www.postgresql.org/docs/8.2/static/plpython-funcs.html&#34;&gt;SD and GD&lt;/a&gt;, that can be used to cache data in memory.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;SD is private to a UDF, it is used to cache data between function calls in a given transaction.&lt;/li&gt;
+&lt;li&gt;GD is global dictionary, it is available to all UDFs within a transaction.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here&amp;rsquo;s the approach we&amp;rsquo;ll take:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/pivotal/blog/master/static/images/largescale_sklearn_models_mpp.png&#34; alt=&#34;large scale sklearn models on mpp&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;We will work with the &lt;a href=&#34;https://archive.ics.uci.edu/ml/datasets/Wine+Quality&#34;&gt;Wine Quality&lt;/a&gt; dataset from the UCI machine learning repository.
+We&amp;rsquo;ve replicated the rows of the dataset several times, to create a database table with cells which well exceed the &lt;code&gt;max_field_size&lt;/code&gt; limit.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select
+    *
+from
+    wine_sample
+limit 10;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;div&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;model&lt;/th&gt;
+      &lt;th&gt;features&lt;/th&gt;
+      &lt;th&gt;quality&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[3.0, 13.27, 4.28, 2.26, 20.0, 120.0, 1.59, 0.69, 0.43, 1.35, 10.2, 0.59, 1.56]&lt;/td&gt;
+      &lt;td&gt;835&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 11.56, 2.05, 3.23, 28.5, 119.0, 3.18, 5.08, 0.47, 1.87, 6.0, 0.93, 3.69]&lt;/td&gt;
+      &lt;td&gt;465&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 11.46, 3.74, 1.82, 19.5, 107.0, 3.18, 2.58, 0.24, 3.58, 2.9, 0.75, 2.81]&lt;/td&gt;
+      &lt;td&gt;562&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 12.37, 1.17, 1.92, 19.6, 78.0, 2.11, 2.0, 0.27, 1.04, 4.68, 1.12, 3.48]&lt;/td&gt;
+      &lt;td&gt;510&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[1.0, 14.22, 3.99, 2.51, 13.2, 128.0, 3.0, 3.04, 0.2, 2.08, 5.1, 0.89, 3.53]&lt;/td&gt;
+      &lt;td&gt;760&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 12.72, 1.81, 2.2, 18.8, 86.0, 2.2, 2.53, 0.26, 1.77, 3.9, 1.16, 3.14]&lt;/td&gt;
+      &lt;td&gt;714&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 13.11, 1.01, 1.7, 15.0, 78.0, 2.98, 3.18, 0.26, 2.28, 5.3, 1.12, 3.18]&lt;/td&gt;
+      &lt;td&gt;502&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 12.47, 1.52, 2.2, 19.0, 162.0, 2.5, 2.27, 0.32, 3.28, 2.6, 1.16, 2.63]&lt;/td&gt;
+      &lt;td&gt;937&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 12.08, 2.08, 1.7, 17.5, 97.0, 2.23, 2.17, 0.26, 1.4, 3.3, 1.27, 2.96]&lt;/td&gt;
+      &lt;td&gt;710&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;[2.0, 12.33, 0.99, 1.95, 14.8, 136.0, 1.9, 1.85, 0.35, 2.76, 3.4, 1.06, 2.31]&lt;/td&gt;
+      &lt;td&gt;750&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;One example of a machine learning model we may wish to build on this dataset could be a regression model to predict the quality of the wine using attributes such as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1 - fixed acidity 
+2 - volatile acidity 
+3 - citric acid 
+4 - residual sugar 
+5 - chlorides 
+6 - free sulfur dioxide 
+7 - total sulfur dioxide 
+8 - density 
+9 - pH 
+10 - sulphates 
+11 - alcohol 
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;These form the &lt;code&gt;features&lt;/code&gt; column, which is a &lt;code&gt;float8[]&lt;/code&gt; in our table listed above. The &lt;code&gt;model&lt;/code&gt; column in the sample table above, could for instance correspond to all wines grown in a given state in the US. Perhaps we may be interested in building a model to predict the quality of wine grown in every state. This toy problem illustrates the data-parallel nature of the modeling task. Next we&amp;rsquo;ll define the UDFs, and UDAs to accomplish our goal of training a model from say &lt;a href=&#34;scikit-learn.org/&#34;&gt;scikit-learn&lt;/a&gt; on a dataset well exceeding the &lt;code&gt;max_field_size&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&#34;define-udcts-udfs-and-udas-to-accomplish-our-goal:436c2189cb909e233e0a25ef849eb12d&#34;&gt;Define, UDCTs, UDFs and UDAs to accomplish our goal&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;--1) SFUNC: State transition function, part of a User-Defined-Aggregate definition
+-- This function will merely stack every row of input, into the GD variable
+drop function if exists stack_rows(
+    text,
+    text[],
+    float8[],
+    float8
+) cascade;
+create or replace function stack_rows(
+    key text,
+    header text[], -- name of the features column and the dependent variable column
+    features float8[], -- independent variables (as array)
+    label float8 -- dependent variable column
+)
+returns text
+as
+$$
+    if &#39;header&#39; not in GD:
+        GD[&#39;header&#39;] = header
+    if not key:
+        gd_key = &#39;stack_rows&#39;
+        GD[gd_key] = [[features, label]]
+        return gd_key
+    else:
+        GD[key].append([features, label])
+        return key
+$$language plpythonu;
+
+--2) Define the User-Defined Aggregate (UDA) consisting of a state-transition function (SFUNC), a state variable and a FINALFUNC (optional)
+drop aggregate if exists stack_rows( 
+    text[], -- header (feature names)
+    float8[], -- features (feature values),
+    float8 -- labels
+) cascade;
+create ordered aggregate stack_rows(
+        text[], -- header (feature names)
+        float8[], -- features (feature values),
+        float8 -- labels
+    )
+(
+    SFUNC = stack_rows,
+    STYPE = text -- the key in GD used to hold the data across calls
+);
+
+--3) Create a return type for model results
+DROP TYPE IF EXISTS host_mdl_coef_intercept CASCADE;
+CREATE TYPE host_mdl_coef_intercept
+AS
+(
+    hostname text, -- hostname on which the model was built
+    coef float[], -- model coefficients
+    intercept float, -- intercepts
+    r_square float -- training data fit
+);
+
+--4) Define a UDF to run ridge regression by retrieving the data from the key in GD and returning results
+drop function if exists run_ridge_regression(text) cascade;
+create or replace function run_ridge_regression(key text)
+returns host_mdl_coef_intercept
+as
+$$
+    import os
+    import numpy as np   
+    import pandas as pd
+    from sklearn import linear_model
+    
+    if key in GD:
+        df = pd.DataFrame(GD[key], columns=GD[&#39;header&#39;])
+        mdl = linear_model.Ridge(alpha = .5)
+        X = np.mat(df[GD[&#39;header&#39;][0]].values.tolist())
+        y = np.mat(df[GD[&#39;header&#39;][1]].values.tolist()).transpose()
+        mdl.fit(X, y)
+        result = [
+            os.popen(&#39;hostname&#39;).read().strip(), 
+            mdl.coef_[0], 
+            mdl.intercept_[0], 
+            mdl.score(X, y)
+        ]   
+        GD[key] = result        
+        result = GD[key]
+        del GD[key]
+        return result
+    else:
+        plpy.info(&#39;returning None&#39;)
+        return None
+$$ language plpythonu;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As seen above, we first defined a state-transition function, which is one of the building blocks of a User-Defined Aggregate. This function takes a row of input (in this case it is a record consisting of a float8[] and a float8 corresponding to the feature vector and the dependent variable) and stacks in the &lt;code&gt;GD&lt;/code&gt; variable, using a user-specified key. This key in &lt;code&gt;GD&lt;/code&gt; is accessible by any other UDFs in the same transaction, thus the UDF &lt;code&gt;run_ridge_regression&lt;/code&gt; retrieves all the stacked rows from the &lt;code&gt;GD&lt;/code&gt; variable, constructs the input matrix required for the &lt;code&gt;ridge regression&lt;/code&gt; model of &lt;code&gt;sklearn&lt;/code&gt; and returns a set of rows as result, where each row of output corresponds to the hostname on which the model was built, the coefficients of the model, the intercept and the &lt;a href=&#34;https://en.wikipedia.org/wiki/Coefficient_of_determination&#34;&gt;coefficient of determination&lt;/a&gt; of the model on the training dataset. All these building blocks were combined in the definition of the User-Defined Aggregate.&lt;/p&gt;
+
+&lt;p&gt;We can invoke our UDAs and UDFs like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;select
+    model,
+    (results).*
+from
+(
+    select
+        model,
+        run_ridge_regression(
+            stacked_input_key
+        ) as results
+    from
+    (
+        select
+            model,
+            stack_rows(
+                ARRAY[&#39;features&#39;, &#39;quality&#39;], --header or names of input fields
+                features, -- feature vector input field
+                quality -- label column
+            ) as stacked_input_key
+        from
+            wine_sample
+        group by
+            model
+    )q1
+)q2;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In the innermost query, we merely stacked the rows of the input table into the GD variable. By grouping by &lt;code&gt;model&lt;/code&gt;, we&amp;rsquo;re building multiple regression models in parallel, without explicitly parallelizing the implementation of the &lt;code&gt;ridge regression&lt;/code&gt; model in &lt;code&gt;scikit-learn&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div&gt;
+&lt;table border=&#34;1&#34; class=&#34;dataframe&#34;&gt;
+  &lt;thead&gt;
+    &lt;tr style=&#34;text-align: right;&#34;&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;model&lt;/th&gt;
+      &lt;th&gt;hostname&lt;/th&gt;
+      &lt;th&gt;coef&lt;/th&gt;
+      &lt;th&gt;intercept&lt;/th&gt;
+      &lt;th&gt;r_square&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;sdw13&lt;/td&gt;
+      &lt;td&gt;[-317.076377948, 62.0500620027, 0.416072749423, 162.375192268, -8.8567342115, 1.55403179538, 56.4122212105, -108.828043759, -208.649699922, 24.895877024, 42.9492673878, 116.389536874, -66.1348558416]&lt;/td&gt;
+      &lt;td&gt;162.546696&lt;/td&gt;
+      &lt;td&gt;0.716523&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;sdw2&lt;/td&gt;
+      &lt;td&gt;[-304.109404213, 74.5250737585, -3.43371878258, 139.27084644, -5.72305248882, 0.744595419201, 77.5014353294, -106.588482015, -167.685124503, 90.1516923867, 39.7803072901, 127.645822384, -101.704587526]&lt;/td&gt;
+      &lt;td&gt;-30.238416&lt;/td&gt;
+      &lt;td&gt;0.708814&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;sdw2&lt;/td&gt;
+      &lt;td&gt;[-307.18651323, 61.5224373481, 1.47063776707, 193.259830857, -18.6214527421, 2.4335710989, 91.135375234, -86.3640292245, -153.343722551, 3.05688315498, 39.2513828334, 46.1381861423, -72.2478960996]&lt;/td&gt;
+      &lt;td&gt;156.581033&lt;/td&gt;
+      &lt;td&gt;0.776013&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;sdw14&lt;/td&gt;
+      &lt;td&gt;[-315.19350321, 65.0837954451, -12.3415435935, 151.63900677, -13.7159306955, 1.3239107062, 42.9091133141, -73.3993821817, -50.9281911399, -15.4088436536, 46.4040342628, 83.3349706245, -53.3831134811]&lt;/td&gt;
+      &lt;td&gt;223.886378&lt;/td&gt;
+      &lt;td&gt;0.727271&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;sdw9&lt;/td&gt;
+      &lt;td&gt;[-309.766022096, 100.281441571, -4.41459273681, 133.913228451, -7.24029032969, 1.85096413382, 87.0188975088, -100.394878326, -72.4600856378, 18.50523645, 31.4688276602, 40.273527478, -74.745208132]&lt;/td&gt;
+      &lt;td&gt;-308.152828&lt;/td&gt;
+      &lt;td&gt;0.738516&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;sdw12&lt;/td&gt;
+      &lt;td&gt;[-308.143968247, 75.8323235002, -7.24767188617, 153.65120976, -7.21866367193, 2.05021275785, 88.1310253165, -104.709107165, -132.213217375, 41.9375754143, 39.3444712727, 87.2320135084, -83.8829139824]&lt;/td&gt;
+      &lt;td&gt;-127.344552&lt;/td&gt;
+      &lt;td&gt;0.720098&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;sdw16&lt;/td&gt;
+      &lt;td&gt;[-292.491831013, 77.9754967544, -2.99699296323, 148.659732944, -9.55581444196, 1.64432942304, 55.6973991837, -84.1137271812, -155.287234458, 17.4856436475, 36.1721932837, 100.274623447, -65.3585353928]&lt;/td&gt;
+      &lt;td&gt;-69.530631&lt;/td&gt;
+      &lt;td&gt;0.701506&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;sdw6&lt;/td&gt;
+      &lt;td&gt;[-334.632387783, 51.2647776529, -3.48328272546, 160.491097171, -8.66863247447, 1.08276882394, 33.8001382612, -96.3381754755, -221.760838113, 33.3029881822, 47.5759038967, 129.677807199, -82.2412541428]&lt;/td&gt;
+      &lt;td&gt;411.147338&lt;/td&gt;
+      &lt;td&gt;0.701124&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;sdw5&lt;/td&gt;
+      &lt;td&gt;[-347.036682861, 70.7144175077, -4.28001413723, 94.2697061067, -3.8362015069, 1.88077507258, 59.2066215719, -123.776836974, -211.836728045, 19.468199028, 46.5848203245, 96.0841879507, -56.4798790464]&lt;/td&gt;
+      &lt;td&gt;158.772706&lt;/td&gt;
+      &lt;td&gt;0.721023&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;sdw2&lt;/td&gt;
+      &lt;td&gt;[-305.207078775, 69.1563749904, 1.85205159406, 142.053062793, -9.84353848356, 2.20689559387, 49.6397176189, -90.0801141803, -217.435154348, 31.7993674214, 42.5733663559, 137.24861027, -75.2972668947]&lt;/td&gt;
+      &lt;td&gt;21.565687&lt;/td&gt;
+      &lt;td&gt;0.722828&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In the results above, the &lt;code&gt;hostname&lt;/code&gt; column tell us in which host of the cluster was the &lt;code&gt;ridge regression&lt;/code&gt; model for the corresponding value in the &lt;code&gt;model&lt;/code&gt; column was trained on. We can thus confirm that we were able to build &lt;code&gt;scikit-learn&lt;/code&gt; models in parallel, on a dataset which exceeded the &lt;code&gt;max_field_size&lt;/code&gt; limit. This allows data scientists to harness the amazing ecosystem of machine learning libraries in Python and R, via procedural languages like PL/Python and PL/R (amongst others), at scale for data parallel problems.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-about-pl-r:436c2189cb909e233e0a25ef849eb12d&#34;&gt;What about PL/R?&lt;/h2&gt;
+
+&lt;p&gt;Similar functionality is possible in PL/R as well. Refer to the global variables section on the &lt;a href=&#34;http://www.joeconway.com/plr/doc/plr-global-data.html&#34;&gt;PL/R guide&lt;/a&gt; for more details. In short, you can assign values to a global environment variable inside your UDFs like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;assign(&amp;quot;global_variable_for_your_udf&amp;quot;, matrix ,env=.GlobalEnv)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;more-information:436c2189cb909e233e0a25ef849eb12d&#34;&gt;More information&lt;/h2&gt;
+
+&lt;p&gt;If you&amp;rsquo;d like to look at the raw &lt;code&gt;Jupyter notebooks&lt;/code&gt;, you can clone them from &lt;a href=&#34;https://github.com/vatsan/gp-sql-snippets/blob/master/notebooks/01_max_fieldsize_1gb_workaround.ipynb&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Pairing for Data Scientists</title>
+      <link>/post/pairing-on-data-science/</link>
+      <pubDate>Fri, 15 Jan 2016 10:13:32 +0000</pubDate>
+      
+      <guid>/post/pairing-on-data-science/</guid>
+      <description>
+
+&lt;p&gt;Hey! Happy 2016!! I have now spent two months working on the Pivotal Labs Data Science Team in London and the journey so far has been really exciting. I have been introduced to new working methodologies in an agile data science (DS) environment, pairing being one of them. We&amp;rsquo;ve found that pairing works well with DS, and I wanted to share some of my experiences and tips for getting started with DS pairing.&lt;/p&gt;
+
+&lt;p&gt;I feel pairing can be a great enablement technique. While pairing with clients, it makes them feel more involved. By developing a use case together they understand the code base better than a regular handover session at the end of project cycle. In the process, you understand the business requirements better which helps to speed up the process. Pairing with a colleague makes exploration and development of a DS use case much more fun. Besides helping in knowledge and skill exchange it&amp;rsquo;s a good way to mitigate risk.&lt;/p&gt;
+
+&lt;h2 id=&#34;pair-programming-and-data-science:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Pair Programming and Data Science??&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/pairing_ds_logo.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/pairing_ds_logo.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Hmmmm… &lt;a href=&#34;https://blog.pivotal.io/tag/paired-programming&#34;&gt;Pair Programming&lt;/a&gt; is exactly what it sounds. Pairing has always been one of the key programming practices followed at Pivotal Labs. If you ever get a chance to visit the Labs office you will see two developers sharing a big desk space and working on two mirrored screens simultaneously. Sounds interesting and a bit challenging…. Honestly when I first saw this alien style of programming I had concerns about how productive it could be in a DS environment. Yes we have to code as data scientist! For those who didn’t know, DS involves programming right from the initial feature creation and exploratory phase to model development and its operationalization.&lt;/p&gt;
+
+&lt;h3 id=&#34;hoops-to-jump-through:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Hoops to Jump through&lt;/h3&gt;
+
+&lt;p&gt;When you start on a DS use case your objective is fairly broad. You need to spend a lot of time to find the right way to materialize the objective. You have to &amp;lsquo;flare and focus&amp;rsquo; repeatedly before coming up with a definite objective and shipping it as an end product.&lt;/p&gt;
+
+&lt;p&gt;I had my doubts about how pairing would fit this flare and focus process. It’s not equivalent to pairing in a software engineering environment where the goals are more definitive to start with and the pair can work together to materialize it in best possible manner. During DS flaring, one might come with a number of problems and consequently an even larger number of ways to tackle them; having another person in the entire development process might make this phase intense and long because different people can have different ways to approach a problem.&lt;/p&gt;
+
+&lt;p&gt;For DS, there is no best tool for the task at hand. If one DS is comfortable using Python that might not necessarily be the same for his/her pair. Although, this is a great opportunity to expand one’s skill set but it might be a little disconcerting to run to Google for some basic syntax check with your pair watching over you!&lt;/p&gt;
+
+&lt;p&gt;In general when the two individuals pairing have different levels of expertise, I don&amp;rsquo;t know how daunting an experience it would be for a newbie to code in this environment or how frustrating it could be for the experienced counterpart trying to get the noobie up to speed.&lt;/p&gt;
+
+&lt;h3 id=&#34;day-3-pivotal-and-henceforth:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Day 3 &lt;em&gt;@Pivotal&lt;/em&gt; and henceforth..&lt;/h3&gt;
+
+&lt;p&gt;I started pairing with &lt;a href=&#34;https://twitter.com/ianhuston&#34;&gt;Ian Huston&lt;/a&gt;, a Senior DS in my team and started jumping through these hoops. He helped me get comfortable with the process in my first few weeks. In the exploratory phase, it actually turned out that greater the number of heads brainstorming about a problem, the faster it is to come up with a variety of routes and then narrowing it down to the most preferred one.&lt;/p&gt;
+
+&lt;p&gt;After an initial brainstorming, we came up with certain set of features we thought would be predictive for the problem case in hand and started to develop it. We followed a test-driven feature generation process. In a ping-pong manner, a team member would come up with a test case first and then the other would write up the functionality to implement it and then the role would reverse for the next round.&lt;/p&gt;
+
+&lt;p&gt;My initial concerns about working with people having varied level of experience was eased. Having an experienced person as your pair helps you understand the pros and cons of various approaches better, so you save a lot of time by choosing better. We follow &lt;a href=&#34;https://en.wikipedia.org/wiki/Extreme_programming&#34;&gt;extreme programming&lt;/a&gt; practices in Pivotal. Ian was kind, encouraged me to be inquisitive and welcomed a newbie’s ideas. I enjoyed my initial pairing experience and started getting used to it. Since then, I have paired with other colleagues and clients onsite and remotely and I really enjoy pairing.&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/pairing_ds.jpg&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;h3 id=&#34;few-handy-tips:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Few Handy Tips&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Check whether you have enough data scientists to be involved in pairing! It&amp;rsquo;s a resource intensive exercise.&lt;/li&gt;
+&lt;li&gt;Have a brainstorming session at the start. Discuss various techniques that can be applied, be innovative then narrow your choices and start implementing it.&lt;/li&gt;
+&lt;li&gt;Difference of opinion? Nothing to worry about. Take a step back, weigh the pros and cons of each approach, go ahead with the winner. In case of a tie, consult someone else on the team or try all of them out on a sample of data. Remember the entire team is responsible for the project. Personal ego can&amp;rsquo;t be in the driver seat here. You&amp;rsquo;ll learn how to deal with disagreements better by the end of the exercise.&lt;/li&gt;
+&lt;li&gt;Pair with right person for the right job! Pair with fellow designers or developers during relevant stages to make the best use of resources in hand. There are no reasons why data scientists shouldn&amp;rsquo;t follow balanced team approach.&lt;/li&gt;
+&lt;li&gt;Project with vague objectives? Which DS use case isn&amp;rsquo;t to start with. Make progress iteratively rather than trying to figure the entire game plan from the start.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;“Pairing is sharing” as one of my colleagues always tells me :). It is a concentrated cohesive effort that helps in fast iterative development, a great way to enable each other and develop something in synergy.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Above all pairing is a great bonding exercise, I would really recommend giving it a shot!&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

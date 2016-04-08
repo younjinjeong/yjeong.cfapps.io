@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Humans on Pivotal Engineering Journal</title>
+    <link>/categories/humans/</link>
+    <description>Recent content in Humans on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Dec 2015 12:55:40 -0500</lastBuildDate>
+    <atom:link href="/categories/humans/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Abstraction, or, The Gift of Our Weak Brains</title>
+      <link>/post/abstraction-or-the-gift-of-our-weak-brains/</link>
+      <pubDate>Fri, 18 Dec 2015 12:55:40 -0500</pubDate>
+      
+      <guid>/post/abstraction-or-the-gift-of-our-weak-brains/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Intelligent developers can, at times, fail to seek out better abstractions in their code.&lt;/li&gt;
+&lt;li&gt;But empathy for our peers drives us towards finding abstractions.&lt;/li&gt;
+&lt;li&gt;Better abstractions lead to better outcomes, and clearer problem-solving.&lt;/li&gt;
+&lt;li&gt;There exist practices to ensure that empathy is top of mind, and to remind us to work towards better abstractions in our code.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;nasa-s-voyager-legacy-code-like-you-ve-never-seen:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;NASA&amp;rsquo;s Voyager: Legacy Code Like You&amp;rsquo;ve Never Seen&lt;/h2&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/voyager-1-10.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Recently, NASA put a call out for FORTRAN developers to &lt;a href=&#34;http://www.theregister.co.uk/2015/10/31/brush_up_on_your_fortran/&#34;&gt;continue work on the Voyager spacecraft software&lt;/a&gt;. Everyone on the original team has retired from NASA at this point, meaning that the code running Voyager is literally two human generations old.&lt;/p&gt;
+
+&lt;p&gt;What kind of problems do you think exist around such extreme legacy code? In an &lt;a href=&#34;http://www.popularmechanics.com/space/a17991/voyager-1-voyager-2-retiring-engineer/&#34;&gt;interview with Popular Mechanics&lt;/a&gt;, the program manager for the Voyager program said:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;hellip; it&amp;rsquo;s time to turn back to old documents to figure out the logic
+behind some of the engineering decisions. Dodd says it&amp;rsquo;s easy to
+find the engineering decisions, but harder to find the
+reasoning. This means combing through &lt;strong&gt;secondary documents and
+correspondence&lt;/strong&gt; hoping to find the solution, trying to get in another
+engineer&amp;rsquo;s head.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Holy cow.&lt;/p&gt;
+
+&lt;p&gt;I mean, I realize that the solution had severe constraints placed on it (miniscule processing power, and 64KB of RAM). But the situation being described sounds like it&amp;rsquo;s orthogonal to those constraints.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;trying to get in another engineer&amp;rsquo;s head.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Think about that for a moment. Not &amp;ldquo;trying to understand the code&amp;rdquo;, not &amp;ldquo;trying to understand the implementation&amp;rdquo;, but &lt;strong&gt;&amp;ldquo;trying to understand how the author was reasoning about the universe at the time.&amp;rdquo;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Wouldn&amp;rsquo;t it have been easier if the relevant abstractions had been captured when that code was written?&lt;/p&gt;
+
+&lt;h2 id=&#34;tale-of-a-prodigy:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;Tale of a Prodigy&lt;/h2&gt;
+
+&lt;p&gt;There&amp;rsquo;s a famous story about &lt;a href=&#34;https://en.wikipedia.org/wiki/John_von_Neumann&#34;&gt;John von Neumann&lt;/a&gt; and the &lt;a href=&#34;http://mathworld.wolfram.com/TwoTrainsPuzzle.html&#34;&gt;&amp;ldquo;Two Trains Puzzle&amp;rdquo;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This particular puzzle is a math problem, involving two trains travelling towards each other, and a fly that&amp;rsquo;s whizzing back and forth between their windshields: How far does the fly travel before it gets squashed?&lt;/p&gt;
+
+&lt;p&gt;The hard way to solve this problem is to &lt;a href=&#34;http://mathworld.wolfram.com/TwoTrainsPuzzle.html&#34;&gt;generate an infinite series&lt;/a&gt; representing the fly&amp;rsquo;s path, and to compute its sum. Most humans aren&amp;rsquo;t capable of doing this calculation in their head; but there&amp;rsquo;s a shortcut to the solution, which some people will find obvious once they realize that:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;you know the &lt;strong&gt;total time&lt;/strong&gt; the fly is traveling (based on the trains&amp;rsquo; relative speeds);&lt;/li&gt;
+&lt;li&gt;and you&amp;rsquo;re given the &lt;strong&gt;fly&amp;rsquo;s speed&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A simple velocity calculation later, and you have the answer.&lt;/p&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/von-neumann.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;According to &lt;u&gt;&lt;a href=&#34;https://www.jstor.org/stable/2319080&#34;&gt;The Legend of von Neumann&lt;/a&gt;&lt;/u&gt;, here&amp;rsquo;s what happened when the puzzle was posed to Von Neumann:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;hellip; he solved it in an instant, and thereby disappointed the
+questioner: &amp;ldquo;Oh, you must have heard the trick before!&amp;rdquo; &amp;ldquo;What
+trick?&amp;rdquo; asked von Neumann, &amp;ldquo;All I did was sum the geometric series.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Von Neumann was a remarkable math prodigy who was famous for his &lt;a href=&#34;https://en.wikipedia.org/wiki/John_von_Neumann#Cognitive_abilities&#34;&gt;extraordinary cognitive abilities&lt;/a&gt;, so perhaps it&amp;rsquo;s unsurprising that he was able to compute an infinite series so quickly.&lt;/p&gt;
+
+&lt;p&gt;If you&amp;rsquo;re paying attention, though, it should be very surprising that such an extraordinary intellect didn&amp;rsquo;t see and use the shortcut to solve the problem.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Why didn&amp;rsquo;t Von Neumann see and use the shortcut?&lt;/strong&gt; Was it easier for him to do the calculation than to search for an unnecessary (to him) abstraction?&lt;/p&gt;
+
+&lt;h2 id=&#34;the-history-of-science-is-a-history-of-abstractions:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;The History of Science is a History of Abstractions&lt;/h2&gt;
+
+&lt;p&gt;Recently, &lt;a href=&#34;http://www.ribbonfarm.com/author/brian/&#34;&gt;Brian Skinner&lt;/a&gt; wrote an &lt;a href=&#34;http://www.ribbonfarm.com/2015/10/29/quasiparticles-and-the-miracle-of-emergence/&#34;&gt;amazing post&lt;/a&gt; about how many of our scientific observations are a direct result of humans seeking to find intuitive abstractions to explain complex phenomena:&lt;/p&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/free-electrons.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;blockquote&gt;
+&lt;p&gt;As an extreme example, consider that human thinking struggles to
+describe even individual atoms with real precision. How is it, then,
+that we can possibly have good science about things that are made up
+of many atoms, like magnets or tornadoes or eukaryotic cells or
+planets or animals? It seems like a miracle that the natural world
+can contain patterns and objects that lie within our understanding,
+because the &lt;strong&gt;individual constituents of those objects are usually
+far too complex for us to parse&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In that post, Brian differentiates between how humans &lt;em&gt;choose to reason&lt;/em&gt; about electrons in an electric circuit, versus how electrons &lt;em&gt;actually&lt;/em&gt; behave.&lt;/p&gt;
+
+&lt;p&gt;The key point being that electron behavior is actually so complicated, involving complex interactions between quantum probabilities, electromagnetic interactions, and macroscopic electric fields, that human brains are piteously underpowered to calculate what&amp;rsquo;s going on in an individual atom.&lt;/p&gt;
+
+&lt;p&gt;The result, though, is that we model the &lt;em&gt;aggregate&lt;/em&gt; behavior of all the electrons in the circuit, instead of modelling &lt;em&gt;each and every&lt;/em&gt; electron. And that statistical abstraction is a model that works amazingly well in a wide range of circumstances.&lt;/p&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/star-trek-aliens1.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Imagine an alien race with the cognitive faculties to reason about individual electron trajectories&lt;/strong&gt;. Would those aliens fall back to the same abstraction? Or would they simply continue, as Von Neumann did, to do the calculations the hard way?&lt;/p&gt;
+
+&lt;h2 id=&#34;the-impact-of-ability-on-developing-abstraction:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;The Impact of Ability on Developing Abstraction&lt;/h2&gt;
+
+&lt;p&gt;These stories anecdotally support a hypothesis: Humans develop the proper abstraction only when they hit the limit of their computational power.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;NASA computer scientists (perhaps some of the smartest, most exacting and meticulous people assembled since the Manhattan Project)  write code that is so inscrutable that modern-day maintainers are forced to read the authors&amp;rsquo; mail to figure out what the hell the software was intended to do.&lt;/li&gt;
+&lt;li&gt;John von Neumann didn&amp;rsquo;t bother to look for a more elegant solution, because he was able to brute force an infinite series so easily.&lt;/li&gt;
+&lt;li&gt;When science exceeds the physiological limits of our brains&amp;rsquo; capabilities, scientists seek and find appropriate abstractions that allow civilization to advance.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/Ren%c3%a9_Magritte_The_Human_Condition.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I can only hold one or two things in mind at a time. Maybe three, tops. I want to think deeply about a thing until I&amp;rsquo;m done, and then move on. Ask anyone who&amp;rsquo;s tried to have a conversation with me when I have two or three things already in my head &amp;ndash; I&amp;rsquo;m a total basket case.&lt;/p&gt;
+
+&lt;p&gt;Some people appear to be able to hold much more state in their brain than I can. It&amp;rsquo;s the only way I can explain spaghetti code with light test coverage. When I ask myself, &amp;ldquo;How can anyone understand this?&amp;rdquo;, the answer is usually, &amp;ldquo;Because the author must have more prodigious computing power in their brain than I do.&amp;rdquo; (Maybe I&amp;rsquo;m being generous, but that&amp;rsquo;s another blog post.)&lt;/p&gt;
+
+&lt;p&gt;And that&amp;rsquo;s OK. &lt;strong&gt;Except for when you have to deal with other people.&lt;/strong&gt; Which is probably most of the time. Whoops.&lt;/p&gt;
+
+&lt;h2 id=&#34;complexity-without-empathy-considered-harmful:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;Complexity Without Empathy Considered Harmful&lt;/h2&gt;
+
+&lt;p&gt;How are you, as one of the best and brightest, preparing for the inevitable day when someone less talented than you has to modify the software you wrote?&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s be honest and empathize that most people who currently have the title of &amp;ldquo;software developer&amp;rdquo; are not going to have the time, patience, or talent to wade through spaghetti code with dependencies pointed in the wrong direction, with poorly-named variables, and with poor test coverage.&lt;/p&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/summer.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Worse, though, is the example being set for people who are new to the craft. There&amp;rsquo;s a self-perpetuating cycle here, particularly given that very few developers have any sort of exposure to the &amp;ldquo;&lt;a href=&#34;/post/welcome/&#34;&gt;team sport&lt;/a&gt;&amp;rdquo; that is growing and maintaining large software systems. &lt;strong&gt;If all I see when I look around is poorly-abstracted software, then are you surprised when I generate code of the same quality?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(This, by the way, is why I feel strongly that most colleges and universities are cheating their CS grads by not preparing them for a career working in large, complex teams on large, complex projects. Again, this is for another blog post.)&lt;/p&gt;
+
+&lt;h2 id=&#34;how-to-do-better:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;How To Do Better&lt;/h2&gt;
+
+&lt;p&gt;Obviously, there are smart people who &lt;strong&gt;do&lt;/strong&gt; seek and find proper abstractions. Most of them (at least the ones I know personally)  share a common value: &lt;strong&gt;empathy&lt;/strong&gt;. They all have empathy for their current teammates and future developers.&lt;/p&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/knuth.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;This empathy for fellow developers can emerge in a number of ways. Perhaps the best known manifestation is &lt;a href=&#34;https://en.wikipedia.org/wiki/Donald_Knuth&#34;&gt;Knuth&lt;/a&gt;&amp;rsquo;s &lt;a href=&#34;http://www.literateprogramming.com/knuthweb.pdf&#34;&gt;&amp;ldquo;Literate Programming&amp;rdquo;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Let us change our traditional attitude to the construction of
+programs: Instead of imagining that our main task is to instruct a
+computer what to do, &lt;strong&gt;let us concentrate rather on explaining to
+human beings what we want a computer to do&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/hal-abelson.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Which is simply a restatement of &lt;a href=&#34;https://groups.csail.mit.edu/mac/users/hal/hal.html&#34;&gt;Hal Abelson&lt;/a&gt;&amp;rsquo;s famous quote:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;“Programs must be written for people to read, and only incidentally
+for machines to execute.”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;My own personal interpretation of Literate Programming is: prefer self-explanatory code over comments. I often urge my pairs to write tests and implementations as if it were English, and in so doing help drive out the right abstractions.&lt;/p&gt;
+
+&lt;p&gt;That tactic is actually a variation on an idea presented in Eric Evans&amp;rsquo;s &lt;a href=&#34;https://en.wikipedia.org/wiki/Domain-driven_design&#34;&gt;&amp;ldquo;Domain Driven Design&amp;rdquo;&lt;/a&gt; philosophy, which is to use the language of the domain to articulate requirements as well as implement the code. As explained in his &lt;a href=&#34;http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215&#34;&gt;book of the same name&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;A domain model &amp;hellip; is not just the knowledge in a domain expert&amp;rsquo;s
+head; it is a &lt;strong&gt;rigorously organized and selective abstraction of
+that knowledge&lt;/strong&gt;. &amp;hellip; The model is the backbone of a language used
+by all team members.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;engineering-practices-to-encourage-empathy-and-abstraction:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;Engineering Practices to Encourage Empathy and Abstraction&lt;/h2&gt;
+
+&lt;p&gt;At Pivotal, as in any &lt;a href=&#34;https://en.wikipedia.org/wiki/Extreme_programming&#34;&gt;XP shop&lt;/a&gt;, empathy takes form in our engineering practices.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We test-drive&lt;/strong&gt;, which forces us to think deeply about the proper abstractions in the code as we&amp;rsquo;re writing it. Testing first generally drives out better design; and allows us to safely introduce or change the abstractions later.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We pair program&lt;/strong&gt;, which forces us to explain, before the code gets committed, the reasoning and intentions behind the code. Explaining it to the person sitting next to you is the first step towards explaining it to future readers of your code.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We rotate frequently between teams&lt;/strong&gt;, meaning that we&amp;rsquo;re almost always teaching someone the domain, the architecture, and the codebase. As a result, we are incentivized to make sure the code is understandable and abstracted correctly; and we feel acute pain around explaining poorly abstracted code.&lt;/p&gt;
+
+&lt;p&gt;Generally speaking, these practices lower the threshold at which our brains might otherwise naturally seek for better abstractions. This is good!&lt;/p&gt;
+
+&lt;h2 id=&#34;if-you-re-reading-this-it-s-for-you:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;If You&amp;rsquo;re Reading This, It&amp;rsquo;s For You&lt;/h2&gt;
+
+&lt;p&gt;These practices may be more important for people with greater computational abilities. &lt;strong&gt;This is actually the reverse of most people&amp;rsquo;s intuition&lt;/strong&gt;, which is (derogatorily) that Smart People don&amp;rsquo;t need to follow the same practices as Ordinary People.&lt;/p&gt;
+
+&lt;p&gt;Don&amp;rsquo;t fall into this trap around testing and abstractions. If you think you&amp;rsquo;re so smart, then consider Abstraction to be an act of &lt;a href=&#34;https://en.wikipedia.org/wiki/Noblesse_oblige&#34;&gt;&lt;em&gt;noblesse oblige&lt;/em&gt;&lt;/a&gt; for the rest of us, and challenge yourself to find better abstractions than the next guy or girl.&lt;/p&gt;
+
+&lt;h2 id=&#34;and-a-warning:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;&amp;hellip; And A Warning&lt;/h2&gt;
+
+&lt;p&gt;
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/forever-productive-alone.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;You get to choose what you spend your brain&amp;rsquo;s CPU cycles on.&lt;/strong&gt; Well-abstracted code is easier to reason about and safer to change. If your brain is occupied with poorly-abstracted details, you&amp;rsquo;re going to miss opportunities for creative problem solving, and you won&amp;rsquo;t get the flashes of insight that can be critical to solving problems well.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Smart people who claim to not need practices are often productive &amp;hellip; alone.&lt;/strong&gt; But software (and life) is a &lt;a href=&#34;/post/welcome/&#34;&gt;team sport&lt;/a&gt;. So even if you won&amp;rsquo;t find good abstractions for your own sake, do it for your fellow developers. They&amp;rsquo;ll thank you for it.&lt;/p&gt;
+
+&lt;p&gt;Our brains are naturally limited. This can be a curse, or it can be a gift, depending on how you look at it.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

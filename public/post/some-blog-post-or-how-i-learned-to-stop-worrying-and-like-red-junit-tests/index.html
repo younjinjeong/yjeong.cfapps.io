@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> &#34;Some Blog Post&#34; or, How I Learned to Stop Worrying and Like Red Junit Tests &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            &#34;Some Blog Post&#34; or, How I Learned to Stop Worrying and Like Red Junit Tests
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">Tips and tricks for writing tests that fail well.  What to mock, what to name your tests, and how to <code>when</code>.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Thu, Mar 24, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    Tira Odhner
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/java">Java</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/testing">Testing</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/some-blog-post-or-how-i-learned-to-stop-worrying-and-like-red-junit-tests.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="%!s(&lt;nil&gt;) ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+
+
+  <figure class="right small visible-lg">
+      
+          <img src="/images/tira/test_failure_disaster.png"  />
+      
+      
+  </figure>
+  <figure class="hidden-lg">
+      
+          <img src="/images/tira/test_failure_disaster.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>Let me throw this scenario at you: A test is failing. You didn&rsquo;t write it, and the error is really weird. The test name doesn&rsquo;t tell you what the code is supposed to do, but whatever it is, your code isn&rsquo;t doing that.</p>
+
+<p>That&rsquo;s pretty much worst case scenario for test failures, and it happened to me earlier today.</p>
+
+<p>I don&rsquo;t blame the people who wrote the test. It&rsquo;s tricky to figure out how to write a good test in Java. Seriously! There&rsquo;s no <code>describe</code> blocks or <code>it</code>s like in <a href="http://jasmine.github.io/2.4/introduction.html">jasmine</a> and <a href="http://rspec.info/">rspec</a>. How do you even structure a test? I&rsquo;m not really a fan of Java (Who needs type safety anyway?), but I&rsquo;ve learned a few things in the two years I&rsquo;ve been here at Pivotal Labs that let me hate it a lot less.</p>
+
+<h2 id="test-name-structure:8ae03c7a1b57337c01821bfe9847dcf9">Test Name Structure</h2>
+
+<p>Okay, for starters, you can take advantage of the test method name.</p>
+
+<pre><code class="language-java">@Test
+public void updateCalendar() {
+</code></pre>
+
+<p>should become</p>
+
+<pre><code class="language-java">@Test
+public void updateCalendar_whenThereIsAnEvent_savesTheEvent() {
+</code></pre>
+
+<p>The first time I saw that I was mindblown. It&rsquo;s so simple, but so great! Someone probably told you that method names should never be that long, but I&rsquo;m just going to let you in on a little secret: tests are special, and it&rsquo;s worth it, believe me.</p>
+
+<p>This opens you up to having more than one test for one method, and lets your tests be smaller. So instead of a bunch of assertions and a bunch of setup, you can have just a tiny bit of setup that corresponds to that <code>whenThereIsAnEvent</code> and one or two assertions that correspond to the last phrase (<code>savesTheEvent</code>). It&rsquo;s not quite as nice as real describe blocks, but it&rsquo;s serviceable.</p>
+
+<p>Now when your test is failing, there&rsquo;s not a lot of code to look at, and the test tells you what it&rsquo;s about. Already this code is going to be so much easier to fix.</p>
+
+<p>You might be thinking, &ldquo;Wait, I&rsquo;m writing more than one test per method? Where does it end? How many tests do I write?&rdquo; I&rsquo;ll get to that. It&rsquo;s at the very end though, so if you&rsquo;re holding your breath, you might need to scroll down.</p>
+
+<h2 id="empty-assertions:8ae03c7a1b57337c01821bfe9847dcf9">Empty Assertions</h2>
+
+
+
+  <figure class="right small visible-lg">
+      
+          <img src="/images/tira/empty_assertions.png"  />
+      
+      
+  </figure>
+  <figure class="hidden-lg">
+      
+          <img src="/images/tira/empty_assertions.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>This code looks fine, right?:</p>
+
+<pre><code class="language-java">assertThat(savedUser.getName()).isEqualTo(user.getName());
+</code></pre>
+
+<p>It looks fine, but under the surface it might actually have a horrible disease: <em>Emptiassertionitis</em>. If <code>user.name</code> was never set, this is actually</p>
+
+<pre><code class="language-java">assertThat(savedUser.getName()).isEqualTo(null); 
+</code></pre>
+
+<p>Oh no, that&rsquo;s not what you meant at all! So, to avoid that, I recommend always inlining this kind of thing.</p>
+
+<pre><code class="language-java">assertThat(savedUser.getName()).isEqualTo(&quot;Some Name&quot;);
+</code></pre>
+
+<p>&ldquo;But Tira, that isn&rsquo;t dry!&rdquo; Nope, it isn&rsquo;t. Because this is a test, and tests are special. Tests don&rsquo;t need to be dry, at least not as much as they need to be transparent. If your test data is meaningful and your test failures are obvious, that&rsquo;s a pretty good test in my book.</p>
+
+<h2 id="weird-null-pointers:8ae03c7a1b57337c01821bfe9847dcf9">Weird Null Pointers</h2>
+
+
+
+  <figure class="right small visible-lg">
+      
+          <img src="/images/tira/e_is_for_exception.jpg"  />
+      
+      
+  </figure>
+  <figure class="hidden-lg">
+      
+          <img src="/images/tira/e_is_for_exception.jpg"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>Okay, this is really specific to Java. You know how there is <code>int</code> and <code>Integer</code> and <code>long</code> and <code>Long</code> and so on? Well, it turns out that when you try to set one of the lowercase ones to <code>null</code>, you get a null pointer exception. It makes sense; the whole point of the wrapper classes is to make the primitives into nullable <code>Object</code>s. But still, every time I see a null pointer exception being thrown from an innocent-looking line like:</p>
+
+<pre><code class="language-java">calendarDay.setEventCount(eventCount); // calendarDay is not null
+</code></pre>
+
+<p>I have to do a double take. If I&rsquo;m a little drowsy, sometimes it&rsquo;s three or four takes before I realize what&rsquo;s going on.</p>
+
+<p>As people who write tests, we run into this weird little issue a lot. We don&rsquo;t want to set up all the data that isn&rsquo;t relevant to the test we&rsquo;re writing. We shouldn&rsquo;t have to set it up. But, doing this minimal setup means things are often null that wouldn&rsquo;t be otherwise. Just make them nullable and move on.</p>
+
+<p>If the thing isn&rsquo;t valid as <code>null</code>, consider a <code>@NotNull</code> validation.</p>
+
+<h2 id="helpful-test-data:8ae03c7a1b57337c01821bfe9847dcf9">Helpful Test Data</h2>
+
+<p>You may think that test data doesn&rsquo;t matter. It can be anything. But I&rsquo;m here to tell you that it can matter. It can <em>be something</em>.
+When I think about setting up test data, I think about what kind of failure messages it will produce. Your test data can tell you what to do next, or it can confuse you.
+Here we have ordinary test data:</p>
+
+<pre><code class="language-java">User user = User.builder()
+.id(&quot;10&quot;)
+.age(10) // not the only field with this value
+.name(&quot;Ghengis Khan&quot;) // Joke name
+.email(&quot;email&quot;)  // The value is the same as name of the field
+.build();
+</code></pre>
+
+<p>This test data can actually be a real problem when you have <em>Emptiassertionitis</em>-style tests:</p>
+
+<pre><code class="language-java">assertThat(find(&quot;.my-form&quot;).getText()).contains(user.getEmail());
+</code></pre>
+
+<p>See how that user&rsquo;s email is the same as the field name? There&rsquo;s probably a <code>&lt;label&gt;email&lt;/label&gt;</code> on the page, so our assertion passes even when the user&rsquo;s email is not being rendered.
+If instead you make that into <code>&quot;some-email@example.com&quot;</code>, you&rsquo;ll get a nice error that tells you exactly what to fix.
+The same thing goes for that <code>id</code> field. Make the <code>id</code> field into <code>&quot;some-id-1&quot;</code> and your error message will point you at the <code>id</code> field, without being confused for <code>age</code>. It&rsquo;s okay sometimes to use fun names, but when you&rsquo;re deciding between something clever and something clear, go for clear. There&rsquo;s plenty of other stuff to be creative with when you&rsquo;re writing code. And when you aren&rsquo;t going for the clever approach, &ldquo;Some&rdquo; is a wonderful word for filling in test data. It won&rsquo;t be confused for real values, and it won&rsquo;t get mixed up with form fields:</p>
+
+<pre><code class="language-java">User user = User.builder()
+.id(&quot;some-id-1&quot;)
+.age(10)
+.name(&quot;Some Name&quot;)
+.email(&quot;some-email@example.com&quot;)
+.build();
+</code></pre>
+
+<p>Wow! This test data is so boring, but so helpful!</p>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/tira/something_is_blue.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<h2 id="mockito-how-to-when:8ae03c7a1b57337c01821bfe9847dcf9">Mockito: How to <code>when</code></h2>
+
+<p>A lot of times I see mocks set up like this:</p>
+
+<pre><code class="language-java">when(magician.putInHat(magicObject)).thenReturn(123);
+assertThat(whatever.doThing()).isEqualTo(123);
+</code></pre>
+
+<p>That&rsquo;s all well and dandy in the sense that you&rsquo;re testing everything you wanted to test. <code>putInHat</code> is being called correctly with magicObject. Its return value is coming back and being used as the result of <code>doThing</code>.</p>
+
+<p>But what about when this test is failing? What if you pass in the wrong <code>MagicObject</code> to <code>putInHat</code>?</p>
+
+<p>You get <code>&quot;it is not true that null is equal to 123&quot;</code>. I mean, I think we can all agree that null is not equal to 123, but this failure doesn&rsquo;t exactly make it obvious that <code>putInHat</code> is betraying you and returning <code>null</code>. It would never do that in real life, but of course it&rsquo;s a mock because this is a unit test. So how can we get a better test failure?</p>
+
+<p>Swap in a <code>Matcher</code> and a <code>verify</code>, for all the same test coverage goodness but with twice the fun:</p>
+
+<pre><code class="language-java">when(magician.putInHat(any(MagicObject.class)).thenReturn(123);
+assertThat(whatever.doThing()).isEqualTo(123);
+verify(magician).putInHat(magicObject);
+</code></pre>
+
+<p>It&rsquo;s one extra line of code, but now our failure message looks like this:
+<code>&quot;expected putInHat to have been called with MagicObject@2456 but actual calls were MagicObject@1234&quot;</code></p>
+
+<p>Abracadabra, that&rsquo;s way more helpful.</p>
+
+<h2 id="what-to-mock:8ae03c7a1b57337c01821bfe9847dcf9">What to Mock</h2>
+
+<p>You want to write pure unit tests. That means you mock everything that isn&rsquo;t the object you&rsquo;re testing. Right? Wrong. I mean, kind of, but not quite. You could mock everything but please don&rsquo;t. Mock things with behavior. Don&rsquo;t mock Models.</p>
+
+<p>Consider the following:</p>
+
+<pre><code class="language-java">@Test 
+public void addOne_returnsTheIncrementedValue(){
+  valuable.setValue(10);
+  assertThat(incrementer.addOne(valuable)).isEqualTo(11);
+}
+</code></pre>
+
+<p>Imagine that incrementer is working as expected, but this test is failing. It says<code>&quot;it is not true that null is equal to 11&quot;</code>. Why? because <code>valuable</code> is a mock object. Sure, you could say <code>when(valuable.getValue()).thenReturn(10)</code> and your test would work, but it&rsquo;s just really weird and harder to use than newing up an instance of the real thing.</p>
+
+<h2 id="how-many-tests-do-i-write:8ae03c7a1b57337c01821bfe9847dcf9">How Many Tests do I write?</h2>
+
+
+
+  <figure class="right small visible-lg">
+      
+          <img src="/images/tira/too_many_tests.png"  />
+      
+      
+  </figure>
+  <figure class="hidden-lg">
+      
+          <img src="/images/tira/too_many_tests.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>When I was first getting into writing unit tests, I kept hearing about how I needed to test edge cases. So I wrote code with all these null checks and exception handling, and almost none of it was necessary and all of it was ugly. Don&rsquo;t think about edge cases. Think about real cases.</p>
+
+<p>Write one test for each side of a control flow. So if you have an <code>if</code> in your method, you should have two tests for that method.</p>
+
+<p>If there is an <code>if</code> with an <code>&amp;&amp;</code> or <code>||</code>, you should have 3 tests.</p>
+
+<p>If there are two objects you have to set up to test all of a method&rsquo;s behavior, consider whether you can separate that into two tests as well.</p>
+
+<p>The goal is to have simple, meaningful, descriptive tests. Think of tests as comments with proof. Their whole purpose is to communicate to the next developer what the code is doing and why.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

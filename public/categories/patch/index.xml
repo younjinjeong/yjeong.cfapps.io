@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Patch on Pivotal Engineering Journal</title>
+    <link>/categories/patch/</link>
+    <description>Recent content in Patch on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Jan 2016 13:55:53 -0700</lastBuildDate>
+    <atom:link href="/categories/patch/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Intro to the Patch Command</title>
+      <link>/post/intro-to-patch/</link>
+      <pubDate>Tue, 05 Jan 2016 13:55:53 -0700</pubDate>
+      
+      <guid>/post/intro-to-patch/</guid>
+      <description>
+
+&lt;h2 id=&#34;intro-to-the-patch-command:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Intro to the Patch Command&lt;/h2&gt;
+
+&lt;p&gt;Long ago, the patch tool was created to apply diffs of code to codebases. This way when a developer submitted the diff for their new code, someone could assess and then apply the changes to the primary codebase.&lt;/p&gt;
+
+&lt;p&gt;These days, we have version control systems like git and svn to take care of logging and traversing all the code changes submitted.&lt;/p&gt;
+
+&lt;p&gt;So what about the patch command, does it still have a purpose?&lt;/p&gt;
+
+&lt;h2 id=&#34;why:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Why&lt;/h2&gt;
+
+&lt;p&gt;The use case we had was that we needed to put a piece of software that was running on a server into a “debug” mode. The problem was there wasn’t debug mode implemented into its source code. To implement a feature like this would take months and we didn’t have control over the source code for the product.&lt;/p&gt;
+
+&lt;p&gt;The patch command is great for appyling and reverting changes to any text because is uses diffs. This means we can manipulate files whatever way we want, and then return return those files to their original state at the end of our cycle.&lt;/p&gt;
+
+&lt;h2 id=&#34;sample-use-case:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Sample Use Case&lt;/h2&gt;
+
+&lt;p&gt;Here is a simple Go app.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	validate()
+	deploy()
+	smokeTests()
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For the sake of this example, let&amp;rsquo;s say that we&amp;rsquo;re dependant on this app it&amp;rsquo;s has to run before I can test my code. When we run it, it&amp;rsquo;s doing two operations that we might want to remove to speed things up.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ go run src/code.go
+
+Validating...
+Deploying...
+Running Smoke Tests...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In our case, we ran a cycle in our test environments with this code to verify that &lt;code&gt;validate()&lt;/code&gt; and &lt;code&gt;smokeTests()&lt;/code&gt; pass successfully. Then we wanted to trim down our testing cycles so the goal was to remove this functionality for quicker feedback.&lt;/p&gt;
+
+&lt;h3 id=&#34;creating-a-patch-file:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Creating a Patch file&lt;/h3&gt;
+
+&lt;p&gt;First, we&amp;rsquo;ll make a copy of the code and make the changes that we want.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src_altered/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+  //validate() **Disabled**
+  deploy()
+  //smokeTests() **Disabled**
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then we&amp;rsquo;ll get the diff which will serve as our patch file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ diff -ru src src_altered &amp;gt; code.patch; cat code.patch
+
+diff -ru src/code.go src_altered/code.go
+--- src/code.go	2015-11-25 17:55:17.000000000 -0500
++++ src_altered/code.go	2015-11-25 17:48:11.000000000 -0500
+@@ -5,9 +5,9 @@
+ )
+ 
+ func main() {
+-	validate()
++	//validate() **Disabled**
+ 	deploy()
+-	smokeTests()
++	//smokeTests() **Disabled**
+ }
+ 
+ func validate() {
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;applying-a-patch:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Applying a Patch&lt;/h3&gt;
+
+&lt;p&gt;Run the patch command with your new patch file as your input (-i). You
+can also add the -b flag if you want a backup of the original file.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ patch -p0 -i code.patch
+
+patching file src/code.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The -p flag is required, which specifies how many prefixed path
+segements you want to remove from the path.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	//validate()
+	deploy()
+	//smokeTests()
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;reverting-a-patch:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Reverting a Patch&lt;/h3&gt;
+
+&lt;p&gt;For when we want to put the file to a clean state.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only change is that we&amp;rsquo;ve told patch that we want to reverse (-R).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;$ cat src/code.go
+
+package main
+
+import (
+	&amp;quot;fmt&amp;quot;
+)
+
+func main() {
+	validate()
+	deploy()
+	smokeTests()
+}
+
+func validate() {
+	fmt.Println(&amp;quot;Validating...&amp;quot;)
+}
+
+func deploy() {
+	fmt.Println(&amp;quot;Deploying...&amp;quot;)
+}
+
+func smokeTests() {
+	fmt.Println(&amp;quot;Running Smoke Tests...&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;patching-fail-safes:37d9d12a99e4538bd90981433bd1c986&#34;&gt;Patching Fail-Safes&lt;/h3&gt;
+
+&lt;p&gt;Patch works off of diffs so it can figure out if you&amp;rsquo;re trying to patch
+or reverse a file twice so that you don&amp;rsquo;t end up in an unrecoverable
+state.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ patch -p0 -i code.patch
+
+patching file src/code.go
+
+$ patch -p0 -i code.patch
+
+patching file src/code.go
+Reversed (or previously applied) patch detected!  Assume -R? [n] n
+Apply anyway? [n] n
+Skipping patch.
+1 out of 1 hunk ignored -- saving rejects to file src/code.go.rej
+
+$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+
+$ patch -p0 -Ri code.patch
+
+patching file src/code.go
+Unreversed patch detected!  Ignore -R? [n] n
+Apply anyway? [n] n
+Skipping patch.
+1 out of 1 hunk ignored -- saving rejects to file src/code.go.rej
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It also saves a .rej file whenever something goes wrong with any
+operation so you can investigate.&lt;/p&gt;
+
+&lt;h3 id=&#34;more-thanks:37d9d12a99e4538bd90981433bd1c986&#34;&gt;More &amp;amp; Thanks&lt;/h3&gt;
+
+&lt;p&gt;As you can imagine, there is much more to the patch command. There isn&amp;rsquo;t a lot of material out there but I would, as always, start with &lt;a href=&#34;http://www.freebsd.org/cgi/man.cgi?patch&#34;&gt;the man page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I never would have known this command existed if it weren&amp;rsquo;t for &lt;a href=&#34;https://www.linkedin.com/profile/view?id=AAkAAAcAwNABp639qPfhGAX1KVuIkj5ghtUCJmc&#34;&gt;Aaron Jarecki&lt;/a&gt;, so big shoutout goes to him.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

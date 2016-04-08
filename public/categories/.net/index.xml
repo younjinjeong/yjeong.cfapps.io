@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>.Net on Pivotal Engineering Journal</title>
+    <link>/categories/index.net/</link>
+    <description>Recent content in .Net on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 13 Jan 2016 10:00:00 -0500</lastBuildDate>
+    <atom:link href="/categories/.net/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deploying your first .NET app on Cloud Foundry</title>
+      <link>/post/dotnet-quick-intro/</link>
+      <pubDate>Wed, 13 Jan 2016 10:00:00 -0500</pubDate>
+      
+      <guid>/post/dotnet-quick-intro/</guid>
+      <description>
+
+&lt;p&gt;We on the .NET team for Cloud Foundry are pretty excited about our recently released support for .NET applications in CF! As of November 2015, this 1.0 support for Windows applications is available with Pivotal Cloud Foundry (PCF) 1.6, and is completely open source and available within the &lt;a href=&#34;https://www.cloudfoundry.org/&#34;&gt;Cloud Foundry Foundation&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, Windows developers will have access to the magic of Cloud Foundry!&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;re really excited to bring the magic of Cloud Foundry to Windows developers as well!&lt;/p&gt;
+
+&lt;h2 id=&#34;some-background:fe7b60f02e4226e4a72b87835d8bd54b&#34;&gt;Some Background&lt;/h2&gt;
+
+&lt;p&gt;Cloud Foundry is a great platform for deploying your web applications. Once you&amp;rsquo;ve set it up, the experience as a developer is as easy as &lt;code&gt;cf push&lt;/code&gt; to push your app live to the platform.&lt;/p&gt;
+
+&lt;p&gt;You may have heard about the recent &lt;a href=&#34;https://docs.cloudfoundry.org/concepts/diego/diego-architecture.html&#34;&gt;&lt;em&gt;Diego&lt;/em&gt;&lt;/a&gt; effort within CF. If not, Onsi has a great primer &lt;a href=&#34;https://blog.pivotal.io/pivotal-cloud-foundry/features/cf-summit-video-diego-reimagines-the-cloud-foundry-elastic-runtime&#34;&gt;here&lt;/a&gt;. At a high level though, Diego is the new &lt;em&gt;runtime&lt;/em&gt; for CF.&lt;/p&gt;
+
+&lt;p&gt;In order to get .NET applications to run on a Windows Server, we needed to implement:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Diego support for Windows&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Garden container support for Windows*&lt;/p&gt;
+
+&lt;p&gt;*&lt;em&gt;PS. This is where we got the name of the project. Garden + Windows = Greenhouse!&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Over the past several months, we&amp;rsquo;ve spent a lot of time implementing both of these on top of Windows 2012 R2, and we now &lt;em&gt;fully support&lt;/em&gt; Diego on Windows! You can see all of our code on Github in &lt;a href=&#34;https://github.com/cloudfoundry-incubator/diego-windows-release&#34;&gt;Diego Windows&lt;/a&gt; and &lt;a href=&#34;https://github.com/cloudfoundry-incubator/garden-windows&#34;&gt;Garden Windows&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now that we&amp;rsquo;re all set with the background, lets actually deploy an app!&lt;/p&gt;
+
+&lt;h2 id=&#34;prerequisites-for-deploying-windows-apps:fe7b60f02e4226e4a72b87835d8bd54b&#34;&gt;Prerequisites for Deploying Windows Apps&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;An existing Cloud Foundry installation with Elastic Runtime/Diego support. If you don&amp;rsquo;t have one yet, first check out &lt;a href=&#34;http://pivotal.io/platform&#34;&gt;Pivotal Cloud Foundry&lt;/a&gt; or the &lt;a href=&#34;http://docs.cloudfoundry.org/deploying/&#34;&gt;Cloud Foundry Open Source project&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;At least one Windows cell in your CF deployment using the latest compatible Diego Windows and Garden Windows MSIs. More information can be found in the &lt;a href=&#34;http://docs.pivotal.io/pivotalcf/opsguide/deploying-diego.html&#34;&gt;PCF docs&lt;/a&gt; or the &lt;a href=&#34;https://github.com/cloudfoundry-incubator/diego-windows-release/blob/master/docs/INSTALL.md&#34;&gt;Diego Windows Install Instructions&lt;/a&gt; on Github&lt;/li&gt;
+&lt;li&gt;On your development machine (&lt;em&gt;Windows machine not required if you&amp;rsquo;re using our pre-built sample app&lt;/em&gt;):
+
+&lt;ul&gt;
+&lt;li&gt;Git. For Windows, we like &lt;a href=&#34;https://git-for-windows.github.io/&#34;&gt;git for windows&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;The latest &lt;a href=&#34;https://github.com/cloudfoundry/cli&#34;&gt;Cloud Foundry CLI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;deploying-your-first-app:fe7b60f02e4226e4a72b87835d8bd54b&#34;&gt;Deploying your first app&lt;/h2&gt;
+
+&lt;p&gt;With that out of the way, now lets get to deploying. We&amp;rsquo;ll start with a simple sample app that you can just push. You can follow these instructions on either a Linux or a Windows client machine.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;First clone our basic sample app to a new directory:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/cloudfoundry-incubator/NET-sample-app.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can also download the source from the &lt;a href=&#34;https://github.com/cloudfoundry-incubator/.NET-sample-app&#34;&gt;GitHub page&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;If &lt;em&gt;Diego is enabled by default&lt;/em&gt; on your CF deployment, you can just push your app and wait for it to start:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cf push my-app -s windows2012R2 -b binary_buildpack -p ./my-app/ViewEnvironment/
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is telling CF to push your app with the name &lt;code&gt;my-app&lt;/code&gt;, using the &lt;strong&gt;stack&lt;/strong&gt; &lt;code&gt;windows2012R2&lt;/code&gt;, with the &lt;strong&gt;buildpack&lt;/strong&gt; &lt;code&gt;binary_buildpack&lt;/code&gt; from the &lt;strong&gt;path&lt;/strong&gt; of &lt;code&gt;./my-app/ViewEnvironment/&lt;/code&gt;.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;If it&amp;rsquo;s not, or if you&amp;rsquo;re not sure, you&amp;rsquo;ll need to install the &lt;a href=&#34;https://github.com/cloudfoundry-incubator/diego-enabler&#34;&gt;Diego Enabler&lt;/a&gt; CLI plugin and then enable Diego onn the application before starting it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cf add-plugin-repo CF-Community http://plugins.cloudfoundry.org/
+$ cf install-plugin Diego-Enabler -r CF-Community
+$ cf push my-app -s windows2012R2 -b binary_buildpack -p --no-start ./my-app/ViewEnvironment/
+$ cf enable-diego my-app
+$ cf start my-app
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;Once your app is pushed, you can navigate to the app&amp;rsquo;s URL and you will see all the VCAP variables.  Add &lt;code&gt;?all=&lt;/code&gt; to the URL to see all the system variables too.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;some-notes:fe7b60f02e4226e4a72b87835d8bd54b&#34;&gt;Some Notes:&lt;/h3&gt;
+
+&lt;p&gt;For Windows applications, we rely on the &lt;em&gt;binary_buildpack&lt;/em&gt; to push pre-compiled applications. If you want to push your own app, make sure to build it locally and push those compiled binaries, as opposed to the uncompiled source files like you might do on a Linux host.&lt;/p&gt;
+
+&lt;p&gt;If you have any errors, check your application logs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cf logs my-app --recent
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In general, once you&amp;rsquo;ve built an application in Visual Studio, you&amp;rsquo;ll want to publish the application in VS (see &lt;a href=&#34;https://msdn.microsoft.com/library/1y1404zt(v=vs.100&#34;&gt;MSDN instructions&lt;/a&gt;.aspx)) and then push the folder that you&amp;rsquo;ve published to, and not the root folder for your app.&lt;/p&gt;
+
+&lt;h2 id=&#34;next-steps:fe7b60f02e4226e4a72b87835d8bd54b&#34;&gt;Next Steps&lt;/h2&gt;
+
+&lt;p&gt;Cloud Foundry simplifies the process of deploying .NET apps. Try it with your own apps! Check your logs and report any issues to us on &lt;a href=&#34;https://github.com/cloudfoundry-incubator/diego-windows-release&#34;&gt;GitHub&lt;/a&gt;, or on the &lt;strong&gt;#Greenhouse&lt;/strong&gt; channel on the open &lt;a href=&#34;http://slack.cloudfoundry.org/&#34;&gt;Cloud Foundry Slack&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

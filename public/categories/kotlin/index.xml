@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kotlin on Pivotal Engineering Journal</title>
+    <link>/categories/kotlin/</link>
+    <description>Recent content in Kotlin on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 19 Mar 2016 12:15:15 -0600</lastBuildDate>
+    <atom:link href="/categories/kotlin/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Algebraic Data Types In Kotlin</title>
+      <link>/post/algebraic-data-types-in-kotlin/</link>
+      <pubDate>Sat, 19 Mar 2016 12:15:15 -0600</pubDate>
+      
+      <guid>/post/algebraic-data-types-in-kotlin/</guid>
+      <description>&lt;p&gt;Lately I have been doing a good amount of reading on functional programming, specifically &lt;a href=&#34;http://haskellbook.com/&#34;&gt;Haskell&lt;/a&gt; and &lt;a href=&#34;http://elm-lang.org/&#34;&gt;Elm&lt;/a&gt;. As part of this reading, I&amp;rsquo;ve been exposed to the wonderful world of type systems more advanced than the ones that I am used to, i.e. the Java type system. Exposure to &lt;a href=&#34;https://en.wikipedia.org/wiki/Algebraic_data_type&#34;&gt;algebraic data types (ADTs)&lt;/a&gt; is one of the things that I&amp;rsquo;ve enjoyed about these readings. In the rest of this article, I will demonstrate how ADTs can be used in the Kotlin type system to assure that you&amp;rsquo;ve handled all of the possible outcomes from a business use case. For those already familiar with the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.8.2.0/docs/Data-Either.html&#34;&gt;&lt;code&gt;Either&lt;/code&gt; type&lt;/a&gt; much of this will be old news to you.&lt;/p&gt;
+
+&lt;p&gt;Algebraic data types allow me to create a closed set of possible options for a specific type in my domain.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;sealed class CreateSubscriptionResult {
+    class Success(val subscription: Subscription): CreateSubscriptionResult()
+    class Failure(val errors: List&amp;lt;String&amp;gt;): CreateSubscriptionResult()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this case I am using the &lt;a href=&#34;https://kotlinlang.org/docs/reference/classes.html#sealed-classes&#34;&gt;&lt;code&gt;sealed&lt;/code&gt; keyword&lt;/a&gt; to tell the type system that there will not be any more possible outcomes for a &lt;code&gt;CreateSubscriptionResult&lt;/code&gt;. Now I can use the &lt;code&gt;when&lt;/code&gt; keyword to force the consumer of the &lt;code&gt;CreateSubscriptionResult&lt;/code&gt; to make sure it handles all of the possible outcomes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;return when (result) {
+    is CreateSubscriptionResult.Success -&amp;gt;
+        // Do something on success
+    is CreateSubscriptionResult.Failure -&amp;gt;
+        // Do something on failure
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Were I to omit one of the possible outcomes,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;return when (result) {
+    is CreateSubscriptionResult.Success -&amp;gt;
+        // Do something on success
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;then the Kotlin compiler will tell me that I&amp;rsquo;ve forgotten something.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;when expression must be exhaustive, add necessary &#39;is Failure&#39; branch or &#39;else&#39; branch instead
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Well isn&amp;rsquo;t that nice. I now can use the type system to remind myself, and my fellow developers, that something is missing and keep those types of bugs from cropping up in my software without a lot of boilerplate code. If another outcome is added at some point, the compiler will tell me that and I can then figure out how to handle it.&lt;/p&gt;
+
+&lt;p&gt;By using the type system to do this, I enable a faster feedback loop than had I written a test for it. Yes I may still need a test for the logic inside of each branch but I would postulate that if I keep it simple enough (like a difference in response code) that a test may be overkill because of the type system assurance. I&amp;rsquo;ll leave that decision up to you.&lt;/p&gt;
+
+&lt;p&gt;One place I have been experimenting with this type of pattern is in my &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/master/applications/ums/src/main/kotlin/com/example/ums/subscriptions/SubscriptionsController.kt#L36-L47&#34;&gt;Spring controllers&lt;/a&gt;. I like how it makes the code that handles the outcomes easy to read and understand. Another benefit is that I now have an explicit contract between the use case and the consumer that outlines all of the possible outcomes for the use case. When I combine this contract with the &lt;code&gt;when&lt;/code&gt; keyword, the compiler will enforce that the client either handles each outcome or decides to explicitly punt on some by using the &lt;code&gt;else&lt;/code&gt; keyword.&lt;/p&gt;
+
+&lt;p&gt;Have some feedback? I&amp;rsquo;d love to hear it. Reach out to me on Twitter @mikegehard and we can have a conversation about it.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin, part 3: Data Classes</title>
+      <link>/post/spring-boot-kotlin-data-classes/</link>
+      <pubDate>Mon, 29 Feb 2016 17:53:56 -0700</pubDate>
+      
+      <guid>/post/spring-boot-kotlin-data-classes/</guid>
+      <description>&lt;p&gt;Welcome to the third installment of our Java 8 -&amp;gt; Kotlin conversion for a Spring Boot application. &lt;a href=&#34;/post/spring-boot-configuration-in-kotlin/&#34;&gt;Last time&lt;/a&gt; we saw how converting a configuration class to Kotlin helped clean up some of the boilerplate code required in Java.&lt;/p&gt;
+
+&lt;p&gt;In this third installment, we are going to continue our theme of &amp;ldquo;write less code with Kotlin&amp;rdquo; and look at how &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html&#34;&gt;Kotlin data classes&lt;/a&gt; help us clean up our POJOs data classes.&lt;/p&gt;
+
+&lt;p&gt;Our &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/83883fee6dac3cb06e10bd6a510403cbe3e1ef62/components/email/src/main/java/com/example/email/EmailMessage.java&#34;&gt;starting point&lt;/a&gt; is a plain old Java object (POJO) to hold some data to be sent via RabbitMQ:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.email;
+
+import java.io.Serializable;
+
+public class EmailMessage implements Serializable {
+
+    private final String toAddress;
+    private final String subject;
+    private final String body;
+
+    public EmailMessage(String toAddress, String subject, String body) {
+        this.toAddress = toAddress;
+        this.subject = subject;
+        this.body = body;
+    }
+
+    public String getToAddress() {
+        return toAddress;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getBody() {
+        return body;
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is the &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/f137c5ec25a2a575c30113a3260f55af6d0285ed/components/email/src/main/kotlin/com/example/email/EmailMessage.kt&#34;&gt;same class&lt;/a&gt; implemented as a &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html&#34;&gt;Kotlin data class&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.email
+
+import java.io.Serializable
+
+data class EmailMessage(val toAddress: String, val subject: String, val body: String) : Serializable
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Not only is this code much shorter than it&amp;rsquo;s Java counterpart, it also has more functionality. As a Kotlin data class, this tiny amount of code gets:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;generated implementations for a &lt;code&gt;equals()/hashCode()&lt;/code&gt; pair&lt;/li&gt;
+&lt;li&gt;a default &lt;code&gt;toString()&lt;/code&gt; method&lt;/li&gt;
+&lt;li&gt;a &lt;code&gt;copy()&lt;/code&gt; method that allows for easy altering of individual attributes of the object&lt;/li&gt;
+&lt;li&gt;the ability to &lt;a href=&#34;https://kotlinlang.org/docs/reference/data-classes.html#data-classes-and-destructuring-declarations&#34;&gt;destructure&lt;/a&gt; the object in an assignment statement.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Other places this feature will come in handy is with &lt;a href=&#34;https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin#jackson-kotlin-module&#34;&gt;JSON deserialization&lt;/a&gt; and &lt;a href=&#34;https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin#jackson-kotlin-module&#34;&gt;Spring Data JPA classes&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As someone evaluating a switch from Java to Kotlin, these data classes are a major reasons for adopting Kotlin in your Spring Boot application. They help you write, and thus maintain, less code and the less code we have to maintain the better in my mind.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin, part 2: Configuration Classes</title>
+      <link>/post/spring-boot-configuration-in-kotlin/</link>
+      <pubDate>Tue, 23 Feb 2016 14:29:50 -0700</pubDate>
+      
+      <guid>/post/spring-boot-configuration-in-kotlin/</guid>
+      <description>&lt;p&gt;In the &lt;a href=&#34;/post/spring-boot-application-with-kotlin/&#34;&gt;first post&lt;/a&gt; of this series, we looked at the conversion of a Spring Boot application class from Java 8 to Kotlin. The nice thing about these migrations is that they can be done incrementally since Kotlin plays very nicely with legacy Java. In fact, it was one of the design considerations for the language.&lt;/p&gt;
+
+&lt;p&gt;In this second post, we will look at the conversion of a configuration class into Kotlin.&lt;/p&gt;
+
+&lt;p&gt;Here is an example of a Spring Boot configuration class as written in Java 8:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing;
+
+import com.example.billing.reocurringPayments.Service;
+import com.example.payments.RecurlyGateway;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+class Configuration {
+    @Bean
+    public com.example.payments.Gateway paymentGateway() {
+        return new RecurlyGateway();
+    }
+
+    @Bean
+    public Service serviceThatMayFail() {
+        return new Service();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is that same configuration class written in Kotlin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import com.example.billing.reocurringPayments.Service
+import com.example.payments.RecurlyGateway
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+@Configuration
+open class Configuration {
+    @Bean
+    open fun paymentGateway() = RecurlyGateway()
+
+    @Bean
+    open fun serviceThatMayFail() = Service()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There aren&amp;rsquo;t a bunch of huge differences but here are some of the smaller differences that stand out to me:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The Configuration class must be declared open. This is because Spring Boot subclasses your configuration class but Kotlin makes them final by default. See &lt;a href=&#34;https://kotlinlang.org/docs/reference/classes.html#inheritance&#34;&gt;here&lt;/a&gt; for details.&lt;/li&gt;
+&lt;li&gt;The @Bean functions must be declared open for the same reason as above.&lt;/li&gt;
+&lt;li&gt;There are no return types on the functions because Kotlin will infer the types. This type inference is one of
+my favorite features of Kotlin.&lt;/li&gt;
+&lt;li&gt;Kotlin has implicit returns (and no braces) for &lt;a href=&#34;https://kotlinlang.org/docs/reference/functions.html#single-expression-functions&#34;&gt;single-expression functions&lt;/a&gt;. When you only have one expression in a function body, Kotlin will automatically assume that you want to return that value so there is no need for an explicit &lt;code&gt;return&lt;/code&gt; or braces. For bodies with multiple expressions, the &lt;code&gt;return&lt;/code&gt; is still mandatory because the compiler may not be able to guess what the return type is for the function.&lt;/li&gt;
+&lt;li&gt;No &lt;code&gt;new&lt;/code&gt; keyword when initializing an object. This coupled with the type inference, implicit returns and single statement/no braces makes for a nice compact configuration class.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Spring configuration classes are a mixed bag for me in Kotlin. The actual code difference is only 4 lines of code (18 vs 14) but the visual noise is significantly reduced in Kotlin. Having to declare both the class and all of the methods as open seems a bit clunky for me but I&amp;rsquo;m willing to overlook it due to the type inference, lack of return for single expression functions and the other improvements that these classes gain from Kotlin.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading. In our next installment, we will take a look at Spring controllers in Kotlin.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>The Journey of a Spring Boot application from Java 8 to Kotlin: The Application Class</title>
+      <link>/post/spring-boot-application-with-kotlin/</link>
+      <pubDate>Sat, 13 Feb 2016 09:35:56 -0700</pubDate>
+      
+      <guid>/post/spring-boot-application-with-kotlin/</guid>
+      <description>
+
+&lt;p&gt;After writing a significant amount of Ruby/Rails for many years, lately I have found myself writing a ton of Spring Boot applications. &lt;a href=&#34;http://projects.spring.io/spring-boot/&#34;&gt;Spring Boot&lt;/a&gt; is a great framework for the JVM that focuses on developer productivity by making &amp;ldquo;it easy to create stand-alone, production-grade Spring based Applications that you can &amp;lsquo;just run&amp;rsquo;&amp;rdquo;. It has a lot of the feel of Rails in the &amp;ldquo;convention over configuration&amp;rdquo; department but because I end up using Java 8, I have lost some of the &amp;ldquo;joy&amp;rdquo; that you get when writing in Ruby. Even though Java 8 provides significant improvements over Java 7, I wanted to find out if I could get some more of that joy back by using &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; to write Spring Boot applications.&lt;/p&gt;
+
+&lt;p&gt;Kotlin is a new language from the folks at &lt;a href=&#34;https://www.jetbrains.com/&#34;&gt;JetBrains&lt;/a&gt;, creators of IntelliJ and RubyMine, as a replacement for Java in developing their products. Their goal was to create a more concise JVM based language that helps increase developer productivity, avoid some common pitfalls in Java development and be 100% compatible with existing Java programs. It targets Java 6 as the baseline while still adding some great language features so it is quite useful for Android development as well.&lt;/p&gt;
+
+&lt;p&gt;This post, and all that follow, will use an existing Java 8/Spring Boot &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/tree/running-java&#34;&gt;application&lt;/a&gt; as a starting point for the exploration. This will allow me to see direct comparisons between Java 8 syntax and Kotlin syntax. The journey will allow me to experience first hand what a Spring Boot/Kotlin application might look like as well as learn the language as I go that is a bit more than a &amp;ldquo;Hello World&amp;rdquo; application.
+If you want to follow along as I travel, you can check out the evolving source on &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin&#34;&gt;GitHub here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In addition, these posts are not meant to be a full tutorial on Kotlin and will only cover the language features pertinent to the transformation. If you want a full tutorial, the Kotlin website has a lot of &lt;a href=&#34;https://kotlinlang.org/docs/reference/&#34;&gt;great information&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, if you have any suggestions for improvements in &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin&#34;&gt;the code&lt;/a&gt;, please feel free to submit a GitHub issue or submit a pull request.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-starting-line:f0640ab72d87a1ffd3722283734cb7cc&#34;&gt;The starting line&lt;/h2&gt;
+
+&lt;p&gt;The first thing we need when starting a Spring Boot application is an application class. Here is the &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/running-java/applications/billing/src/main/java/com/example/billing/Application.java&#34;&gt;application class&lt;/a&gt; that I started with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+
+...
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;No surprises here. We create a static &lt;code&gt;main()&lt;/code&gt; method on the Application class that Spring Boot detects when you run the executable jar file.&lt;/p&gt;
+
+&lt;p&gt;Here is that same application class in Kotlin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+// This class must not be final or Spring Boot is not happy.
+open class Application {
+    companion object {
+        @JvmStatic fun main(args: Array&amp;lt;String&amp;gt;) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first difference you may notice is the lack of semicolons. Yes ladies and gentlemen, no semicolons in Kotlin. While not a huge deal for some, it was a step in the right direction for me.&lt;/p&gt;
+
+&lt;p&gt;The next difference I noticed is the &lt;code&gt;open&lt;/code&gt; keyword in front of the class definition. Classes in Kotlin are final by default, as per Item 17 from &lt;a href=&#34;http://www.oracle.com/technetwork/java/effectivejava-136174.html&#34;&gt;Effective Java&lt;/a&gt;: &lt;em&gt;Design and document for inheritance or else prohibit it&lt;/em&gt;. This is my first experience with friction between Kotlin&amp;rsquo;s &amp;ldquo;enforce good practices&amp;rdquo; and Spring Boot&amp;rsquo;s conventions. The &lt;code&gt;@SpringBootApplication&lt;/code&gt; is a convenience annotation that marks the class with the &lt;code&gt;@Configuration&lt;/code&gt;, &lt;code&gt;@EnableAutoConfiguration&lt;/code&gt; and &lt;code&gt;@ComponentScan&lt;/code&gt; annotations. It is the &lt;code&gt;@Configuration&lt;/code&gt; annotation that forces the use of the &lt;code&gt;open&lt;/code&gt; keyword. Removing the &lt;code&gt;open&lt;/code&gt; keyword causes a runtime error when the application boots:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Configuration class &#39;Application&#39; may not be final. Remove the final modifier to continue.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This is easy enough to fix since this application class doesn&amp;rsquo;t contain any configuration information. Instead of using the &lt;code&gt;@SpringBootApplication&lt;/code&gt; annotation you can &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/commit/a9045e1968193fc70b4c43a330fde265b3325f7a&#34;&gt;substitute&lt;/a&gt; the &lt;code&gt;@EnableAutoConfiguration&lt;/code&gt; and &lt;code&gt;@ComponentScan&lt;/code&gt; annotations.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+
+@EnableAutoConfiguration
+@ComponentScan
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+class Application {
+    companion object {
+        @JvmStatic fun main(args: Array&amp;lt;String&amp;gt;) {
+            SpringApplication.run(Application::class.java, *args)
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The final differences that I noticed are in the definition of the &lt;code&gt;main()&lt;/code&gt; method. Kotlin has an idea of &lt;a href=&#34;https://kotlinlang.org/docs/reference/object-declarations.html#companion-objects&#34;&gt;companion objects&lt;/a&gt;. These objects are used in a way similar to static methods in Java but not exactly. That is where the &lt;code&gt;@JvmStatic&lt;/code&gt; annotation comes in. This annotation tells Kotlin to generate an actual Java static method instead of the &amp;ldquo;kinda,sorta&amp;rdquo; one that is the default in Kotlin. This annotation is a great example of the investment in JVM compatibility.&lt;/p&gt;
+
+&lt;p&gt;The &lt;code&gt;main()&lt;/code&gt; method is also missing the &lt;code&gt;public&lt;/code&gt; modifier. &lt;a href=&#34;https://kotlinlang.org/docs/reference/visibility-modifiers.html&#34;&gt;Methods are public by default&lt;/a&gt; in Kotlin which reduces a bit of the boilerplate present in Java applications.&lt;/p&gt;
+
+&lt;p&gt;Finally, you will notice that arrays in Kotlin are actual parameterized classes instead of the primitive type that they are in Java. Kotlin also puts the type annotation after the variable is defined. We will get into why this is important in future posts.&lt;/p&gt;
+
+&lt;p&gt;One final gotcha with the Kotlin application class is that you have to tell Spring Boot where to find the application class. In Gradle, it is as easy as this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;springBoot {
+    mainClass = &#39;com.example.billing.Application&#39;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Update - Feb, 16 2016: You do not need to tell Spring Boot where the application class is any longer. I got this from an early JetBrains blog post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;an-alternate-application-class:f0640ab72d87a1ffd3722283734cb7cc&#34;&gt;An alternate application class&lt;/h1&gt;
+
+&lt;p&gt;Kotlin also allows functions to be defined outside of classes so we can re-write the application class as:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;package com.example.billing
+
+import org.springframework.boot.SpringApplication
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient
+import org.springframework.context.annotation.ComponentScan
+
+@EnableAutoConfiguration
+@ComponentScan
+@EnableDiscoveryClient
+@EnableCircuitBreaker
+
+class Application
+
+fun main(args: Array&amp;lt;String&amp;gt;) {
+    SpringApplication.run(Application::class.java, *args)
+}
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If we do this, the &lt;code&gt;main()&lt;/code&gt; method is defined on a class called &lt;code&gt;ApplicationKt&lt;/code&gt;, named after the file &lt;code&gt;Application.kt&lt;/code&gt;, and this slightly changes the &lt;code&gt;build.gradle&lt;/code&gt; entry:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;springBoot {
+    mainClass = &#39;com.example.billing.ApplicationKt&#39;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;em&gt;Update - Feb, 16 2016: You do not need to tell Spring Boot where the application class is any longer. I got this from an early JetBrains blog post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;This definition simplifies the signature of the &lt;code&gt;main()&lt;/code&gt; method a bit. Gone are the annotations and the explicit companion object so the code is a little less cluttered.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m not sure which one I prefer better. Using the companion object is more explicit about which class contains the &lt;code&gt;main()&lt;/code&gt; method but the above definition is more succinct. Here we trade less code for an implicit understanding that an ApplicationKt class gets generated by the compiler. Over time, I&amp;rsquo;m thinking the abbreviated application class will grow on me.&lt;/p&gt;
+
+&lt;h1 id=&#34;closing-thoughts:f0640ab72d87a1ffd3722283734cb7cc&#34;&gt;Closing thoughts&lt;/h1&gt;
+
+&lt;p&gt;In my mind, Kotlin is a step in the right direction as a &amp;ldquo;better Java&amp;rdquo;. It seems to me that the language designers did what they could to remain compatible with existing Java programs while not being handcuffed by the legacy of Java. The lack of semi colons may seem trivial but will add up in large codebases and the enforcement of best practices at the language level will also help large codebases.&lt;/p&gt;
+
+&lt;p&gt;Yes there are some slight gotchas when it comes to smoothly integrating with Spring Boot but those are outweighed by the benefits of the new syntax and language constructs.&lt;/p&gt;
+
+&lt;p&gt;In our next installment, we will take a look at Java Spring Boot configuration classes and compare them to their Kotlin brethren. I&amp;rsquo;m hoping that we will continue to see gains from Kotlin that will outweigh the friction with Spring Boot.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Setting up Kotlin with Android and tests</title>
+      <link>/post/setting-up-kotlin-with-android-and-tests/</link>
+      <pubDate>Wed, 11 Nov 2015 14:39:05 -0800</pubDate>
+      
+      <guid>/post/setting-up-kotlin-with-android-and-tests/</guid>
+      <description>
+
+&lt;p&gt;I recently heard about &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; with the release of their 1.0 Beta last week. Kotlin is a modern programming language that runs in the JVM and is interoperable with Java. Kotlin can also be used to create Android apps.&lt;/p&gt;
+
+&lt;p&gt;I was curious, so I decided to set up a small Android app using Kotlin and try out some different methods of testing.&lt;/p&gt;
+
+&lt;h2 id=&#34;setting-up-the-app:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Setting up the app&lt;/h2&gt;
+
+&lt;p&gt;Setting up a hello word Android app in Kotlin was actually quite easy!  The Kotlin plugin for IntelliJ / Android Studo has a tool for converting your Java code to Kotlin, so you can get started really quickly! I was able to follow this &lt;a href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-android.html&#34;&gt;tutorial&lt;/a&gt; to get my Android app set up.&lt;/p&gt;
+
+&lt;p&gt;Two points to watch out for:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Make sure you have installed the Kotlin plugins in Android Studio before you start&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;I had to highlight the text of my java file before selecting &amp;ldquo;Convert Java File to Kotlin File&amp;rdquo; in order to get the converter to work.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;android-instrumentation-tests:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Android instrumentation tests&lt;/h2&gt;
+
+&lt;p&gt;I started by writing a simple Android Instrumentation test in Java (you can freely mix Java files and Kotlin files in your project and it seems to work fine).  Once that was working, I converted it to Kotlin:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivityTest : ActivityInstrumentationTestCase2&amp;lt;MainActivity&amp;gt;(MainActivity::class.java) {
+   private var mainActivity: Activity? = null
+
+   @Throws(Exception::class)
+   override fun setUp() {
+       super.setUp()
+       mainActivity = activity
+   }
+
+   fun test_itDisplaysHelloWorld() {
+       val textView = mainActivity!!.findViewById(R.id.main_text) as TextView
+       val actual = textView.text.toString()
+       Assert.assertEquals(&amp;quot;Hello World!&amp;quot;, actual)
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only trouble I had was that after I converted the file, the Android Studio test runner configuration was broken.  To fix it I had to edit my run configuration in Android Studio by navigating to &lt;code&gt;Run -&amp;gt; Edit Configurations -&amp;gt; Android Tests&lt;/code&gt; and setting the instrumentation runner to &lt;code&gt;android.test.InstrumentationTestRunner&lt;/code&gt;.  After that, lo and behold, the test worked fine in Kotlin!&lt;/p&gt;
+
+&lt;h2 id=&#34;robolectric-tests:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Robolectric tests&lt;/h2&gt;
+
+&lt;p&gt;After my resounding success at getting the Android Instrumentation Tests to work, I decided to try my luck at Robolectric.  It turns out, Robolectric pretty much Just Worked too.  Here&amp;rsquo;s a Robolectric test written in Kotlin, equivalent to the instrumentation test above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@RunWith(RobolectricGradleTestRunner::class)
+@Config(constants = BuildConfig::class)
+class ExampleRobolectricTest {
+
+    @Test
+    fun itShouldDisplayHelloWorld() {
+        val activity = Robolectric.setupActivity(MainActivity::class.java)
+        val textView = activity.findViewById(R.id.main_text) as TextView
+
+        assertThat(textView.text).isEqualTo(&amp;quot;Hello World!&amp;quot;)
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;unit-tests-with-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Unit tests with Spek&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://jetbrains.github.io/spek/&#34;&gt;Spek&lt;/a&gt; is a testing framwork written in Kotlin with a pretty, rspec-like syntax. I would love to be able to write my Android tests using something like Spek, so I decided to try!&lt;/p&gt;
+
+&lt;h3 id=&#34;bad-news-1-android-instrumentation-tests-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Bad news #1: Android Instrumentation tests + Spek&lt;/h3&gt;
+
+&lt;p&gt;Spek requires your tests to inherit from a base class called &lt;code&gt;Spek&lt;/code&gt;.  Android instrumentation tests require your tests to inherit from &lt;code&gt;InstrumentationTestCase&lt;/code&gt;.  As far as I can tell, this is a deal-breaker for using the two systems together, for the moment.&lt;/p&gt;
+
+&lt;h3 id=&#34;bad-news-2-robolectric-tests-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Bad news #2: Robolectric tests + Spek&lt;/h3&gt;
+
+&lt;p&gt;Robolectric doesn&amp;rsquo;t specifically require your tests to inherit from any particular class, which theoretically opens the door to using it together with Spek.  However, naively combining them doesn&amp;rsquo;t work as expected, as the test runner cannot find any tests.  I think the reason for this is that Robolectric relies on using the RobolectricTestRunner, which extends the &lt;code&gt;BlockJUnit4ClassRunner&lt;/code&gt; (which identifies tests based on annotations), while Spek runs with it&amp;rsquo;s own &lt;code&gt;JUnitClassRunner&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the future I may look into writing a RobolectricSpek test runner, but for now, it looks like these two systems do not play nicely together.&lt;/p&gt;
+
+&lt;h3 id=&#34;finally-the-good-news:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Finally, the good news&lt;/h3&gt;
+
+&lt;p&gt;Although Spek does not seem to be compatible with either Robolectric or Android instrumentation tests, it actually works fine as a replacement for vanilla JUnit tests.  I think this kind of test is of dubious utility in a typical Android project, since there&amp;rsquo;s usually not a lot of code that can be tested purely with JUnit, but if you have these kinds of tests, you could easily convert them to use Spek.  Here&amp;rsquo;s a sample test I wrote in my hello world app:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;import org.jetbrains.spek.api.Spek
+import kotlin.test.assertEquals
+
+class ExampleUnitTest : Spek() {
+    init {
+        given(&amp;quot;Two numbers&amp;quot;) {
+            val firstNumber = 3
+            val secondNumber = 5
+            on(&amp;quot;adding the numbers&amp;quot;) {
+                val result = firstNumber + secondNumber
+                it(&amp;quot;should return the correct sum&amp;quot;) {
+                    assertEquals(8, result)
+                }
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;conclusion:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Kotlin seems like a promising new language with a lot of features that make it nicer to use than Java.  Setting up a &amp;ldquo;Hello World&amp;rdquo; Android app was extremely simple, and getting tests to run with Robolectric or the Android instrumentation runner was no problem.  I look forward to trying it out more in the future!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

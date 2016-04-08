@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> The World&#39;s Smallest Concourse CI Server &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            The World&#39;s Smallest Concourse CI Server
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">How to deploy a publicly-accessible, extremely lean Concourse CI server.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Sat, Oct 24, 2015 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/briancunnie">Brian Cunnie</a>
+                  
+                </li>
+              
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/robdimsdale">Rob Dimsdale</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/bosh">BOSH</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/concourse">Concourse</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/worlds-smallest-concourse-server.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="briancunnie @robdimsdale ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<p><a href="https://en.wikipedia.org/wiki/Continuous_integration">Continuous Integration</a>
+(CI) is often used in conjunction with test-driven development (TDD);
+however, CI servers often
+bring their own set of challenges: they are usually &ldquo;snowflakes&rdquo;,
+uniquely configured machines that are difficult to upgrade, re-configure, or
+re-install. <sup><a href="#snowflakes">[snowflakes]</a></sup></p>
+
+<p>In this blog post, we describe deploying a publicly-accessible, lean
+(1GB RAM, 1 vCPU, 15GB disk)
+<a href="http://concourse.ci/">Concourse</a> CI server using a 350-line manifest.
+Upgrades/re-configurations/re-installs are as simple as editing a file
+and typing one command (<em>bosh-init</em>).</p>
+
+<p>We must confess to sleight-of-hand: although we describe deploying a CI
+server, the worker is too lean to run any but the smallest tests.
+<strong>The deployed CI Server we describe can&rsquo;t run large tests</strong>.</p>
+
+<p>We will address that shortcoming in a future blog post where we describe
+the manual provisioning of local workers. The process isn&rsquo;t difficult, but
+including it would have made the blog post undesirably long.</p>
+
+<h2 id="0-set-up-the-concourse-server:250d623a31e5e446b416d6f4fb2feaa8">0. Set Up the Concourse Server</h2>
+
+<p>In the following steps, we demonstrate creating a Concourse
+CI server, <a href="https://ci.blabbertabber.com/">ci.blabbertabber.com</a>
+for our open source Android project,
+<a href="https://github.com/blabbertabber/blabbertabber">BlabberTabber</a>.</p>
+
+<h3 id="0-0-prepare-an-aws-account:250d623a31e5e446b416d6f4fb2feaa8">0.0 Prepare an AWS Account</h3>
+
+<p>We follow the bosh.io <a href="http://bosh.io/docs/init-aws.html#prepare-aws">instructions</a>
+<sup><a href="#aws_tooling">[AWS tooling]</a></sup>
+to prepare our AWS account.</p>
+
+<p>After we have completed this step, we have the information
+we need to populate our BOSH deployment&rsquo;s manifest:</p>
+
+<ul>
+<li>Access Key ID, e.g. AKIAxxxxxxxxxxxxxxxx</li>
+<li>Secret Access Key, e.g. 0+B1XW6VVxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</li>
+<li>Availability Zone, e.g. us-east-1a</li>
+<li>Region, e.g. us-east-1</li>
+<li>Elastic IP, e.g. 52.23.10.10</li>
+<li>Subnet ID, e.g. subnet-1c90ef6b</li>
+<li>Key Pair Name, e.g. bosh, aws_nono</li>
+<li>Key Pair Path, e.g. ~/my-bosh/bosh.pem, ~/.ssh/aws_nono.pem</li>
+</ul>
+
+<h3 id="0-1-create-the-concourse-security-group:250d623a31e5e446b416d6f4fb2feaa8">0.1 Create the <em>concourse</em> Security Group</h3>
+
+<p>Although we created an AWS Security Group in the previous step, it doesn&rsquo;t
+suit our purposes&mdash;we need to open the ports for HTTP (80) and HTTPS (443).
+We create a <em>concourse</em> Security Group via the Amazon AWS Console:</p>
+
+<ul>
+<li><strong>VPC &rarr; Security Groups</strong></li>
+<li>click <strong>Create Security Group</strong>
+
+<ul>
+<li>Name tag: <strong>concourse</strong></li>
+<li>Description: <strong>Rules for accessing Concourse CI server</strong></li>
+<li>VPC: <em>select the VPC in which you created in the previous step</em></li>
+<li>click <strong>Yes, Create</strong></li>
+</ul></li>
+<li>click <strong>Inbound Rules</strong> tab</li>
+<li>click <strong>Edit</strong></li>
+
+<li><p>add the following rules:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Type of Traffic</th>
+<th align="left">Protocol</th>
+<th align="right">Port Range</th>
+<th align="right">Source IP CIDR</th>
+<th align="left">Notes</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">SSH (22)</td>
+<td align="left">TCP (6)</td>
+<td align="right">22</td>
+<td align="right">0.0.0.0/0</td>
+<td align="left">debugging, agents</td>
+</tr>
+
+<tr>
+<td align="left">HTTP (80)</td>
+<td align="left">TCP (6)</td>
+<td align="right">80</td>
+<td align="right">0.0.0.0/0</td>
+<td align="left">redirect</td>
+</tr>
+
+<tr>
+<td align="left">HTTPS (443)</td>
+<td align="left">TCP (6)</td>
+<td align="right">443</td>
+<td align="right">0.0.0.0/0</td>
+<td align="left">web</td>
+</tr>
+
+<tr>
+<td align="left">Custom TCP Rule</td>
+<td align="left">TCP (6)</td>
+<td align="right">2222</td>
+<td align="right">0.0.0.0/0</td>
+<td align="left">agents</td>
+</tr>
+
+<tr>
+<td align="left">Custom TCP Rule</td>
+<td align="left">TCP (6)</td>
+<td align="right">6868</td>
+<td align="right">0.0.0.0/0</td>
+<td align="left">bosh-init</td>
+</tr>
+</tbody>
+</table></li>
+
+<li><p>click <strong>Save</strong></p></li>
+</ul>
+
+<h3 id="0-2-obtain-ssl-certificates:250d623a31e5e446b416d6f4fb2feaa8">0.2 Obtain SSL Certificates</h3>
+
+<p>We decide to use HTTPS to communicate with our Concourse server, for we will
+need to authenticate against the webserver when we configure our CI
+(when we transmit our credentials over the Internet we want them to be encrypted).</p>
+
+<p>We purchase valid SSL certificates for our server <sup><a href="#lets_encrypt">[Let&rsquo;s Encrypt]</a></sup> .
+Using a self-signed certificate is also an option.</p>
+
+<p>We use the following command to create our key and CSR. Note that you
+should substitute your information where appropriate, especially for the
+CN (Common Name), i.e. don&rsquo;t use <em>ci.blabbertabber.com</em>.</p>
+
+<pre><code class="language-bash">openssl req -new \
+  -keyout ci.blabbertabber.com.key \
+  -out ci.blabbertabber.com.csr \
+  -newkey rsa:4096 -sha256 -nodes \
+  -subj '/C=US/ST=California/L=San Francisco/O=blabbertabber.com/OU=/CN=ci.blabbertabber.com/emailAddress=brian.cunnie@gmail.com'
+</code></pre>
+
+<p>We submit the CSR to our vendor, authorize the issuance of the certificate,
+and receive our certificate, which we will place in our manifest (along with
+the key and the CA certificate chain).</p>
+
+<p>We configure a DNS A record for our concourse server to point to our AWS Elastic IP.
+We have the following line in our blabbertabber.com zone file:</p>
+
+<pre><code>ci.blabbertabber.com. A 52.23.10.10
+</code></pre>
+
+<h3 id="0-3-create-private-ssh-key-for-remote-workers:250d623a31e5e446b416d6f4fb2feaa8">0.3 Create Private SSH Key for Remote workers</h3>
+
+<p>We create a private ssh key for our remote worker:</p>
+
+<pre><code>ssh-keygen -P ''  -f ~/.ssh/worker_key
+</code></pre>
+
+<p>We will use the public key in the next step, when we create our BOSH manifest.</p>
+
+<h3 id="0-4-create-bosh-manifest:250d623a31e5e446b416d6f4fb2feaa8">0.4 Create BOSH Manifest</h3>
+
+<p>We create the BOSH manifest for our Concourse server by doing the following:</p>
+
+<ul>
+<li>download the redacted (passwords &amp; keys removed) BOSH <a href="https://github.com/blabbertabber/blabbertabber/blob/develop/ci/concourse-aws.yml">manifest</a></li>
+<li>open it in an editor</li>
+<li>search for every occurrence of <em>FIXME</em></li>
+<li>update the field described by the <em>FIXME</em>, e.g. update the IP address,
+set the password, set the Subnet ID, etc&hellip;.</li>
+</ul>
+
+<p>For those interested, our sample Concourse manifest was derived from
+Concourse&rsquo;s official sample <em>bosh-init</em>
+<a href="https://github.com/concourse/concourse/blob/master/manifests/bosh-init-aws.yml">manifest</a> and modified as follows:</p>
+
+<ul>
+<li>added an nginx release to provide SSL termination (i.e. HTTPS)
+while bypassing the need for an ELB ($219.14/year <sup><a href="#ELB-pricing">[ELB-pricing]</a></sup> ).
+This was also why we enabled ports 80 and 443 in our AWS Security Group.</li>
+<li>added a postgres job and configured our Concourse server to use that instead of Amazon RDS in order
+to eliminate RDS charges, but we suspect the savings to be insignificant.</li>
+<li>configured the web interface to be publicly-viewable but require authorization to make changes</li>
+<li>added our remote worker&rsquo;s public key to <em>jobs.properties.tsa.authorized_keys</em></li>
+</ul>
+
+<h3 id="0-5-deploy-the-concourse-server:250d623a31e5e446b416d6f4fb2feaa8">0.5 Deploy the Concourse Server</h3>
+
+<p>We install <em>bosh-init</em> by following these <a href="https://bosh.io/docs/install-bosh-init.html">instructions</a>.</p>
+
+<p>We use <em>bosh-init</em> to deploy Concourse using the manifest
+we created in the previous step. In the following example, our manifest is
+named <em>concourse-aws.yml</em>:</p>
+
+<pre><code>bosh-init deploy concourse-aws.yml
+  ...
+  Finished deploying (00:12:15)
+
+  Stopping registry... Finished (00:00:00)
+  Cleaning up rendered CPI jobs... Finished (00:00:00)
+</code></pre>
+
+<p>A deployment takes ~12 minutes.This <a href="https://gist.github.com/cunnie/088794c9566a707aed71">gist</a> contains
+the complete output of the <em>bosh-init</em> deployment.</p>
+
+<h3 id="0-6-verify-deployment-and-download-concourse-cli:250d623a31e5e446b416d6f4fb2feaa8">0.6 Verify Deployment and Download Concourse CLI</h3>
+
+<p>We browse to <a href="https://ci.blabbertabber.com">https://ci.blabbertabber.com</a>.</p>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/concourse-000/no_pipelines.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>We download the <code>fly</code> CLI by clicking on the Apple icon (assuming that your workstation is an OS X machine) and move it into place:</p>
+
+<pre><code class="language-bash">install ~/Downloads/fly /usr/local/bin
+</code></pre>
+
+<h3 id="0-7-create-hello-world-concourse-job:250d623a31e5e446b416d6f4fb2feaa8">0.7 Create <em>Hello World</em> Concourse job</h3>
+
+<p>We follow Concourse&rsquo;s <a href="http://concourse.ci/getting-started.html">Getting Started</a>
+instructions to create our first pipeline. We
+add <code>tags [ &quot;micro&quot; ]</code> to the sample Concourse pipeline
+so that the job is run on our &ldquo;micro&rdquo; worker (in
+our BOSH manifest, we tag the worker that
+is colocated on our <em>t2.micro</em> Concourse
+server &ldquo;micro&rdquo; so that we can steer small jobs
+to it).</p>
+
+<pre><code class="language-bash">cat &gt; hello-world.yml &lt;&lt;EOF
+jobs:
+- name: hello-world
+  plan:
+  - task: say-hello
+    config:
+      platform: linux
+      image: &quot;docker:///ubuntu&quot;
+      tags: [ &quot;micro&quot; ]
+      run:
+        path: echo
+        args: [&quot;Hello, world!&quot;]
+EOF
+</code></pre>
+
+<p>We configure the pipeline (remember to substitute the username and password in the manifest,
+<em>jobs.properties.atc.basic_auth_username</em> and <em>jobs.properties.atc.basic_auth_password</em>,
+for &ldquo;user:password&rdquo; below):</p>
+
+<pre><code>fly -t &quot;https://user:password@ci.blabbertabber.com&quot; set-pipeline -p really-cool-pipeline -c hello-world.yml
+</code></pre>
+
+<p>You can see the gist of the output <a href="https://gist.github.com/cunnie/a3a125e9069e493ef8ca">here</a>.</p>
+
+<p>Type <strong>y</strong> when prompted to apply the configuration.</p>
+
+<h3 id="0-8-browse-to-concourse-and-kick-off-job:250d623a31e5e446b416d6f4fb2feaa8">0.8 Browse to Concourse and Kick off Job</h3>
+
+<p>Refresh <a href="https://ci.blabbertabber.com">https://ci.blabbertabber.com</a> to
+see our newly-created pipeline:</p>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/concourse-000/new_pipeline.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>Next we unpause the job</p>
+
+<ul>
+<li>click the &ldquo;&equiv;&rdquo; (hamburger) in the upper left hand corner</li>
+<li>click the &ldquo;&#x25b6;&rdquo; (play button) that appears below the hamburger.
+This will un-pause our pipeline and allow builds to run.</li>
+<li>click <strong>Log in with Basic Auth</strong></li>
+<li>authenticate with the <em>atc</em>&rsquo;s account and password (these can be found in the manifest,
+<em>jobs.properties.atc.basic_auth_username</em> and <em>jobs.properties.atc.basic_auth_password</em>)</li>
+<li>click the &ldquo;&equiv;&rdquo; (hamburger) in the upper left hand corner (yes, again)</li>
+<li>click the &ldquo;&#x25b6;&rdquo; (play button) that appears below the hamburger.
+The banner at the top of the screen will switch from light-blue to black.
+The page should look like this:</li>
+</ul>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/concourse-000/unpaused_pipeline.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<h3 id="0-9-our-first-integration-test-hello-world:250d623a31e5e446b416d6f4fb2feaa8">0.9 Our First Integration Test: Hello World</h3>
+
+<p>We kick off our job:</p>
+
+<ul>
+<li>click the <em>hello-world</em> rectangle in the middle of the screen.</li>
+<li>click the &ldquo;<strong>&oplus;</strong>&rdquo; button in the upper right hand side of the screen</li>
+</ul>
+
+<p>We see that the  job completes successfully by the
+pea-green color. We click &ldquo;<strong>&gt;_ say-hello</strong>&rdquo; to see the output:</p>
+
+
+
+  <figure class="img-responsive">
+      
+          <img src="/images/concourse-000/success.png"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<h2 id="1-0-conclusion:250d623a31e5e446b416d6f4fb2feaa8">1.0 Conclusion</h2>
+
+<p>We have demonstrated with the ease with which one can deploy a CI server
+using a combination of <em>Concourse</em> and <em>bosh-init</em>, a deployment which takes
+less than a quarter hour from start (no disk, no OS) to finish (a publicly-accessible,
+up-and-running CI server) and which is easily re-deployed.</p>
+
+<p>We recognize that our deployment is incomplete, that it lacks the workers
+necessary to run jobs of any consequence.  We will describe how to manually
+provision workers in our next blog post.</p>
+
+<p>One of the benefits of the <em>Concourse/bosh-init</em> combination is that <em>Concourse</em>
+stores its state on a <a href="https://bosh.io/docs/persistent-disks.html">persistent disk</a>,
+so that re-deploying the CI server (e.g. new OS, new Concourse) won&rsquo;t cause the loss
+of the pipeline configuration or build history.</p>
+
+<h2 id="appendix-a-concourse-yearly-costs-80-34:250d623a31e5e446b416d6f4fb2feaa8">Appendix A. Concourse Yearly Costs: $80.34</h2>
+
+<p>The yearly cost of running a Concourse server is $80.34. Note that this
+does not include the cost of the worker.
+Had we chosen to implement the recommended m3.large EC2 instance for a worker, it
+would have increased our yearly cost by $713.54 <sup><a href="#m3.large">[m3.large]</a></sup> .</p>
+
+<p>Here are our costs:</p>
+
+<table>
+<thead>
+<tr>
+<th>Expense</th>
+<th>Vendor</th>
+<th>Cost</th>
+<th>Cost / year</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td><em>ci.blabbertabber.com</em> cert</td>
+<td>cheapsslshop.com</td>
+<td>$14.85 3-year  <sup><a href="#inexpensive-SSL">[inexpensive-SSL]</a></sup></td>
+<td>$4.95</td>
+</tr>
+
+<tr>
+<td>EC2 t2.micro instance</td>
+<td>Amazon AWS</td>
+<td>$0.0086 / hour <sup><a href="#t2.micro">[t2.micro]</a></sup></td>
+<td>$75.39</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="footnotes:250d623a31e5e446b416d6f4fb2feaa8">Footnotes</h2>
+
+<p><a name="snowflakes"><sup>[snowflakes]</sup></a>
+Even the most innocuous changes to a CI server can be fraught with anxiety: two years
+ago when we were migrating one of our development team&rsquo;s Jenkins CI server VM
+from one datastore to another (a very low-risk operation),
+we needed to have several meetings with the Team&rsquo;s
+product manager and the anchor before they were willing to allow us to proceed
+with the migration.</p>
+
+<p><a name="aws_tooling"><sup>[AWS Tooling]</sup></a>
+We appreciate that creating the AWS infrastructure (VPC, Elastic IP, Key Pair)
+is tedious and a bit of a clickfest. We&rsquo;re working to make this much easier, soon.
+Per Rob Dimsdale, &ldquo;the MEGA team is actively working on tooling to improve the
+user-experience of creating the AWS stack for Concourse, but we&rsquo;re not ready
+for public consumption of that tooling just yet.&rdquo; Stay tuned.</p>
+
+<p><a name="lets_encrypt"><sup>[Let&rsquo;s Encrypt]</sup></a>
+<a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> is a &ldquo;free, automated, and open&rdquo;
+Certificate Authority which issues valid SSL certificates free of charge.
+We are eagerly awaiting its launch, which hopefully will happen within the
+next few weeks.</p>
+
+<p><a name="ELB-pricing"><sup>[ELB-pricing]</sup></a> ELB pricing, as of this writing, is <a href="https://aws.amazon.com/elasticloadbalancing/pricing/">$0.025/hour</a>, $0.60/day, $219.1455 / year (assuming 365.2425 days / year).</p>
+
+<p><a name="m3.large"><sup>[m3.large]</sup></a> Amazon effectively charges <a href="https://aws.amazon.com/ec2/pricing/">$0.0814/hour</a> for a 1 year term all-upfront m3.large reserved instance.</p>
+
+<p><a name="inexpensive-SSL"><sup>[inexpensive-SSL]</sup></a> One shouldn&rsquo;t pay more than
+$25 for a 3-year certificate. We used <a href="https://www.cheapsslshop.com/comodo-positive-ssl">SSLSHOP</a> to purchase our <em>Comodo Positive SSL</em>, but there are many good SSL vendors, and we don&rsquo;t endorse one over
+the other.</p>
+
+<p><a name="t2.micro"><sup>[t2.micro]</sup></a> Amazon effectively charges <a href="https://aws.amazon.com/ec2/pricing/">$0.0086/hour</a> for a 1 year term all-upfront t2.micro reserved instance.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

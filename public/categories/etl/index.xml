@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Etl on Pivotal Engineering Journal</title>
+    <link>/categories/etl/</link>
+    <description>Recent content in Etl on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 04 Apr 2016 08:54:47 -0700</lastBuildDate>
+    <atom:link href="/categories/etl/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ETL Journey from Oracle to Postgres</title>
+      <link>/post/etl-journey-from-oracle-to-postgres/</link>
+      <pubDate>Mon, 04 Apr 2016 08:54:47 -0700</pubDate>
+      
+      <guid>/post/etl-journey-from-oracle-to-postgres/</guid>
+      <description>
+
+&lt;h2 id=&#34;overview:985df4df2f6b446851eba60db715d300&#34;&gt;Overview&lt;/h2&gt;
+
+&lt;p&gt;We recently rewrote an entire application for a client. The original had been running in production for over 10 years.
+It was still used in production when we started the rewrite and thus had a lot of data.
+Our client wanted to do a Big Bang release, so we needed to transfer all of the data in a small amount of time into the new application.&lt;/p&gt;
+
+&lt;p&gt;Here are the constraints we were working under:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Transfer data from Oracle to Postgres&lt;/li&gt;
+&lt;li&gt;Maximum of 6 hours of downtime&lt;/li&gt;
+&lt;li&gt;Readonly access to the old database&lt;/li&gt;
+&lt;li&gt;New database hosted on Heroku&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So we started with a simple script, and iterated over a few weeks to reach our goal. To make that happen it was important to run the ETL every day.
+Automating the process was very important to support continuous feedback and acceptance of user stories.
+The rest of the article will describe our automated process and what we learned during its development.&lt;/p&gt;
+
+&lt;h2 id=&#34;steps:985df4df2f6b446851eba60db715d300&#34;&gt;Steps&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#expdp:985df4df2f6b446851eba60db715d300&#34;&gt;Export using &lt;code&gt;expdp&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#scp:985df4df2f6b446851eba60db715d300&#34;&gt;Download with &lt;code&gt;scp&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#local-restore:985df4df2f6b446851eba60db715d300&#34;&gt;Restore into local CentOS VM&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#transfer:985df4df2f6b446851eba60db715d300&#34;&gt;Transfer to local Postgres&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#transform:985df4df2f6b446851eba60db715d300&#34;&gt;Transform data into new schema&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#remote-restore:985df4df2f6b446851eba60db715d300&#34;&gt;Restore the data onto Heroku Database&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;expdp:985df4df2f6b446851eba60db715d300&#34;&gt;Export using expdp&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://docs.oracle.com/cd/E11882_01/server.112/e22490/dp_export.htm&#34;&gt;Expdp&lt;/a&gt; and &lt;a href=&#34;https://docs.oracle.com/cd/E11882_01/server.112/e22490/dp_import.htm&#34;&gt;Impdp&lt;/a&gt;
+are Oracle recommended tools for exporting and importing database schemas and data.&lt;/p&gt;
+
+&lt;p&gt;There was a &lt;em&gt;&lt;strong&gt;lot&lt;/strong&gt;&lt;/em&gt; of data in the old system, we realized quickly that we would not import all of it.
+A quick win was to try and limit the amount of data we would export: either through time ranges or by entirely discarding some tables.
+In our case we could exclude an entire Audit table containing more than 16 million records.&lt;/p&gt;
+
+&lt;p&gt;Sample &lt;a href=&#34;http://dba-oracle.com/t_oracle_expdp_tips.htm&#34;&gt;&lt;code&gt;expdp&lt;/code&gt; command&lt;/a&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export ORACLE_HOME=/u01/oracle/product/11.1.0/db_1
+export ORACLE_SID=MY_DB_NAME
+export TABLES_TO_EXPORT=production.reservation,production.payment,production.user
+
+/u01/oracle/product/11.1.0/db_1/bin/expdp DB_EXPORT_USER/amazingPassword@//dbserver:1521/MY_DB_NAME dumpfile=etl.dmp logfile=etl.dmp.log content=data_only directory=DMPDIR tables=$TABLES_TO_EXPORT \
+&amp;quot;query=production.reservation:\&amp;quot;WHERE creation_time &amp;gt;= &#39;01-JAN-15&#39;\&amp;quot;, production.payment:\&amp;quot;WHERE valid = 1\&amp;quot;&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We ran the above code using &lt;code&gt;ssh&lt;/code&gt; on the legacy production server.&lt;/p&gt;
+
+&lt;p&gt;(Note: &lt;code&gt;DMPDIR&lt;/code&gt; here refers to a directory record that we had to manually create in the Oracle database.)&lt;/p&gt;
+
+&lt;h3 id=&#34;scp:985df4df2f6b446851eba60db715d300&#34;&gt;Download with SCP&lt;/h3&gt;
+
+&lt;p&gt;The only thing worth noting about this step is to make sure to use compression.
+We noticed a significant speed increase in file transfer time. Somewhere close to 4 times as fast.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;scp -C john@myserver:/u01/oracle/myDumps/etl.dmp ~/Downloads/myDumpfile.dmp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Also make sure you can automate this using ssh keys for authentication.&lt;/p&gt;
+
+&lt;h3 id=&#34;local-restore:985df4df2f6b446851eba60db715d300&#34;&gt;Restore into local CentOS VM&lt;/h3&gt;
+
+&lt;p&gt;CentOS is by far the easiest Linux system to setup with Oracle. It&amp;rsquo;s also easy to setup in VMWare or VirtualBox.
+Make sure you run it on a beefy machine, having an SSD will improve restore and read times when transferring to Postgres later.&lt;/p&gt;
+
+&lt;p&gt;We use &lt;code&gt;impdp&lt;/code&gt; for the restore:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;impdp production/production &amp;quot;DIRECTORY=downloads&amp;quot; &amp;quot;DUMPFILE=myDumpfile.dmp&amp;quot; &amp;quot;TABLE_EXISTS_ACTION=truncate&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The &lt;code&gt;downloads&lt;/code&gt; directory is similar to the previous &lt;code&gt;DMPDIR&lt;/code&gt; we used with &lt;code&gt;expdp&lt;/code&gt;.
+It points at a shared folder we setup on our VM, which is located in our local MacOSX &lt;code&gt;~/Downloads&lt;/code&gt; folder.
+Make sure you truncate tables before importing using the &lt;code&gt;TABLE_EXISTS_ACTION&lt;/code&gt;,
+this will make it a lot easier to run over and over again.&lt;/p&gt;
+
+&lt;h3 id=&#34;transfer:985df4df2f6b446851eba60db715d300&#34;&gt;Transfer to local Postgres&lt;/h3&gt;
+
+&lt;p&gt;Before we can easily perform all the transformation of the data, we need to get an identical schema into our local Postgres database.
+We tried multiple approaches, one of them was the &lt;a href=&#34;http://ora2pg.darold.net/&#34;&gt;&lt;code&gt;ora2pg&lt;/code&gt; script&lt;/a&gt; but we found that solution to be too slow.
+What worked really well for us  was using a &lt;a href=&#34;https://github.com/laurenz/oracle_fdw&#34;&gt;Foreign Data Wrapper&lt;/a&gt; to extract the data from Oracle into an identical schema in our local Postgres database.
+&lt;code&gt;Foreign Data Wrapper&lt;/code&gt; is not optimal to run complex queries against, but it works great for transferring data into Postgres using simple &lt;code&gt;INSERT INTO... SELECT...&lt;/code&gt; statements.&lt;/p&gt;
+
+&lt;p&gt;For this you will need to setup a schema with foreign data tables mapping to the Oracle tables you care about, and a local schema with the same structure.
+Then you can transfer the data like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;INSERT INTO etl.payments (user_id, reservation_id, amount)
+    SELECT user_id, reservation_id, amount FROM foreign_data.payments
+    WHERE reservation_id IN (SELECT id FROM etl.reservation);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here, &lt;code&gt;etl&lt;/code&gt; is the local Postgres schema, and &lt;code&gt;foreign_data&lt;/code&gt; is the one with the foreign tables.
+As you see in our &lt;code&gt;where&lt;/code&gt; condition we were able to take advantage of existing imported data to limit the records we imported.&lt;/p&gt;
+
+&lt;h3 id=&#34;transform:985df4df2f6b446851eba60db715d300&#34;&gt;Transform data into new schema&lt;/h3&gt;
+
+&lt;p&gt;In our scenario we were with a set of clients that had grown in familiarity with Ruby and we decided to use Ruby as our language
+to both structure and test our Data Transformations.&lt;/p&gt;
+
+&lt;p&gt;At first there was much debate about which language/framework we should use, but in the end it did not really have an effect,
+because most of our transformation code was written in pure sql and using a single database connection.
+We used the &lt;a href=&#34;https://github.com/jeremyevans/sequel&#34;&gt;&lt;code&gt;sequel&lt;/code&gt; gem&lt;/a&gt; to execute SQL directly on our Postgres database and it also allowed us additional flexibility for cases that were too complex to maintain with raw queries.&lt;/p&gt;
+
+&lt;p&gt;Because of these choices, testing became easy. We could insert data into our &lt;code&gt;etl&lt;/code&gt; schema, run our transformation service,
+then assert the correct records were inserted into our public schema.&lt;/p&gt;
+
+&lt;p&gt;Some general guidelines on performing the transformations:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Disable foreign key constraints before you start.&lt;/li&gt;
+&lt;li&gt;Restore foreign key constraints after processing the data.&lt;/li&gt;
+&lt;li&gt;Use &lt;code&gt;source_id&lt;/code&gt; columns containing &lt;code&gt;x-urn:origin_table:origin_id&lt;/code&gt; style values in your target tables.
+Refer to &lt;a href=&#34;https://en.wikipedia.org/wiki/Uniform_Resource_Name&#34;&gt;Uniform Resource Name&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Learn how to use Postgres&amp;rsquo; awesome features:
+&lt;a href=&#34;http://www.postgresql.org/docs/current/static/queries-with.html&#34;&gt;common table expressions&lt;/a&gt;,
+&lt;a href=&#34;http://www.postgresql.org/docs/current/static/tutorial-window.html&#34;&gt;window functions&lt;/a&gt;,
+&lt;a href=&#34;http://www.postgresql.org/docs/current/static/functions-aggregate.html&#34;&gt;aggregate functions&lt;/a&gt;&amp;hellip;&lt;/li&gt;
+&lt;li&gt;Don&amp;rsquo;t hesitate to cleanup data before processing it in a generic fashion.
+For example, we had a few records in the legacy system with columns containing invalid XML.
+It was much easier to fix these columns ahead of time and run the transformations afterwards.
+Obviously you do not want to perform this on the production database,
+but the Postgres schema that matches production is a good place for that.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;getting-started:985df4df2f6b446851eba60db715d300&#34;&gt;Getting started&lt;/h4&gt;
+
+&lt;p&gt;Before we dive into some of the useful SQL techniques we used, we think it&amp;rsquo;s worth mentioning some of our first steps in transforming the data.
+There were a lot of tables in the old system, and much of this data still exists in the new system.
+It could be intimidating at first, so we had to find a good starting point.&lt;/p&gt;
+
+&lt;p&gt;First we tried to tackle the easiest tables then work towards the hardest ones, the ones with more relations.
+This approach proved to be difficult, because much of the easier tables were shown on pages that were centered around some of the harder tables.
+This meant testing and accepting these ETL stories could not be done until we had more data.&lt;/p&gt;
+
+&lt;p&gt;After struggling through that approach, we took a step back and decided to do the exact opposite: we started with the most &lt;em&gt;central&lt;/em&gt; table in the system.
+For our first iteration of the import, we associated it to &amp;ldquo;dummy&amp;rdquo; records, then iterated through the relationships until we no longer needed the &amp;ldquo;dummy&amp;rdquo; entries.&lt;/p&gt;
+
+&lt;p&gt;This allowed for us to immediately and continuously see the efforts of our transformations in our application.&lt;/p&gt;
+
+&lt;p&gt;Now onto some Postgres/SQL features we found most useful during this process!&lt;/p&gt;
+
+&lt;h4 id=&#34;common-table-expressions:985df4df2f6b446851eba60db715d300&#34;&gt;Common Table Expressions&lt;/h4&gt;
+
+&lt;p&gt;This feature is great for breaking the problem down into easily understood chunks. It helps make queries easier to understand.
+For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;WITH
+    payment_notes_xml AS (
+        SELECT
+            id                                    AS payment_id,
+            unnest(xpath(&#39;//NOTE&#39;, notes :: XML)) AS note_xml
+        FROM payments
+    )
+INSERT INTO payment_notes (payment_id, note, type)
+    SELECT
+        payment_id,
+        xpath(&#39;//TEXT/text()&#39;) AS note,
+        xpath(&#39;//TYPE/text()&#39;) AS type
+    FROM payment_notes_xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Common table expressions (CTE) allow you to name a query for later use in your SQL. CTE&amp;rsquo;s can be read from (and joined to) as if they were a table in your database.
+In this example, we also show the use of &lt;a href=&#34;http://www.postgresql.org/docs/current/static/functions-array.html&#34;&gt;unnest&lt;/a&gt; and &lt;a href=&#34;http://www.postgresql.org/docs/current/static/functions-xml.html&#34;&gt;xpath&lt;/a&gt;.
+The &lt;code&gt;xpath&lt;/code&gt; function allows us to extract the text and type from each &lt;code&gt;NOTE&lt;/code&gt; node in the notes XML column.
+The &lt;code&gt;unnest&lt;/code&gt; function then expands the given array into individual rows.&lt;/p&gt;
+
+&lt;p&gt;The following XML would result in three rows being inserted into the &lt;code&gt;payment_notes&lt;/code&gt; table:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;NOTES&amp;gt;
+    &amp;lt;NOTE&amp;gt;
+        &amp;lt;TEXT&amp;gt;foo&amp;lt;/TEXT&amp;gt;
+        &amp;lt;TYPE&amp;gt;Internal&amp;lt;/TYPE&amp;gt;
+    &amp;lt;/NOTE&amp;gt;
+    &amp;lt;NOTE&amp;gt;
+        &amp;lt;TEXT&amp;gt;bar&amp;lt;/TEXT&amp;gt;
+        &amp;lt;TYPE&amp;gt;Internal&amp;lt;/TYPE&amp;gt;
+    &amp;lt;/NOTE&amp;gt;
+    &amp;lt;NOTE&amp;gt;
+        &amp;lt;TEXT&amp;gt;baz&amp;lt;/TEXT&amp;gt;
+        &amp;lt;TYPE&amp;gt;Public&amp;lt;/TYPE&amp;gt;
+    &amp;lt;/NOTE&amp;gt;
+&amp;lt;/NOTES&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;window-functions:985df4df2f6b446851eba60db715d300&#34;&gt;Window Functions&lt;/h4&gt;
+
+&lt;p&gt;Window functions are functions that can be applied to a set of rows once they are grouped.
+For example, you could find the most recent payments of each user using the &lt;code&gt;row_number&lt;/code&gt; window function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;WITH payment_ranks AS (
+    SELECT
+        id,
+        amount,
+        user_id,
+        paid_at,
+        row_number() OVER (PARTITION BY user_id ORDER BY paid_at DESC) AS rank
+    FROM payments
+)
+
+SELECT * FROM payment_ranks WHERE rank = 1;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;aggregate-functions:985df4df2f6b446851eba60db715d300&#34;&gt;Aggregate Functions&lt;/h4&gt;
+
+&lt;p&gt;Aggregate functions can be used to group multiple results into a single result.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;WITH reservation_payment_users as (
+    SELECT
+        reservation_id,
+        array_agg(user_id) as all_user_ids
+    FROM payments
+    GROUP BY reservation_id
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This example shows how you can select all of the user_ids that paid for a given reservation in one row.&lt;/p&gt;
+
+&lt;h4 id=&#34;distinct-on:985df4df2f6b446851eba60db715d300&#34;&gt;DISTINCT ON&lt;/h4&gt;
+
+&lt;p&gt;Throughout our Transform step, we found the &lt;code&gt;DISTINCT ON&lt;/code&gt; feature to be rather helpful.
+Whether we were trying to remove duplicate entries coming from the production database,
+or grab the first associated record based on an &lt;code&gt;ORDER BY&lt;/code&gt; clause.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;SELECT DISTINCT ON (payments.user_id)
+    users.id, payments.id
+FROM users
+LEFT JOIN payments ON payments.user_id = users.id
+ORDER BY payments.paid_at DESC;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This example shows how we can get the latest payment for each user.&lt;/p&gt;
+
+&lt;h3 id=&#34;remote-restore:985df4df2f6b446851eba60db715d300&#34;&gt;Restore the data onto Heroku Database&lt;/h3&gt;
+
+&lt;p&gt;Once the transformations are done, generate a dump of your local database, then upload it to S3 using the &lt;a href=&#34;https://aws.amazon.com/code/Amazon-S3/943&#34;&gt;provided s3-bash tools&lt;/a&gt;.
+We upload it to S3 so that we can perform the restore using Heroku&amp;rsquo;s &lt;code&gt;run&lt;/code&gt; command, downloading the dump then restoring it.
+Running it using a dyno is much faster as it will be on the same network as the database itself.
+Using the &lt;a href=&#34;http://www.postgresql.org/docs/current/static/app-pgrestore.html&#34;&gt;&lt;code&gt;pg_restore&lt;/code&gt;&lt;/a&gt;
+command provides more flexibility than using
+the built-in &lt;a href=&#34;https://devcenter.heroku.com/articles/heroku-postgres-import-export&#34;&gt;&lt;code&gt;heroku pg:restore&lt;/code&gt;&lt;/a&gt; command.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;heroku run -s standard-2x &amp;quot;wget https://s3.amazonaws.com/my-app/dumps/myDumpFile -O tmp/etl.dmp &amp;amp;&amp;amp; pg_restore --clean --no-acl --no-owner --verbose --jobs=6 --username=my_user -h my_host --dbname=my_db -p 1234 tmp/etl.dmp&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In order to find the best performance here, you will want to play with the &lt;code&gt;--jobs&lt;/code&gt; argument and the type of dyno you want to use,
+&lt;code&gt;-s standard-2x&lt;/code&gt; here.&lt;/p&gt;
+
+&lt;h3 id=&#34;you-re-all-done:985df4df2f6b446851eba60db715d300&#34;&gt;You&amp;rsquo;re all done!&lt;/h3&gt;
+
+&lt;p&gt;After a few weeks of development we were ready to run this against the production database
+and helped our client do the switch in just a few hours to the shiny new application!&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

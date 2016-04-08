@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+rm -rf public
+echo "Production..."
+hugo -b http://engineering.pivotal.io             -d public/prod
+echo "Staging..."
+hugo -b http://pivotal-cf-blog-staging.cfapps.io/ -d public/staging --buildDrafts
+echo "Local..."
+hugo -b http://localhost                          -d public/local --buildDrafts $@
+

@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Agile on Pivotal Engineering Journal</title>
+    <link>/categories/agile/</link>
+    <description>Recent content in Agile on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 15 Feb 2016 20:18:28 -0400</lastBuildDate>
+    <atom:link href="/categories/agile/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Exploring at Pivotal</title>
+      <link>/post/exploring-at-pivotal/</link>
+      <pubDate>Mon, 15 Feb 2016 20:18:28 -0400</pubDate>
+      
+      <guid>/post/exploring-at-pivotal/</guid>
+      <description>
+
+&lt;h1 id=&#34;the-problem:53d3e320697847aea016713255ef9986&#34;&gt;The problem&lt;/h1&gt;
+
+&lt;p&gt;As Agile methodologies sweep modern software development teams, a question begins to be uttered by more and more adopters:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;What do we do with our QAs?&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Some want their QAs but demand that they complete their work in much less time - sometimes in as little as a couple hours. Many opt to remove the group from their process altogether. And some groups introduce the practice of Test-Driven-Development to, more or less, replace the work of Quality Assurance Engineers. In Agile, the faster and more continously one can ship code, the better. And there&amp;rsquo;s something crippling about having your hot code being left to get cold at the inspection of a quality gatekeeper. I admit, I&amp;rsquo;ve never did see the appeal or benefits of Agile until I joined Pivotal. The productivity, efficiency, and consistency at which software development happens is something that I do not think that I will witness elsewhere. However, Pivotal is Agile to the bone and that means that iterations are tight, code is rarely written by yourself, and much of the testing is automated.&lt;/p&gt;
+
+&lt;p&gt;Pivotal strives to assure the highest level of quality with anything that we ship, especially with the &lt;a href=&#34;http://pivotal.io/platform&#34;&gt;Pivotal Cloud Foundry&lt;/a&gt; project. The project has hundreds of developers on it at a time. The kind of bugs that manifest aren&amp;rsquo;t the typical kind that a unit test will catch. It&amp;rsquo;s things like that some members your distributed system were fighting over the last slice of&amp;hellip; allocated memory and now they refuse talk to each other. It&amp;rsquo;s the kind of bugs that you cannot anticipate and thus might overlook the automated test for it. In short, the kind of things that you would expect your QA team to report.&lt;/p&gt;
+
+&lt;p&gt;Something that has worked well for a lot of other agile groups is to have a tester on every team that tests in tandem with the developers working. Although that has had some success, we want to avoid having that kind of format here. There&amp;rsquo;s something alarming about having a member of your team having a specialized skillset or domain of knowledge. If this one member is out sick or leaves and takes all his/her abilities with them then the team is at a disadvantage. Moreover, this can be a disparaging position to many. In a way, your role is validated by having another group waiting on your work. For instance, your designer deemed necessary by the front-end engineers looking for a mock-up to implement. Comparably, your PM is deemed necessary by the engineers looking for stories to implement and acccept. If you have a tester on the team that gets to test code that is continually deployed regardless of his/her say-so, it can be demoralizing - for some.&lt;/p&gt;
+
+&lt;h1 id=&#34;the-solution:53d3e320697847aea016713255ef9986&#34;&gt;The solution&lt;/h1&gt;
+
+&lt;p&gt;We try to close the gap with the concept of exploratory charter stories. The idea is that we have investigation stories catered towards testing sprinkled through the backlog that &lt;em&gt;any&lt;/em&gt; member of the team can pick up. In doing the story, you&amp;rsquo;d be engaging in the practice of unscripted testing and be using a workflow similar to that of QA doing some exploratory testing themselves. In general they look like this.&lt;/p&gt;
+
+
+&lt;figure class=&#34;center&#34;&gt;
+    
+        &lt;img src=&#34;/images/sample-charter.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Anyone who has done charter based exploratory testing will feel right at home with these. The typical use case is a team might create a charter story after a track of work that needs extra validation before a release or turning on a feature flag. The power of this approach comes in knowing how to use it effectively with your overall testing strategy. On the one hand, you &lt;em&gt;must&lt;/em&gt; have your developers covering your bases with automated regression tests written while the code is written. Then you have your product manager checking for lapses in the usability or business facing requirements while performing acceptance tests on delivered work. Exploratory testing offers the chance to catch the relevant edge cases that might slip through the other stages of your testing in a way that only human &lt;strong&gt;intuition&lt;/strong&gt; can. More importantly, it gives you the chance to learn about how product behaves. In general, these can work out quite well - if you know how to use it.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-problem-with-the-solution:53d3e320697847aea016713255ef9986&#34;&gt;The problem with the solution&lt;/h2&gt;
+
+&lt;p&gt;The most prominent problem is knowing when you should write a charter. It is a non-trivial issue that I do not think gets experienced elsewhere. We want to restrict the charters for high-risk areas of your application, but saying you can know that before the fact also implies that you can know where bugs will lie before they happen. We try to provide that &lt;strong&gt;intuition&lt;/strong&gt; by having &lt;strong&gt;explorers&lt;/strong&gt; who frequently rotate among teams that have a strong sense of where bugs normally lie and can, by pairing, transfer this. Still, intuition is a very slippery notion and not something that one can easily ascertain as being transferred. Furthermore, bugs aren&amp;rsquo;t simply in the high-risk places but also in the areas of low-risk or places you would not expect them to be. Although we purposefully want to restrict exploration, so that developer time is not encumberred, we risk missing the test coverage that we could be getting.&lt;/p&gt;
+
+&lt;p&gt;A more unsettling problem is not understanding how learning is important to the process and how it relates to testing, especially among developers. A common theme is that having to derail usual feature work, and sacrificing velocity, to go spelunking on the feature that you might have delivered days ago seems like a step backwards. One might wonder how chartered explorations differ from the usual delivery process or even the process of reading documentation while working on a story. The issue is that these individuals are purely looking for bugs, as a return on investment, for the time spent not writing code. Exploratory testing is about much more than just that.&lt;/p&gt;
+
+&lt;p&gt;Although I, myself, am an &lt;strong&gt;explorer&lt;/strong&gt; here at Pivotal, I also build iOS apps in my spare time - with some deployed to the App Store. My testing for my apps are purely exploratory. Every code change, every styling change, anything change I do, I re-enact the entire user flow to get the relevant view and inspect it. It&amp;rsquo;s the equivalent of performing your regression suite manually, but it is still exploratory in nature in that it still leaves room for unscripted testing based on what I might notice. It might seem incredibly slow and tedious but I prefer it that way. In fact I believe it to be the ideal form of testing. What people are missing is that exploratory testing isn&amp;rsquo;t simply about finding bugs, it is about becoming &lt;em&gt;intimate&lt;/em&gt; with your application. I want to know every time it sneezes and not through some analytics software but with my own eyes. And when you get to that point of trying your login screen for the thousandth time, finding bugs or thinking up edges cases to explore is trivial. I&amp;rsquo;d argue that the best explorers are motivated simply by the desire to &lt;del&gt;learn&lt;/del&gt; experience every single thing about how their software behaves and by nothing else.&lt;/p&gt;
+
+&lt;h2 id=&#34;the-truth:53d3e320697847aea016713255ef9986&#34;&gt;The Truth&lt;/h2&gt;
+
+&lt;p&gt;Of course, not everyone is wired like that. Many developers are motivated by the tangible. Code, features, points are tangible units of work. They&amp;rsquo;re things that can be shown off or argued about. Your initimacy with a project is something akin to inner beauty. Furthermore it is a lot easier to be more passionate about the application that you built from the ground up than a project that you&amp;rsquo;ve just been rolled on to. &lt;em&gt;But&lt;/em&gt; it does not matter. If there&amp;rsquo;s anything true in this world, it is this: Whoever knows the most, finds the most bugs, period. You just recognize issues faster, your &lt;strong&gt;intuition&lt;/strong&gt; is more effective; and most importantly, what you know you don&amp;rsquo;t know usually leads to more fruitful investigations. If you can find a way to know the most about your product by a better means than exploratory testing then, by all means, do it. And then tell me about it.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Pairing for Data Scientists</title>
+      <link>/post/pairing-on-data-science/</link>
+      <pubDate>Fri, 15 Jan 2016 10:13:32 +0000</pubDate>
+      
+      <guid>/post/pairing-on-data-science/</guid>
+      <description>
+
+&lt;p&gt;Hey! Happy 2016!! I have now spent two months working on the Pivotal Labs Data Science Team in London and the journey so far has been really exciting. I have been introduced to new working methodologies in an agile data science (DS) environment, pairing being one of them. We&amp;rsquo;ve found that pairing works well with DS, and I wanted to share some of my experiences and tips for getting started with DS pairing.&lt;/p&gt;
+
+&lt;p&gt;I feel pairing can be a great enablement technique. While pairing with clients, it makes them feel more involved. By developing a use case together they understand the code base better than a regular handover session at the end of project cycle. In the process, you understand the business requirements better which helps to speed up the process. Pairing with a colleague makes exploration and development of a DS use case much more fun. Besides helping in knowledge and skill exchange it&amp;rsquo;s a good way to mitigate risk.&lt;/p&gt;
+
+&lt;h2 id=&#34;pair-programming-and-data-science:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Pair Programming and Data Science??&lt;/h2&gt;
+
+
+
+  &lt;figure class=&#34;right small visible-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/pairing_ds_logo.png&#34;  /&gt;
+      
+      
+  &lt;/figure&gt;
+  &lt;figure class=&#34;hidden-lg&#34;&gt;
+      
+          &lt;img src=&#34;/images/pairing_ds_logo.png&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Hmmmm… &lt;a href=&#34;https://blog.pivotal.io/tag/paired-programming&#34;&gt;Pair Programming&lt;/a&gt; is exactly what it sounds. Pairing has always been one of the key programming practices followed at Pivotal Labs. If you ever get a chance to visit the Labs office you will see two developers sharing a big desk space and working on two mirrored screens simultaneously. Sounds interesting and a bit challenging…. Honestly when I first saw this alien style of programming I had concerns about how productive it could be in a DS environment. Yes we have to code as data scientist! For those who didn’t know, DS involves programming right from the initial feature creation and exploratory phase to model development and its operationalization.&lt;/p&gt;
+
+&lt;h3 id=&#34;hoops-to-jump-through:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Hoops to Jump through&lt;/h3&gt;
+
+&lt;p&gt;When you start on a DS use case your objective is fairly broad. You need to spend a lot of time to find the right way to materialize the objective. You have to &amp;lsquo;flare and focus&amp;rsquo; repeatedly before coming up with a definite objective and shipping it as an end product.&lt;/p&gt;
+
+&lt;p&gt;I had my doubts about how pairing would fit this flare and focus process. It’s not equivalent to pairing in a software engineering environment where the goals are more definitive to start with and the pair can work together to materialize it in best possible manner. During DS flaring, one might come with a number of problems and consequently an even larger number of ways to tackle them; having another person in the entire development process might make this phase intense and long because different people can have different ways to approach a problem.&lt;/p&gt;
+
+&lt;p&gt;For DS, there is no best tool for the task at hand. If one DS is comfortable using Python that might not necessarily be the same for his/her pair. Although, this is a great opportunity to expand one’s skill set but it might be a little disconcerting to run to Google for some basic syntax check with your pair watching over you!&lt;/p&gt;
+
+&lt;p&gt;In general when the two individuals pairing have different levels of expertise, I don&amp;rsquo;t know how daunting an experience it would be for a newbie to code in this environment or how frustrating it could be for the experienced counterpart trying to get the noobie up to speed.&lt;/p&gt;
+
+&lt;h3 id=&#34;day-3-pivotal-and-henceforth:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Day 3 &lt;em&gt;@Pivotal&lt;/em&gt; and henceforth..&lt;/h3&gt;
+
+&lt;p&gt;I started pairing with &lt;a href=&#34;https://twitter.com/ianhuston&#34;&gt;Ian Huston&lt;/a&gt;, a Senior DS in my team and started jumping through these hoops. He helped me get comfortable with the process in my first few weeks. In the exploratory phase, it actually turned out that greater the number of heads brainstorming about a problem, the faster it is to come up with a variety of routes and then narrowing it down to the most preferred one.&lt;/p&gt;
+
+&lt;p&gt;After an initial brainstorming, we came up with certain set of features we thought would be predictive for the problem case in hand and started to develop it. We followed a test-driven feature generation process. In a ping-pong manner, a team member would come up with a test case first and then the other would write up the functionality to implement it and then the role would reverse for the next round.&lt;/p&gt;
+
+&lt;p&gt;My initial concerns about working with people having varied level of experience was eased. Having an experienced person as your pair helps you understand the pros and cons of various approaches better, so you save a lot of time by choosing better. We follow &lt;a href=&#34;https://en.wikipedia.org/wiki/Extreme_programming&#34;&gt;extreme programming&lt;/a&gt; practices in Pivotal. Ian was kind, encouraged me to be inquisitive and welcomed a newbie’s ideas. I enjoyed my initial pairing experience and started getting used to it. Since then, I have paired with other colleagues and clients onsite and remotely and I really enjoy pairing.&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/pairing_ds.jpg&#34;  class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;h3 id=&#34;few-handy-tips:93e0d689577ed6b8ef2a5f61422c0e08&#34;&gt;Few Handy Tips&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Check whether you have enough data scientists to be involved in pairing! It&amp;rsquo;s a resource intensive exercise.&lt;/li&gt;
+&lt;li&gt;Have a brainstorming session at the start. Discuss various techniques that can be applied, be innovative then narrow your choices and start implementing it.&lt;/li&gt;
+&lt;li&gt;Difference of opinion? Nothing to worry about. Take a step back, weigh the pros and cons of each approach, go ahead with the winner. In case of a tie, consult someone else on the team or try all of them out on a sample of data. Remember the entire team is responsible for the project. Personal ego can&amp;rsquo;t be in the driver seat here. You&amp;rsquo;ll learn how to deal with disagreements better by the end of the exercise.&lt;/li&gt;
+&lt;li&gt;Pair with right person for the right job! Pair with fellow designers or developers during relevant stages to make the best use of resources in hand. There are no reasons why data scientists shouldn&amp;rsquo;t follow balanced team approach.&lt;/li&gt;
+&lt;li&gt;Project with vague objectives? Which DS use case isn&amp;rsquo;t to start with. Make progress iteratively rather than trying to figure the entire game plan from the start.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;“Pairing is sharing” as one of my colleagues always tells me :). It is a concentrated cohesive effort that helps in fast iterative development, a great way to enable each other and develop something in synergy.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Above all pairing is a great bonding exercise, I would really recommend giving it a shot!&lt;/em&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Abstraction, or, The Gift of Our Weak Brains</title>
+      <link>/post/abstraction-or-the-gift-of-our-weak-brains/</link>
+      <pubDate>Fri, 18 Dec 2015 12:55:40 -0500</pubDate>
+      
+      <guid>/post/abstraction-or-the-gift-of-our-weak-brains/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;TL;DR&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Intelligent developers can, at times, fail to seek out better abstractions in their code.&lt;/li&gt;
+&lt;li&gt;But empathy for our peers drives us towards finding abstractions.&lt;/li&gt;
+&lt;li&gt;Better abstractions lead to better outcomes, and clearer problem-solving.&lt;/li&gt;
+&lt;li&gt;There exist practices to ensure that empathy is top of mind, and to remind us to work towards better abstractions in our code.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;nasa-s-voyager-legacy-code-like-you-ve-never-seen:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;NASA&amp;rsquo;s Voyager: Legacy Code Like You&amp;rsquo;ve Never Seen&lt;/h2&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/voyager-1-10.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Recently, NASA put a call out for FORTRAN developers to &lt;a href=&#34;http://www.theregister.co.uk/2015/10/31/brush_up_on_your_fortran/&#34;&gt;continue work on the Voyager spacecraft software&lt;/a&gt;. Everyone on the original team has retired from NASA at this point, meaning that the code running Voyager is literally two human generations old.&lt;/p&gt;
+
+&lt;p&gt;What kind of problems do you think exist around such extreme legacy code? In an &lt;a href=&#34;http://www.popularmechanics.com/space/a17991/voyager-1-voyager-2-retiring-engineer/&#34;&gt;interview with Popular Mechanics&lt;/a&gt;, the program manager for the Voyager program said:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;hellip; it&amp;rsquo;s time to turn back to old documents to figure out the logic
+behind some of the engineering decisions. Dodd says it&amp;rsquo;s easy to
+find the engineering decisions, but harder to find the
+reasoning. This means combing through &lt;strong&gt;secondary documents and
+correspondence&lt;/strong&gt; hoping to find the solution, trying to get in another
+engineer&amp;rsquo;s head.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Holy cow.&lt;/p&gt;
+
+&lt;p&gt;I mean, I realize that the solution had severe constraints placed on it (miniscule processing power, and 64KB of RAM). But the situation being described sounds like it&amp;rsquo;s orthogonal to those constraints.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&amp;ldquo;trying to get in another engineer&amp;rsquo;s head.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Think about that for a moment. Not &amp;ldquo;trying to understand the code&amp;rdquo;, not &amp;ldquo;trying to understand the implementation&amp;rdquo;, but &lt;strong&gt;&amp;ldquo;trying to understand how the author was reasoning about the universe at the time.&amp;rdquo;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Wouldn&amp;rsquo;t it have been easier if the relevant abstractions had been captured when that code was written?&lt;/p&gt;
+
+&lt;h2 id=&#34;tale-of-a-prodigy:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;Tale of a Prodigy&lt;/h2&gt;
+
+&lt;p&gt;There&amp;rsquo;s a famous story about &lt;a href=&#34;https://en.wikipedia.org/wiki/John_von_Neumann&#34;&gt;John von Neumann&lt;/a&gt; and the &lt;a href=&#34;http://mathworld.wolfram.com/TwoTrainsPuzzle.html&#34;&gt;&amp;ldquo;Two Trains Puzzle&amp;rdquo;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This particular puzzle is a math problem, involving two trains travelling towards each other, and a fly that&amp;rsquo;s whizzing back and forth between their windshields: How far does the fly travel before it gets squashed?&lt;/p&gt;
+
+&lt;p&gt;The hard way to solve this problem is to &lt;a href=&#34;http://mathworld.wolfram.com/TwoTrainsPuzzle.html&#34;&gt;generate an infinite series&lt;/a&gt; representing the fly&amp;rsquo;s path, and to compute its sum. Most humans aren&amp;rsquo;t capable of doing this calculation in their head; but there&amp;rsquo;s a shortcut to the solution, which some people will find obvious once they realize that:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;you know the &lt;strong&gt;total time&lt;/strong&gt; the fly is traveling (based on the trains&amp;rsquo; relative speeds);&lt;/li&gt;
+&lt;li&gt;and you&amp;rsquo;re given the &lt;strong&gt;fly&amp;rsquo;s speed&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A simple velocity calculation later, and you have the answer.&lt;/p&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/von-neumann.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;According to &lt;u&gt;&lt;a href=&#34;https://www.jstor.org/stable/2319080&#34;&gt;The Legend of von Neumann&lt;/a&gt;&lt;/u&gt;, here&amp;rsquo;s what happened when the puzzle was posed to Von Neumann:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&amp;hellip; he solved it in an instant, and thereby disappointed the
+questioner: &amp;ldquo;Oh, you must have heard the trick before!&amp;rdquo; &amp;ldquo;What
+trick?&amp;rdquo; asked von Neumann, &amp;ldquo;All I did was sum the geometric series.&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Von Neumann was a remarkable math prodigy who was famous for his &lt;a href=&#34;https://en.wikipedia.org/wiki/John_von_Neumann#Cognitive_abilities&#34;&gt;extraordinary cognitive abilities&lt;/a&gt;, so perhaps it&amp;rsquo;s unsurprising that he was able to compute an infinite series so quickly.&lt;/p&gt;
+
+&lt;p&gt;If you&amp;rsquo;re paying attention, though, it should be very surprising that such an extraordinary intellect didn&amp;rsquo;t see and use the shortcut to solve the problem.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Why didn&amp;rsquo;t Von Neumann see and use the shortcut?&lt;/strong&gt; Was it easier for him to do the calculation than to search for an unnecessary (to him) abstraction?&lt;/p&gt;
+
+&lt;h2 id=&#34;the-history-of-science-is-a-history-of-abstractions:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;The History of Science is a History of Abstractions&lt;/h2&gt;
+
+&lt;p&gt;Recently, &lt;a href=&#34;http://www.ribbonfarm.com/author/brian/&#34;&gt;Brian Skinner&lt;/a&gt; wrote an &lt;a href=&#34;http://www.ribbonfarm.com/2015/10/29/quasiparticles-and-the-miracle-of-emergence/&#34;&gt;amazing post&lt;/a&gt; about how many of our scientific observations are a direct result of humans seeking to find intuitive abstractions to explain complex phenomena:&lt;/p&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/free-electrons.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;blockquote&gt;
+&lt;p&gt;As an extreme example, consider that human thinking struggles to
+describe even individual atoms with real precision. How is it, then,
+that we can possibly have good science about things that are made up
+of many atoms, like magnets or tornadoes or eukaryotic cells or
+planets or animals? It seems like a miracle that the natural world
+can contain patterns and objects that lie within our understanding,
+because the &lt;strong&gt;individual constituents of those objects are usually
+far too complex for us to parse&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;In that post, Brian differentiates between how humans &lt;em&gt;choose to reason&lt;/em&gt; about electrons in an electric circuit, versus how electrons &lt;em&gt;actually&lt;/em&gt; behave.&lt;/p&gt;
+
+&lt;p&gt;The key point being that electron behavior is actually so complicated, involving complex interactions between quantum probabilities, electromagnetic interactions, and macroscopic electric fields, that human brains are piteously underpowered to calculate what&amp;rsquo;s going on in an individual atom.&lt;/p&gt;
+
+&lt;p&gt;The result, though, is that we model the &lt;em&gt;aggregate&lt;/em&gt; behavior of all the electrons in the circuit, instead of modelling &lt;em&gt;each and every&lt;/em&gt; electron. And that statistical abstraction is a model that works amazingly well in a wide range of circumstances.&lt;/p&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/star-trek-aliens1.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Imagine an alien race with the cognitive faculties to reason about individual electron trajectories&lt;/strong&gt;. Would those aliens fall back to the same abstraction? Or would they simply continue, as Von Neumann did, to do the calculations the hard way?&lt;/p&gt;
+
+&lt;h2 id=&#34;the-impact-of-ability-on-developing-abstraction:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;The Impact of Ability on Developing Abstraction&lt;/h2&gt;
+
+&lt;p&gt;These stories anecdotally support a hypothesis: Humans develop the proper abstraction only when they hit the limit of their computational power.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;NASA computer scientists (perhaps some of the smartest, most exacting and meticulous people assembled since the Manhattan Project)  write code that is so inscrutable that modern-day maintainers are forced to read the authors&amp;rsquo; mail to figure out what the hell the software was intended to do.&lt;/li&gt;
+&lt;li&gt;John von Neumann didn&amp;rsquo;t bother to look for a more elegant solution, because he was able to brute force an infinite series so easily.&lt;/li&gt;
+&lt;li&gt;When science exceeds the physiological limits of our brains&amp;rsquo; capabilities, scientists seek and find appropriate abstractions that allow civilization to advance.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/Ren%c3%a9_Magritte_The_Human_Condition.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;I can only hold one or two things in mind at a time. Maybe three, tops. I want to think deeply about a thing until I&amp;rsquo;m done, and then move on. Ask anyone who&amp;rsquo;s tried to have a conversation with me when I have two or three things already in my head &amp;ndash; I&amp;rsquo;m a total basket case.&lt;/p&gt;
+
+&lt;p&gt;Some people appear to be able to hold much more state in their brain than I can. It&amp;rsquo;s the only way I can explain spaghetti code with light test coverage. When I ask myself, &amp;ldquo;How can anyone understand this?&amp;rdquo;, the answer is usually, &amp;ldquo;Because the author must have more prodigious computing power in their brain than I do.&amp;rdquo; (Maybe I&amp;rsquo;m being generous, but that&amp;rsquo;s another blog post.)&lt;/p&gt;
+
+&lt;p&gt;And that&amp;rsquo;s OK. &lt;strong&gt;Except for when you have to deal with other people.&lt;/strong&gt; Which is probably most of the time. Whoops.&lt;/p&gt;
+
+&lt;h2 id=&#34;complexity-without-empathy-considered-harmful:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;Complexity Without Empathy Considered Harmful&lt;/h2&gt;
+
+&lt;p&gt;How are you, as one of the best and brightest, preparing for the inevitable day when someone less talented than you has to modify the software you wrote?&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s be honest and empathize that most people who currently have the title of &amp;ldquo;software developer&amp;rdquo; are not going to have the time, patience, or talent to wade through spaghetti code with dependencies pointed in the wrong direction, with poorly-named variables, and with poor test coverage.&lt;/p&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/summer.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Worse, though, is the example being set for people who are new to the craft. There&amp;rsquo;s a self-perpetuating cycle here, particularly given that very few developers have any sort of exposure to the &amp;ldquo;&lt;a href=&#34;/post/welcome/&#34;&gt;team sport&lt;/a&gt;&amp;rdquo; that is growing and maintaining large software systems. &lt;strong&gt;If all I see when I look around is poorly-abstracted software, then are you surprised when I generate code of the same quality?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;(This, by the way, is why I feel strongly that most colleges and universities are cheating their CS grads by not preparing them for a career working in large, complex teams on large, complex projects. Again, this is for another blog post.)&lt;/p&gt;
+
+&lt;h2 id=&#34;how-to-do-better:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;How To Do Better&lt;/h2&gt;
+
+&lt;p&gt;Obviously, there are smart people who &lt;strong&gt;do&lt;/strong&gt; seek and find proper abstractions. Most of them (at least the ones I know personally)  share a common value: &lt;strong&gt;empathy&lt;/strong&gt;. They all have empathy for their current teammates and future developers.&lt;/p&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/knuth.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;This empathy for fellow developers can emerge in a number of ways. Perhaps the best known manifestation is &lt;a href=&#34;https://en.wikipedia.org/wiki/Donald_Knuth&#34;&gt;Knuth&lt;/a&gt;&amp;rsquo;s &lt;a href=&#34;http://www.literateprogramming.com/knuthweb.pdf&#34;&gt;&amp;ldquo;Literate Programming&amp;rdquo;&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Let us change our traditional attitude to the construction of
+programs: Instead of imagining that our main task is to instruct a
+computer what to do, &lt;strong&gt;let us concentrate rather on explaining to
+human beings what we want a computer to do&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/hal-abelson.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Which is simply a restatement of &lt;a href=&#34;https://groups.csail.mit.edu/mac/users/hal/hal.html&#34;&gt;Hal Abelson&lt;/a&gt;&amp;rsquo;s famous quote:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;“Programs must be written for people to read, and only incidentally
+for machines to execute.”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;My own personal interpretation of Literate Programming is: prefer self-explanatory code over comments. I often urge my pairs to write tests and implementations as if it were English, and in so doing help drive out the right abstractions.&lt;/p&gt;
+
+&lt;p&gt;That tactic is actually a variation on an idea presented in Eric Evans&amp;rsquo;s &lt;a href=&#34;https://en.wikipedia.org/wiki/Domain-driven_design&#34;&gt;&amp;ldquo;Domain Driven Design&amp;rdquo;&lt;/a&gt; philosophy, which is to use the language of the domain to articulate requirements as well as implement the code. As explained in his &lt;a href=&#34;http://www.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215&#34;&gt;book of the same name&lt;/a&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;A domain model &amp;hellip; is not just the knowledge in a domain expert&amp;rsquo;s
+head; it is a &lt;strong&gt;rigorously organized and selective abstraction of
+that knowledge&lt;/strong&gt;. &amp;hellip; The model is the backbone of a language used
+by all team members.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;engineering-practices-to-encourage-empathy-and-abstraction:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;Engineering Practices to Encourage Empathy and Abstraction&lt;/h2&gt;
+
+&lt;p&gt;At Pivotal, as in any &lt;a href=&#34;https://en.wikipedia.org/wiki/Extreme_programming&#34;&gt;XP shop&lt;/a&gt;, empathy takes form in our engineering practices.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We test-drive&lt;/strong&gt;, which forces us to think deeply about the proper abstractions in the code as we&amp;rsquo;re writing it. Testing first generally drives out better design; and allows us to safely introduce or change the abstractions later.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We pair program&lt;/strong&gt;, which forces us to explain, before the code gets committed, the reasoning and intentions behind the code. Explaining it to the person sitting next to you is the first step towards explaining it to future readers of your code.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;We rotate frequently between teams&lt;/strong&gt;, meaning that we&amp;rsquo;re almost always teaching someone the domain, the architecture, and the codebase. As a result, we are incentivized to make sure the code is understandable and abstracted correctly; and we feel acute pain around explaining poorly abstracted code.&lt;/p&gt;
+
+&lt;p&gt;Generally speaking, these practices lower the threshold at which our brains might otherwise naturally seek for better abstractions. This is good!&lt;/p&gt;
+
+&lt;h2 id=&#34;if-you-re-reading-this-it-s-for-you:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;If You&amp;rsquo;re Reading This, It&amp;rsquo;s For You&lt;/h2&gt;
+
+&lt;p&gt;These practices may be more important for people with greater computational abilities. &lt;strong&gt;This is actually the reverse of most people&amp;rsquo;s intuition&lt;/strong&gt;, which is (derogatorily) that Smart People don&amp;rsquo;t need to follow the same practices as Ordinary People.&lt;/p&gt;
+
+&lt;p&gt;Don&amp;rsquo;t fall into this trap around testing and abstractions. If you think you&amp;rsquo;re so smart, then consider Abstraction to be an act of &lt;a href=&#34;https://en.wikipedia.org/wiki/Noblesse_oblige&#34;&gt;&lt;em&gt;noblesse oblige&lt;/em&gt;&lt;/a&gt; for the rest of us, and challenge yourself to find better abstractions than the next guy or girl.&lt;/p&gt;
+
+&lt;h2 id=&#34;and-a-warning:987aad797c32cfa9d58a0abc21b9e382&#34;&gt;&amp;hellip; And A Warning&lt;/h2&gt;
+
+&lt;p&gt;
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/abstraction-or-the-gift-of-our-weak-brains/forever-productive-alone.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;You get to choose what you spend your brain&amp;rsquo;s CPU cycles on.&lt;/strong&gt; Well-abstracted code is easier to reason about and safer to change. If your brain is occupied with poorly-abstracted details, you&amp;rsquo;re going to miss opportunities for creative problem solving, and you won&amp;rsquo;t get the flashes of insight that can be critical to solving problems well.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Smart people who claim to not need practices are often productive &amp;hellip; alone.&lt;/strong&gt; But software (and life) is a &lt;a href=&#34;/post/welcome/&#34;&gt;team sport&lt;/a&gt;. So even if you won&amp;rsquo;t find good abstractions for your own sake, do it for your fellow developers. They&amp;rsquo;ll thank you for it.&lt;/p&gt;
+
+&lt;p&gt;Our brains are naturally limited. This can be a curse, or it can be a gift, depending on how you look at it.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Agile and Program Logic</title>
+      <link>/post/agile-and-program-logic/</link>
+      <pubDate>Sat, 17 Oct 2015 14:48:36 +0100</pubDate>
+      
+      <guid>/post/agile-and-program-logic/</guid>
+      <description>
+
+&lt;p&gt;I just started at Pivotal a couple of months ago. Before that, I worked on
+formal methods, program logic, and semantics. My &lt;a href=&#34;http://www.resourcereasoning.com/people.html&#34;&gt;old
+colleagues&lt;/a&gt; in academia and my
+new colleagues in industry are all aiming at the same thing &amp;ndash; we want to build
+awesome software. In this post I want to talk about some of our differences in
+perspective; and how that affects the sorts of tools that my old colleagues
+produce, and the sorts of tools my new colleagues are likely to want to use.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s the most important bit of this blog post. I think that if you want to
+make awesome software (which is reliable, and which does something that&amp;rsquo;s
+useful to someone), you need to do three things:&lt;/p&gt;
+
+&lt;dl&gt;
+&lt;dt&gt;Discovery&lt;/dt&gt;
+&lt;dd&gt;Figure out what you want&lt;/dd&gt;
+&lt;dt&gt;Implementation&lt;/dt&gt;
+&lt;dd&gt;Write code that does what you said you wanted&lt;/dd&gt;
+&lt;dt&gt;Cost&lt;/dt&gt;
+&lt;dd&gt;Manage &lt;em&gt;Discovery&lt;/em&gt; and &lt;em&gt;Implementation&lt;/em&gt; within the constraints of your local
+economics&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:593f78287bfed9eb47252e554d38176c:1&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:593f78287bfed9eb47252e554d38176c:1&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;Academic computer scientists - quite rightly - tend to focus on
+&lt;em&gt;Implementation&lt;/em&gt;. There are good reasons for this - success in &lt;em&gt;Implementation&lt;/em&gt;
+is relatively easy to measure, even if you&amp;rsquo;re developing a small prototype in
+isolation from the market it&amp;rsquo;s ultimately aimed at. On the other hand, I think
+Agile/TDD (Test Driven Development) is really good at &lt;em&gt;Discovery&lt;/em&gt;. When I
+was living in academia I often found myself arguing that formal methods and
+proof-based techniques were better at &lt;em&gt;Implementation&lt;/em&gt; than TDD can ever
+be&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:593f78287bfed9eb47252e554d38176c:2&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:593f78287bfed9eb47252e554d38176c:2&#34;&gt;2&lt;/a&gt;&lt;/sup&gt;.  This might be true&lt;sup class=&#34;footnote-ref&#34; id=&#34;fnref:593f78287bfed9eb47252e554d38176c:3&#34;&gt;&lt;a rel=&#34;footnote&#34; href=&#34;#fn:593f78287bfed9eb47252e554d38176c:3&#34;&gt;3&lt;/a&gt;&lt;/sup&gt;, but it misses the point. The
+point is that it doesn&amp;rsquo;t matter how good an engineer is at &lt;em&gt;Implementation&lt;/em&gt; if
+they have no plan for &lt;em&gt;Discovery&lt;/em&gt;. For the rest of this post, I&amp;rsquo;m going to
+explore the strategy we use at Pivotal for &lt;em&gt;Discovery&lt;/em&gt; and what that might
+mean for academic toolsmiths who want us to use their methods and tools when we
+come to do &lt;em&gt;Implementation&lt;/em&gt;.  Many of the things I mention here will also turn
+out to be quite handy for managing &lt;em&gt;Cost&lt;/em&gt; as well, but to do that justice will
+require another post.&lt;/p&gt;
+
+&lt;h2 id=&#34;agile-tdd-at-pivotal:593f78287bfed9eb47252e554d38176c&#34;&gt;Agile/TDD at Pivotal&lt;/h2&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/pairing.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;There are &lt;a href=&#34;https://en.wikipedia.org/wiki/Extreme_programming&#34;&gt;lot&lt;/a&gt;
+&lt;a href=&#34;https://en.wikipedia.org/wiki/Test-driven_development&#34;&gt;of&lt;/a&gt;
+&lt;a href=&#34;https://www.destroyallsoftware.com/screencasts&#34;&gt;places&lt;/a&gt; to read about
+Agile/TDD online, and you&amp;rsquo;ve almost certainly read this sort of thing before.
+I&amp;rsquo;m repeating it here for easy context, and because I don&amp;rsquo;t want to describe
+and evangelise some TDD theory that no-one practices &amp;ndash; I want to describe what
+I actually do every day. If you don&amp;rsquo;t currently do these things and you want to
+give them a try, that&amp;rsquo;s awesome. But in the context of this post it&amp;rsquo;s more
+important to describe to my old colleagues what sort of process their tools are
+going to need to slot in to if they want me to use them.&lt;/p&gt;
+
+&lt;p&gt;So here we go:&lt;/p&gt;
+
+&lt;p&gt;Every new feature, every bugfix, every change to our codebase is a story in our
+tracker. These stories are prioritized by the Product Manager (PM). Our
+engineers work in pairs. Each pair uses a single machine at a given time with
+two monitors, keyboards and mice. Each pair picks the highest priority task
+from the tracker, and makes it happen. To make a story happen, you write a
+test, make it pass, push to master, repeat. The master branch of our git repo
+contains all the things all of us are currently working on, and all the tests
+always pass.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s look in to some of that in more detail.&lt;/p&gt;
+
+&lt;h3 id=&#34;imaginary-case-study-the-machine-that-goes-ping:593f78287bfed9eb47252e554d38176c&#34;&gt;Imaginary Case Study: The Machine That Goes Ping&lt;/h3&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/ping-machine.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Suppose we&amp;rsquo;re building a client-server application for some customer. The
+customer has asked for a whole bunch of things, and (with more or less help
+from our PM, depending on various factors) has written up a bunch of stories in
+our tracker. There might be a story called &amp;ldquo;introduce ping button&amp;rdquo;. This story
+will have some &amp;ldquo;acceptance criteria&amp;rdquo; attached. The idea is that once the
+engineers think they&amp;rsquo;ve finished the story the PM should be able to read the
+acceptance criteria; try out the new functionality; and decide whether the
+engineers did their job right, or whether they need another go. For this story,
+our acceptance criteria might look something like this:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;start the server in one terminal with &lt;code&gt;servergui&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;start client in another terminal with &lt;code&gt;appclient --connect localhost&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;press ping button on server&lt;/li&gt;
+&lt;li&gt;I expect to see &amp;ldquo;Ping!&amp;rdquo; on the client term.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is an informal description of what the customer thought they wanted. There
+are various problems with it as a specification. For example, do we expect the
+ping message to propagate to all clients currently connected, or only to some
+of them? Which ones? If a client isn&amp;rsquo;t connected during the broadcast, do we
+expect the message to be stored, and delivered when the client eventually
+connects? The Agile/TDD process will help us clear all this up.&lt;/p&gt;
+
+&lt;p&gt;The first thing the pair of engineers working on this story will do is write an
+integration test. This test should be as simple as possible a formalization of
+the loose informal specification in the story. For example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Describe(&amp;quot;Pinger&amp;quot;, func() {
+  var server Server
+  var client Client
+  var testLogger Logger
+
+  BeforeEach(func() {
+    server = NewServer(....)
+    testLogger = TestLogger{}
+    client = NewClient(.... testLogger ... )
+    client.Connect(server.Address())
+  })
+
+  It(&amp;quot;Can ping the client&amp;quot;, func() {
+    server.Ping()
+    Eventually(testLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+  })
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;I&amp;rsquo;ve written this example test in &lt;a href=&#34;https://golang.org/&#34;&gt;go&lt;/a&gt; (missing a few
+details about how we actually start our imaginary server and so on), following
+the patterns encouraged by the testing library
+&lt;a href=&#34;https://github.com/onsi/ginkgo&#34;&gt;ginkgo&lt;/a&gt;. We will see as tests get more
+complicated that the strings in the blocks labelled &lt;code&gt;Describe&lt;/code&gt;, &lt;code&gt;It&lt;/code&gt;, and
+similar encourage us to write our tests in a specification-like way. We
+describe things, and properties of things. Later we will see how to describe
+context-specific properties of things, and organize our properties into
+hierarchies of contexts. For now, notice that this test describes exactly what
+the customer asked for &amp;ndash; what they thought they wanted &amp;ndash; and makes no attempt
+to guess what extra things they might want. This test deliberately says nothing
+about multiple clients, or offline clients.&lt;/p&gt;
+
+&lt;p&gt;The pair of engineers working on this story are now free to make this test pass
+any way they like &amp;ndash; so long as the code they write is test-driven with
+unittests.&lt;/p&gt;
+
+&lt;h3 id=&#34;clarifying-the-spec:593f78287bfed9eb47252e554d38176c&#34;&gt;Clarifying the Spec&lt;/h3&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/magnifying-code.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;For our narrative, let us assume that while the engineers were writing the test
+above, they realised that it would pass even if the server never attempts to
+send messages to more than one client. On this occasion, the engineers decide
+to ask the PM for clarification. The PM replies &amp;ldquo;Oh yes &amp;ndash; I think we want a
+proper broadcast message there, not just a message to a single random client&amp;rdquo;.
+In the ensuing conversation, the PM and the engineers could choose to finish
+this story quickly with just the one integration test, and to open a new story
+for making our ping into a broadcast message&amp;hellip; Or they could choose to update
+the existing story (which is still &amp;ldquo;in-flight&amp;rdquo;) to reflect their new shared
+understanding of the problem. In our example, they choose the second option:
+the PM updates the acceptance criteria to mention multiple clients, and the
+engineers make a note to write a second integration test once they have the
+first one passing.&lt;/p&gt;
+
+&lt;p&gt;With the new test added, the tests for this story now look like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Describe(&amp;quot;Pinger&amp;quot;, func() {
+  var server Server
+  var client Client
+  var testLogger Logger
+
+  BeforeEach(func() {
+    server = NewServer(....)
+    testLogger = TestLogger{}
+    client = NewClient(.... testLogger ... )
+    client.Connect(server.Address())
+  })
+
+  It(&amp;quot;can ping the client&amp;quot;, func() {
+    server.Ping()
+    Eventually(testLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+  })
+
+  Context(&amp;quot;when there are multiple clients&amp;quot;, func() {
+    var secondClient Client
+    var secondLogger Logger
+
+    BeforeEach(func() {
+      secondLogger = Logger{}
+      secondClient = NewClient( ... secondLogger ... )
+      secondClient.Connect(server.Address())
+    })
+
+    It(&amp;quot;pings all of them&amp;quot;, func() {
+      server.Ping()
+      Eventually(testLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+      Eventually(secondLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+    })
+  })
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The engineers make this test pass (with unittests for every change they make on
+the way), mark the story as finished, and move on to something else. Job done.&lt;/p&gt;
+
+&lt;h3 id=&#34;changing-your-mind:593f78287bfed9eb47252e554d38176c&#34;&gt;Changing Your Mind&lt;/h3&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/change-mind.jpg&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;The PM is now free to bring the current version of the software to the client,
+to see what they think. The client might be entirely happy with what the team
+gives them, or they might realise they actually wanted something a little
+different, or a little more tightly specified than what they first asked for.
+This is totally fine. In our story, let us imagine that the client realised
+they wanted the ping message to eventually reach even offline clients &amp;ndash; the
+next time they connect. The client can request a new story: &amp;ldquo;enable offline
+pinging&amp;rdquo;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;start the server in one terminal with &lt;code&gt;servergui&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;press the ping button on the server gui&lt;/li&gt;
+&lt;li&gt;start client in another terminal with &lt;code&gt;appclient --connect localhost&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;I expect to see &amp;ldquo;Ping!&amp;rdquo; on the client term.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The PM will prioritise this story, and it will eventually be picked up by a
+pair of engineers who might update the tests in the following way:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Describe(&amp;quot;Pinger&amp;quot;, func() {
+  var server Server
+  var client Client
+  var testLogger Logger
+
+  BeforeEach(func() {
+    server = NewServer(....)
+    testLogger = TestLogger{}
+    client = NewClient(.... testLogger ... )
+    client.Connect(server.Address())
+  })
+
+  It(&amp;quot;can ping the client&amp;quot;, func() {
+    server.Ping()
+    Eventually(testLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+  })
+
+  Context(&amp;quot;when there are multiple clients&amp;quot;, func() {
+    var secondClient Client
+    var secondLogger Logger
+
+    BeforeEach(func() {
+      secondLogger = Logger{}
+      secondClient = NewClient( ... secondLogger ... )
+    })
+
+    It(&amp;quot;pings both of them&amp;quot;, func() {
+      secondClient.Connect(server.Address())
+      server.Ping()
+      Eventually(testLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+      Eventually(secondLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+    })
+
+    Context(&amp;quot;when the second client connects after the ping has been sent&amp;quot;, func() {
+      It(&amp;quot;pings the second client when it does connect&amp;quot;, func() {
+        server.Ping()
+        Eventually(testLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+        secondClient.Connect(server.Address())
+        Eventually(secondLogger).Should(Say(&amp;quot;Ping!&amp;quot;))
+      })
+    })
+  })
+})
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Notice that the new test (which we may view as a partial specification)
+composes perfectly with the existing tests. We didn&amp;rsquo;t waste any effort when we
+were working on the first thing the client thought they wanted. When the client
+changed/clarified their mind, we were able to evolve the code we&amp;rsquo;d already
+written into what they now realised they wanted. For this to work we absolutely
+need a very local kind of expressivity in our specification language. We want
+to be able to write large numbers of tiny partial-specifications, and we want
+them to trivially compose.&lt;/p&gt;
+
+&lt;h2 id=&#34;formal-methods:593f78287bfed9eb47252e554d38176c&#34;&gt;Formal Methods&lt;/h2&gt;
+
+&lt;p&gt;So what can formal methods research do for us?&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m going to guess some answers to this question biased heavily by my
+experience with &lt;a href=&#34;http://www0.cs.ucl.ac.uk/staff/p.ohearn/papers/Marktoberdorf11LectureNotes.pdf&#34;&gt;separation
+logic&lt;/a&gt;,
+but I hope some ideas may be more generally applicable.&lt;/p&gt;
+
+&lt;h3 id=&#34;tools:593f78287bfed9eb47252e554d38176c&#34;&gt;Tools&lt;/h3&gt;
+
+
+&lt;figure class=&#34;left small&#34;&gt;
+    
+        &lt;img src=&#34;/images/infer.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Recently, Facebook open-sourced the &lt;a href=&#34;http://fbinfer.com/&#34;&gt;Infer&lt;/a&gt; tool. This is
+a separation-logic based shape-analysis tool, which can detect things like
+memory leaks, buffer overruns, null pointer accesses and so on. My imperfect
+understanding of their use of that tool is that it runs in their CI after code
+has been pushed to their version-control system, and often provides useful
+input to the code-review process which (at Facebook) happens after the code has
+been written, but before it gets into production. This seems to be (&lt;em&gt;very&lt;/em&gt;)
+loosely analogous to the time when the PM checks the acceptance criteria in the
+Pivotal process. FB-Pivotal process differences aside, having a broad-sweep
+static analysis as powerful as Infer in the CI is an awesome and beautiful
+thing. But I think we can do better.&lt;/p&gt;
+
+&lt;h3 id=&#34;locality:593f78287bfed9eb47252e554d38176c&#34;&gt;Locality&lt;/h3&gt;
+
+
+&lt;figure class=&#34;right small&#34;&gt;
+    
+        &lt;img src=&#34;/images/east-london-massive.png&#34; /&gt;
+    
+    
+&lt;/figure&gt;
+
+
+&lt;p&gt;Separation logic people like to talk about &amp;ldquo;local specifications&amp;rdquo;. They write
+specifications that talk about the state of the program-memory before and after
+running whatever piece of code they&amp;rsquo;re talking about. By &amp;ldquo;local&amp;rdquo; they mean that
+they only talk about the bits of memory that the program cares about (needs to
+read from or write to). Advantages of local separation logic specifications are
+that they compose neatly, and they reduce the amount of effort (mental for a
+human, computational for a tool) needed to prove that a given program does as
+it claims to.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve just claimed that Pivotal people care about &amp;ldquo;local partial
+specifications&amp;rdquo;. By this, I mean specifications that trivially compose, and
+which say the absolute minimum needed to describe a single feature.&lt;/p&gt;
+
+&lt;p&gt;Tools like Infer do a great job of allowing engineers to reap some of the
+benefits of separation-logic reasoning without needing to learn separation
+logic themselves. I&amp;rsquo;d like to explore if we can do even better by exploiting
+the similarities in our ideas of what &amp;ldquo;local&amp;rdquo; means. To start the ball rolling,
+here are some tests it might be fun to be able to write:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Expect(foo()).DoesNotLeakMemory()
+
+Expect(foo()).CannotCrash()
+
+Expect(foo()).CannotCrash(SoLongAs(bar)) // Where `bar` is a boolean expression
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first two aren&amp;rsquo;t necessarily very interesting (Infer will already do this
+for your whole codebase, so why bother for just one function?) except that they
+naturally lead to the third. An Infer-like tool could use the boolean
+expression &lt;code&gt;bar&lt;/code&gt; to infer the footprint of the function &lt;code&gt;foo&lt;/code&gt;, and then attempt
+to prove memory-safety given that footprint as a precondition. I think this
+barely scratches the surface of what might be possible.&lt;/p&gt;
+
+&lt;p&gt;Recall the list of three things I claimed you need to build awesome software
+(right at the top of this page). Wouldn&amp;rsquo;t it be great if engineers working on
+&lt;em&gt;Discovery&lt;/em&gt; and academics working on &lt;em&gt;Implementation&lt;/em&gt; had independently
+stumbled on the same idea of &amp;ldquo;locality&amp;rdquo;? If so, then that commonality might be
+interesting in its own right; but perhaps it could also be exploited by
+academic toolsmiths to produce some awesome new tools that fit well into our
+processes here in industry.&lt;/p&gt;
+
+&lt;h2 id=&#34;coming-soon:593f78287bfed9eb47252e554d38176c&#34;&gt;Coming Soon&lt;/h2&gt;
+
+&lt;p&gt;In this post I was aiming to make the connection between the TDD virtue of
+small tests, and the separation logic concept of locality. If this sort of
+cross-over between formal methods and Agile interests you, then drop me a line,
+or keep an eye on this blog. Next up, I&amp;rsquo;d like to write about &lt;a href=&#34;http://www.cse.chalmers.se/~rjmh/QuickCheck/manual.html&#34;&gt;property-based
+testing&lt;/a&gt; (which is
+also available &lt;a href=&#34;https://golang.org/pkg/testing/quick/&#34;&gt;to Go programmers&lt;/a&gt; out
+of the box) and how that may or may not fit into my day to day workflow.&lt;/p&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+
+&lt;hr /&gt;
+
+&lt;ol&gt;
+&lt;li id=&#34;fn:593f78287bfed9eb47252e554d38176c:1&#34;&gt;&lt;p&gt;Of course your local economic constraints could be very
+    different to someone else&amp;rsquo;s. You might be working in Silicon Valley on
+    a VC funded project, looking to demonstrate market value by selling app
+    subscriptions; or you might be working for a European government on a
+    publicly funded project, looking to demonstrate public value by
+    improving the quality of life of your citizens without making any
+    money; or you might be working on an open source project fueled by
+    volunteer time, looking to improve your reputational value by doing
+    something people think is cool.&lt;/p&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:593f78287bfed9eb47252e554d38176c:1&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+
+&lt;li id=&#34;fn:593f78287bfed9eb47252e554d38176c:2&#34;&gt;&lt;p&gt;Or at least at verifying that you did your &lt;em&gt;Implementation&lt;/em&gt; work right
+    when you wrote the code. &lt;a href=&#34;https://en.wikipedia.org/wiki/Refinement_(computing)#Program_refinement&#34;&gt;Some formal
+    methods&lt;/a&gt;
+    will tell you how to write the code such that it does the right thing,
+    while others will only reassure you that the code you were writing
+    anyway was good code.&lt;/p&gt;
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:593f78287bfed9eb47252e554d38176c:2&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li id=&#34;fn:593f78287bfed9eb47252e554d38176c:3&#34;&gt;Or it might not. It&amp;rsquo;s beyond the scope of this little blog post.
+ &lt;a class=&#34;footnote-return&#34; href=&#34;#fnref:593f78287bfed9eb47252e554d38176c:3&#34;&gt;&lt;sup&gt;[return]&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

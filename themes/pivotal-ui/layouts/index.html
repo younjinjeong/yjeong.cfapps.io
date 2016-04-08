@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+  {{ partial "head.html" . }}
+  <body>
+    {{ partial "heading.html" . }}
+    <div class="container">
+      <div class="bg-neutral-11">
+        <div class="pan">
+          <div id="posts">
+            <ol class="list-timeline">
+              {{ range .Data.Pages }}
+              <li class="list-timeline-item post">
+                <div class="list-timeline-date">
+                  <ul class="authors">
+                  {{ $all := .Site.Data.authors}}
+                  {{ $authors := .Params.authors}}
+                  {{ range $author := $authors }}
+                    {{ with $a := (index $all $author)}}
+                      <li>{{ $a.Name }}</li>
+                    {{ end}}
+                  {{ end }}
+                  </ul>
+                  <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+                </div>
+                <span class="list-timeline-title post">
+                  <a class="h3" href="{{ .Permalink }}">
+                    {{ if .Draft }}<span class="type-xs label label-primary draft">Draft</span>{{ end }}
+                    {{ .Title }}
+                    <span class="list-timeline-subtitle h5 type-dark-5">{{ .Params.short | markdownify }}</span>
+                  </a>
+                  {{ if .Params.tags }}
+                    <span class="list-timeline-tags em-alt">
+                      <span class="type-dark-6">Tags: &nbsp;</span>
+                      {{ range .Params.tags }}
+                        <a href="/tags/{{ . | urlize }}">{{ . }}</a> &nbsp;&nbsp;
+                      {{ end }}
+                    </span>
+                  {{ end }}
+                  {{ if .Params.categories }}
+                    <span class="list-timeline-tags em-alt">
+                      <span class="type-dark-6">Categories: &nbsp;</span>
+                      {{ range .Params.categories }}
+                        <a href="/categories/{{ . | urlize }}">{{ . }}</a> &nbsp;&nbsp;
+                      {{ end }}
+                    </span>
+                  {{ end }}
+                </span>
+              </li>
+              {{ end }}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

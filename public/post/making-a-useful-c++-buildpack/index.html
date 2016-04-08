@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Making A Useful C&#43;&#43; Buildpack &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Making A Useful C&#43;&#43; Buildpack
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">A useful C++ buildpack needs to consider header files and libraries, not just <code>make</code>. Here&rsquo;s a story about how I made a useful buildpack for a C++ web framework.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Sun, Mar 20, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/flavorjones">Mike Dalessio</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/cf-runtime">CF Runtime</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/making-a-useful-c&#43;&#43;-buildpack.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="flavorjones ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<p><strong>TL;DR:</strong></p>
+
+<ul>
+<li>running <code>make</code> is easy,</li>
+<li>but you need <strong>header files</strong> to compile against,</li>
+<li>and you need <strong>libraries</strong> to link against,</li>
+<li>and you probably want to <strong>configure</strong> your framework.</li>
+<li>hey! I&rsquo;ve released <a href="https://github.com/cloudfoundry-community/cppcms-buildpack">cloudfoundry-community/cppcms-buildpack</a></li>
+</ul>
+
+<h2 id="a-simple-c-c-buildpack-is-easy:b858bc1485f7780a5d75be489e3e26f5">A Simple C/C++ Buildpack is Easy</h2>
+
+<p>If you want to run <code>make</code> during staging, that&rsquo;s pretty easy. Heroku
+has a minimal buildpack,
+<a href="https://github.com/heroku/heroku-buildpack-c">heroku-buildpack-c</a>,
+that will simply run <code>configure</code> (if you&rsquo;ve got a <code>configure</code> file)
+and <code>make</code>. And it totally works on Cloud Foundry, you can go try it!</p>
+
+<h2 id="oh-wait:b858bc1485f7780a5d75be489e3e26f5">Oh, wait.</h2>
+
+<p>You won&rsquo;t go try it out. I know you won&rsquo;t, because it&rsquo;s a terrible
+idea.</p>
+
+<p>It&rsquo;s totally impractical to write a web service in C++ without using
+some sort of framework that would require header files and libraries
+that aren&rsquo;t present in the rootfs.</p>
+
+<p>How impractical? Here&rsquo;s a simple &ldquo;Hello, world!&rdquo; program that I found
+by clicking on the first Google result that matched &ldquo;c web server&rdquo;:</p>
+
+<blockquote>
+<p><a href="https://github.com/fekberg/GoHttp">https://github.com/fekberg/GoHttp</a></p>
+</blockquote>
+
+<p>If you
+<a href="https://github.com/fekberg/GoHttp/blob/master/GoHttp.c">look at the code</a>,
+you&rsquo;ll see there&rsquo;s 500+ lines of C code that are simply handling GET
+and HEAD requests for various mime types.</p>
+
+<p>That seems pretty amazing; I actually expected it to be much bigger
+and more complicated. Regardless, I would never, ever want to do that
+myself, for a huge variety of reasons, primarily security, but also to
+preserve my sanity and to make sure I was focusing on the
+<a href="http://engineering.pivotal.io/post/abstraction-or-the-gift-of-our-weak-brains/">right abstractions</a>.</p>
+
+<p>The hypothesis for the rest of this post it that <strong>any robust web app
+is going to be using a framework</strong>, which will bring along its own
+header files and libraries. And thus a buildpack that simply runs
+<code>make</code> is not very useful.</p>
+
+<h2 id="a-real-world-example:b858bc1485f7780a5d75be489e3e26f5">A Real-World Example</h2>
+
+<p>I was chatting with a business partner a few weeks ago about his
+firm&rsquo;s need for a C++ buildpack. I&rsquo;ll call him &ldquo;Bob.&rdquo; I brought up the
+challenges of making sure header files and libraries are available
+during staging.</p>
+
+<p>&ldquo;Wouldn&rsquo;t it be easier to pre-compile the binary on a development
+system where all these files are available, and then deploy using the
+<a href="https://github.com/cloudfoundry/binary-buildpack">binary-buildpack</a>?&rdquo;
+I asked.</p>
+
+<p><strong>&ldquo;No, I want to preserve the simplicity of <code>cf push</code> for our C++
+developers,&rdquo;</strong> Bob responded. &ldquo;It&rsquo;s a great model, and there&rsquo;s no good reason it shouldn&rsquo;t work for our C++ microservice authors.&rdquo;</p>
+
+<p>This absolutely blew my mind, as it turned on its head my mental model
+of a C++ developer.</p>
+
+<p>For many years I worked with productive C and C++ developers who all
+preferred &ldquo;manual transmission&rdquo; tooling, to preserve developer
+discretion and optimization in how code was built and deployed.</p>
+
+<p>Now Bob, an internet-famous technology executive, was telling me that
+he&rsquo;d prefer &ldquo;automatic transmission&rdquo;, as popularly described by
+<a href="https://twitter.com/onsijoe/status/598235841635360768">Onsi&rsquo;s CF Haiku</a>:</p>
+
+<blockquote>
+<p>here is my source code
+<br>run it on the cloud for me
+<br>i do not care how</p>
+</blockquote>
+
+<p><strong>ORLY!</strong> Challenge accepted.</p>
+
+<h2 id="cppcms:b858bc1485f7780a5d75be489e3e26f5">CppCMS</h2>
+
+<p>Bob mentioned <a href="http://cppcms.com/">CppCMS</a> as a potential C++ web
+framework for microservice authors. I had never heard of it before,
+and so step one was to get familiar with it, and deploy a &ldquo;Hello,
+World!&rdquo; app.</p>
+
+<p>The CppCMS site provides a &ldquo;Hello, World!&rdquo; app, and the code is pretty
+tight (at least, compared to the
+<a href="https://github.com/fekberg/GoHttp/blob/master/GoHttp.c">GoHTTP</a>
+implementation):</p>
+
+<pre><code class="language-c++">#include &lt;cppcms/application.h&gt;
+#include &lt;cppcms/applications_pool.h&gt;
+#include &lt;cppcms/service.h&gt;
+#include &lt;cppcms/http_response.h&gt;
+#include &lt;iostream&gt;
+
+class hello : public cppcms::application {
+public:
+  hello(cppcms::service &amp;srv) :
+    cppcms::application(srv) {}
+  virtual void main(std::string url);
+};
+
+void hello::main(std::string /*url*/)
+{
+  response().out() &lt;&lt;
+    &quot;&lt;html&gt;\n&quot;
+    &quot;&lt;body&gt;\n&quot;
+    &quot;  &lt;h1&gt;Hello World&lt;/h1&gt;\n&quot;
+    &quot;&lt;/body&gt;\n&quot;
+    &quot;&lt;/html&gt;\n&quot;;
+}
+
+int main(int argc,char ** argv)
+{
+  try {
+    cppcms::service srv(argc,argv);
+    srv.applications_pool().
+      mount(cppcms::applications_factory&lt;hello&gt;());
+    srv.run();
+  } catch(std::exception const &amp;e) {
+    std::cerr &lt;&lt; e.what() &lt;&lt; std::endl;
+  }
+}
+</code></pre>
+
+<p>The obvious challenge, however, being the compile-time requirement of
+<code>cppcms</code> header files and the runtime requirement on both
+<code>libcppcms.so</code> and <code>libbooster.so</code> shared object libraries.</p>
+
+<h2 id="let-s-adopt-some-conventions:b858bc1485f7780a5d75be489e3e26f5">Let&rsquo;s Adopt Some Conventions</h2>
+
+<p>We can very easily reproduce some of
+<a href="https://github.com/heroku/heroku-buildpack-c">heroku-buildpack-c</a>&rsquo;s
+behavior, and demand that application authors provide a <code>Makefile</code> to
+compile the application.</p>
+
+<p>We might imagine a simple <code>Makefile</code> that assumes the existence of a <code>cppcms</code> directory containing header files and libraries:</p>
+
+<pre><code class="language-make">hello: hello.cpp
+  c++ hello.cpp -o hello \
+    -Lcppcms/lib -Icppcms/include \
+    -lcppcms -lbooster -lz
+</code></pre>
+
+<p>But CppCMS also requires a
+<a href="http://cppcms.com/wikipp/en/page/cppcms_1x_config">JSON configuration file</a>
+at runtime. Let&rsquo;s ask configuration authors to name this file as
+<code>cppcms.js</code>, so we can:</p>
+
+<ol>
+<li>know whether this is a CppCMS application (i.e., at <code>bin/detect</code> time)</li>
+<li>inject configuration parameters into an application at runtime (e.g., <code>PORT</code>)</li>
+</ol>
+
+<p>For context, here&rsquo;s what a typical development configuration looks like for CppCMS:</p>
+
+<pre><code class="language-json">{
+  &quot;service&quot; : {
+    &quot;api&quot; : &quot;http&quot;,
+    &quot;port&quot; : 8888
+  },
+  &quot;logging&quot; : {
+    &quot;level&quot; : &quot;debug&quot;
+  }
+}
+</code></pre>
+
+<p>At detection time, let&rsquo;s look for <code>cppcms.js</code>:</p>
+
+<pre><code class="language-bash"># bin/detect
+if [[ -f &quot;$1/cppcms.js&quot; ]] ; then
+  echo &quot;cppcms&quot;
+  exit 0
+else
+  echo &quot;no&quot;
+  exit 1
+fi
+</code></pre>
+
+<p>And at runtime, let&rsquo;s use <code>jq</code> to inject <code>IP</code> and <code>PORT</code>, and to make sure
+the HTTP interface is active:</p>
+
+<pre><code class="language-bash">cp cppcms.js cppcms.js.template
+cat cppcms.js.template | \
+  jq &quot;.service.port=${PORT}|.service.ip=\&quot;0.0.0.0\&quot;|.service.api=\&quot;http\&quot;&quot; | \
+  tee cppcms.js
+</code></pre>
+
+<h2 id="but-what-about-the-headers-and-libraries:b858bc1485f7780a5d75be489e3e26f5">But What About the Headers and Libraries?</h2>
+
+<p>Making header files available at staging time seems pretty easy;
+they&rsquo;re just text files, and can be simply copied from a CppCMS
+distribution.</p>
+
+<p>But shared-object libraries are harder. They need to be cross-compiled
+for the rootfs. How can we make sure this happens safely?</p>
+
+<p>Good news. The CF Buildpacks team has, over the last year,
+open-sourced all the tooling that they use to generate binaries for
+most of the Official Cloud Foundry™ buildpacks (binary, go, node, php,
+python, ruby, and staticfile). One of these tools is
+<a href="https://github.com/cloudfoundry/binary-builder">binary-builder</a>,
+which cross-compiles binaries for the CF container rootfs.</p>
+
+<p>I wrote a new &ldquo;recipe&rdquo; for CppCMS, which is on an
+<a href="https://github.com/cloudfoundry/binary-builder/tree/flavorjones-cppcms">experimental branch</a>,
+that downloads and verifies a checksum for a source tarball, then
+configures and compiles it for the CF rootfs. It contains the header
+files and the libraries (both static and shared), and so contains
+everything we need to stage and run a CppCMS application.</p>
+
+<h2 id="putting-it-all-together:b858bc1485f7780a5d75be489e3e26f5">Putting It All Together</h2>
+
+<p>(The final version of the buildpack is at
+<a href="https://github.com/cloudfoundry-community/cppcms-buildpack">cloudfoundry/cppcms-buildpack</a>.)</p>
+
+<p>The pieces we need to assemble:</p>
+
+<ul>
+<li>the tarball containing the headers files and libraries</li>
+<li>a <code>bin/detect</code> script</li>
+<li>a <code>bin/compile</code> script</li>
+<li>a <code>bin/release</code> script</li>
+<li>a script to configure the application at runtime</li>
+</ul>
+
+<h3 id="the-cppcms-tarball:b858bc1485f7780a5d75be489e3e26f5">The CppCMS Tarball</h3>
+
+<p>The <code>binary-builder</code> job from the
+<a href="https://github.com/cloudfoundry/binary-builder/tree/flavorjones-cppcms">experimental branch</a>
+creates a file, <code>cppcms-1.0.5-linux-x64.tgz</code>, containing header files
+and both static and shared libraries.</p>
+
+<p>We&rsquo;ll add this tarball to the buildpack as an archive which can be
+used if and when the buildpack is used to compile an application; and
+we&rsquo;ll make sure it&rsquo;s easily identifiable as having been cross-compiled
+for
+<a href="https://github.com/cloudfoundry/stacks/tree/master/cflinuxfs2"><code>cflinuxfs2</code></a>
+(as opposed to another stack).</p>
+
+<h3 id="bin-detect:b858bc1485f7780a5d75be489e3e26f5"><code>bin/detect</code></h3>
+
+<p>Shown above; let&rsquo;s just look for the <code>cppcms.js</code> script.</p>
+
+<p>If you&rsquo;re specifying your buildpack at <code>cf push</code> time (with the <code>-b</code>
+parameter), this script won&rsquo;t even run, so it&rsquo;s not strictly necessary
+unless you&rsquo;ve added it to the admin buildpacks on your CF deployment.</p>
+
+<h3 id="bin-compile:b858bc1485f7780a5d75be489e3e26f5"><code>bin/compile</code></h3>
+
+<p>The workhorse of application staging, <code>bin/compile</code> must generate a
+droplet that&rsquo;s deployable, and so has to do a few different things.</p>
+
+<p>First, we&rsquo;ll untar the appropriate version of CppCMS for your stack into the application&rsquo;s directory (so it&rsquo;s in the eventual droplet):</p>
+
+<pre><code class="language-bash">CPPCMS_VERSION=1.0.5
+TARBALL=&quot;${BUILDPACKS_DIR}/vendor/${CF_STACK}/cppcms-${CPPCMS_VERSION}-linux-x64.tgz&quot;
+if [[ ! -f $TARBALL ]] ; then
+  ls ${BUILDPACKS_DIR}/vendor/${CF_STACK}
+  error &quot;could not find a cppcms libary for the '${CF_STACK}' stack.&quot;
+fi
+mkdir -p cppcms
+tar -m --directory cppcms -zxf $TARBALL
+</code></pre>
+
+<p>Note that we make <code>CF_STACK</code> a first-class variable. If you&rsquo;ve got
+multiple stacks, you&rsquo;ll need to cross-compile CppCMS for each of them.</p>
+
+<p>Then, we&rsquo;ll make sure it runs <code>configure</code> if you have an
+autoconf-enabled application:</p>
+
+<pre><code class="language-bash">if [[ -f configure ]] ; then
+  ./configure
+fi
+</code></pre>
+
+<p>Next, we&rsquo;ll run <code>make</code>:</p>
+
+<pre><code class="language-bash">make
+</code></pre>
+
+<p>Finally, we&rsquo;ll set up a script to run at application startup to allow
+us to inject runtime configuration (see next subsection).</p>
+
+<pre><code class="language-bash">mkdir -p ${BUILD_DIR}/.profile.d
+cp ${BUILDPACKS_DIR}/bin/cppcms.sh ${BUILD_DIR}/.profile.d
+</code></pre>
+
+<p>(The final version of this script is viewable
+<a href="https://github.com/cloudfoundry-community/cppcms-buildpack/blob/master/bin/compile">here</a>.)</p>
+
+<h3 id="configuring-the-application-at-runtime:b858bc1485f7780a5d75be489e3e26f5">Configuring the Application at Runtime</h3>
+
+<p>Finally, we need to make sure that the application is configured
+properly to run as a CF application. Primarily, this means listening
+on the appropriate port, but also listening on the correct network
+interface and making sure that HTTP is turned on (as opposed to
+<a href="http://cppcms.com/wikipp/en/page/cppcms_1x_tut_web_server_config">FastCGI or some other craziness</a>).</p>
+
+<p>I showed above how we could do this using <code>jq</code>, which has been in the
+rootfs since
+<a href="https://github.com/cloudfoundry/stacks/releases/tag/1.2.0">v1.2.0</a>.</p>
+
+<p>The other thing we&rsquo;ll need to do is to set the linker&rsquo;s path to be
+able to find the libraries at runtime:</p>
+
+<pre><code class="language-bash">export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:cppcms/lib
+</code></pre>
+
+<p>Following the existing
+<a href="https://docs.cloudfoundry.org/devguide/deploy-apps/deploy-app.html#profiled">buildpack convention</a>,
+we&rsquo;ll name this script after the buildpack, <code>cppcms.sh</code>, and put it
+into the droplet&rsquo;s <code>.profile.d</code> directory (see above for where this is
+done in the <code>bin/compile</code> script).</p>
+
+<h2 id="wrap-it-up-already:b858bc1485f7780a5d75be489e3e26f5">Wrap It Up, Already.</h2>
+
+<p>Ok, ok. I&rsquo;ve provided a &ldquo;Hello, World!&rdquo; application <a href="https://github.com/cloudfoundry-community/cppcms-buildpack/tree/master/test/fixtures/hello-world">within the
+buildpack&rsquo;s repo</a> that you can push with this command:</p>
+
+<pre><code class="language-bash">cf push my-app-name -b https://github.com/cloudfoundry-community/cppcms-buildpack
+</code></pre>
+
+<p>Here&rsquo;s what I see:</p>
+
+<pre><code class="language-text">$ cf push flavorjones-cppcms -b https://github.com/cloudfoundry-community/cppcms-buildpack
+Creating app flavorjones-cppcms in org flavorjones / space buildpack-acceptance as mdalessio@pivotal.io...
+OK
+
+Using route flavorjones-cppcms.cfapps.io
+Binding flavorjones-cppcms.cfapps.io to flavorjones-cppcms...
+OK
+
+Uploading flavorjones-cppcms...
+Uploading app files from: /home/flavorjones/code/cf/Buildpacks/cppcms-buildpack/test/fixtures/hello-world
+Uploading 1.9K, 3 files
+Done uploading
+OK
+
+Starting app flavorjones-cppcms in org flavorjones / space buildpack-acceptance as mdalessio@pivotal.io...
+Creating container
+Successfully created container
+Downloading app package...
+Downloaded app package (1.2K)
+Staging...
+-----&gt; compiling with make ...
+       c++ hello.cpp -o hello -Lcppcms/lib -Icppcms/include -lcppcms -lbooster -lz
+-----&gt; setting up .profile.d ...
+Exit status 0
+Staging complete
+Uploading droplet, build artifacts cache...
+Uploading droplet...
+Uploading build artifacts cache...
+Uploaded build artifacts cache (108B)
+Uploaded droplet (24.6M)
+Uploading complete
+
+1 of 1 instances running
+
+App started
+
+
+OK
+
+App flavorjones-cppcms was started using this command `make run`
+
+Showing health and status for app flavorjones-cppcms in org flavorjones / space buildpack-acceptance as mdalessio@pivotal.io...
+OK
+
+requested state: started
+instances: 1/1
+usage: 1G x 1 instances
+urls: flavorjones-cppcms.cfapps.io
+last uploaded: Sun Mar 20 20:12:50 UTC 2016
+stack: unknown
+buildpack: https://github.com/cloudfoundry-community/cppcms-buildpack
+
+     state     since                    cpu    memory    disk      details
+#0   running   2016-03-20 04:13:13 PM   0.0%   0 of 1G   0 of 1G
+</code></pre>
+
+<p>Then:</p>
+
+<pre><code class="language-text">$ curl flavorjones-cppcms.cfapps.io
+&lt;html&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello World&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Heavenly!</p>
+
+<h2 id="what-s-next:b858bc1485f7780a5d75be489e3e26f5">What&rsquo;s Next?</h2>
+
+
+
+  <figure class="right small visible-lg">
+      
+          <img src="/images/making-a-useful-c&#43;&#43;-buildpack/bjarne.jpg"  />
+      
+      
+  </figure>
+  <figure class="hidden-lg">
+      
+          <img src="/images/making-a-useful-c&#43;&#43;-buildpack/bjarne.jpg"  class="img-responsive" />
+      
+      
+  </figure>
+
+
+
+
+<p>I&rsquo;d love to hear what people think of this approach. Currently this buildpack implements shared-linking, and not static-linking, because of what I read on <a href="http://cppcms.com/wikipp/en/page/ref_embedded#Static.Linking">this page</a>.</p>
+
+<p>I&rsquo;d also love to hear your thoughts on whether there are better ways
+to configure the app at startup time.</p>
+
+<p>Go Forth and Prosper with C++!</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Greenplum Database on Pivotal Engineering Journal</title>
+    <link>/categories/greenplum-database/</link>
+    <description>Recent content in Greenplum Database on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 31 Mar 2016 10:57:27 +0100</lastBuildDate>
+    <atom:link href="/categories/greenplum-database/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SERIAL Datatype Performance in Greenplum Database</title>
+      <link>/post/SERIAL_Datatype_Performance_in_Greenplum_Database/</link>
+      <pubDate>Thu, 31 Mar 2016 10:57:27 +0100</pubDate>
+      
+      <guid>/post/SERIAL_Datatype_Performance_in_Greenplum_Database/</guid>
+      <description>
+
+&lt;p&gt;Storing data in a database, you quickly recognize the need for a unique identifier for every data row. Otherwise it is not always possible to join the data with other tables, or identify a specific data row. Sometimes the data itself does not provide a useful key (&amp;ldquo;natural key&amp;rdquo; or &amp;ldquo;business key&amp;rdquo;), therefore it is necessary to create a surrogate key. The tool of choice to create such technical key is the &lt;a href=&#34;http://gpdb.docs.pivotal.io/4380/ref_guide/data_types.html&#34;&gt;SERIAL datatype&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;serial-datatype:4fe49e2346d31430067989cfa55888c7&#34;&gt;SERIAL Datatype&lt;/h2&gt;
+
+&lt;p&gt;The SERIAL datatype is a sequence, attached to a column in a table, and the next value is used as default value in case no value is specified. The following two examples show the steps outlined as SQL commands. The first example creates a table with the &lt;em&gt;id&lt;/em&gt; column as designated surrogate key:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;CREATE TABLE datatable (id INTEGER NOT NULL PRIMARY KEY, data TEXT);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The second example creates a sequence, attaches the sequence to the table and adds the default value to the &lt;em&gt;id&lt;/em&gt; column.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;CREATE SEQUENCE id_sequence;
+
+ALTER SEQUENCE id_sequence OWNED BY datatable.id;
+
+ALTER TABLE datatable
+ALTER COLUMN id SET DEFAULT nextval(&#39;id_sequence&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Attaching the &lt;em&gt;id_sequence&lt;/em&gt; to the &lt;em&gt;datatable&lt;/em&gt; ensures that the sequence is dropped when the table is dropped. A sequence can only be attached to one table, but it can be used in more than one table as a default value - making it a good candidate for a globally unique key.&lt;/p&gt;
+
+&lt;p&gt;The database provides a SERIAL datatype, which is an INTEGER with a sequence attached, and a BIGSERIAL datatype, which is a BIGINT with a sequence attached.&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Datatype&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Numeric type&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Numeric short name&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Minimum value&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Maximum value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;SERIAL&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;INTEGER&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;INT4&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;-2147483648&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;+2147483647&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;BIGSERIAL&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;BIGINT&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;INT8&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;-9223372036854775808&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;9223372036854775807&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&#34;how-to-use-the-serial-datatype:4fe49e2346d31430067989cfa55888c7&#34;&gt;How to use the SERIAL Datatype&lt;/h3&gt;
+
+&lt;p&gt;Once a table with a SERIAL datatype is created, it is easy to use this feature: just do not specify a value for this column:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;serial=# INSERT INTO datatable (data) VALUES (&#39;some text&#39;);
+INSERT 0 1
+serial=# SELECT * FROM datatable;
+ id |   data    
+----+-----------
+  1 | some text
+(1 row)
+
+serial=# INSERT INTO datatable (data) VALUES (&#39;some text&#39;);
+INSERT 0 1
+serial=# SELECT * FROM datatable;
+ id |   data    
+----+-----------
+  1 | some text
+  2 | some text
+(2 rows)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The default value will ensure that the next sequence value is used.&lt;/p&gt;
+
+&lt;h3 id=&#34;good-to-know:4fe49e2346d31430067989cfa55888c7&#34;&gt;Good to know&lt;/h3&gt;
+
+&lt;p&gt;A sequence is never rolled back. If an INSERT is rolled back, the value used by &lt;em&gt;nextval()&lt;/em&gt; is lost, leaving a gap in the &lt;em&gt;id&lt;/em&gt; column here. This makes a sequence a good source for generating unique keys, but it does not ensure that the values are strictly sequential. Do not use this feature to generate something like &amp;ldquo;invoice numbers&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Instead of not specifying the column in the INSERT, one can also specify the keyword &lt;em&gt;DEFAULT&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;serial=# INSERT INTO datatable (id, data) VALUES (DEFAULT, &#39;some text&#39;);
+INSERT 0 1
+serial=# SELECT * FROM datatable;
+ id |   data
+----+-----------
+  1 | some text
+  2 | some text
+  3 | some text
+(3 rows)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This might be necessary when using frameworks which generate SQL queries based on the table structure, and want to include every column of the table.&lt;/p&gt;
+
+&lt;h2 id=&#34;serial-datatype-in-greenplum:4fe49e2346d31430067989cfa55888c7&#34;&gt;SERIAL Datatype in Greenplum&lt;/h2&gt;
+
+&lt;p&gt;A Greenplum Database cluster uses a number of segment databases, running on shared-nothing segment servers. The segment databases share no data and no information which each other. In order to provide globally unique sequence values to the segments, the database uses a sequence server:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;gpadmin   7718  0.0  0.0 361972 10448 ?    S    15:36   0:00  \_ postgres: port 5432, seqserver process
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Whenever a segment needs a value from the sequence, it connects to the sequence server and asks for the next value. You can imagine that there is some overhead involved. This overhead adds up, especially when you not only insert one or two rows, but millions of them. Fortunately, there is a tuning parameter which can be used to avoid many of the round trips to the sequence server:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;ALTER SEQUENCE id_sequence CACHE 5;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Setting the cache value to &lt;em&gt;5&lt;/em&gt; will not only fetch the next value, but every segment database will fetch the next &lt;em&gt;5&lt;/em&gt; values at once, and use them for the next INSERTs. If the segment database in the end only needs 3 values, the remaining 2 are lost (remember the gaps in the sequence?). However with potentially millions of INSERTs, a few lost values are acceptable.&lt;/p&gt;
+
+&lt;h3 id=&#34;performance-improvements-using-the-cache-parameter:4fe49e2346d31430067989cfa55888c7&#34;&gt;Performance improvements using the CACHE parameter&lt;/h3&gt;
+
+&lt;p&gt;This raises an important question: how big is the performance improvement?&lt;/p&gt;
+
+&lt;p&gt;The tests for the following numbers were conducted using a table with two columns (1 SERIAL; 1 floating point, filled with &lt;em&gt;1&lt;/em&gt;). For comparisation, the tests were run with different cache numbers and with a different number of rows.&lt;/p&gt;
+
+&lt;p&gt;The first test, without SERIAL:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;CREATE TABLE serial_cache (id INTEGER DEFAULT &#39;1&#39;, data DOUBLE PRECISION);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;All tests with SERIAL:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-SQL&#34;&gt;CREATE TABLE serial_cache (id SERIAL, data DOUBLE PRECISION);
+ALTER SEQUENCE serial_cache_id_seq CACHE &amp;lt;n&amp;gt;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The following &lt;em&gt;CACHE&lt;/em&gt; parameters were tested:&lt;/p&gt;
+
+&lt;p&gt;0, 1, 2, 3, 5, 10, 20, 50, 100, 500, 1000&lt;/p&gt;
+
+&lt;p&gt;where &lt;em&gt;y=0&lt;/em&gt; is &amp;ldquo;no SERIAL&amp;rdquo; - just an integer with a default value, but not using a sequence.&lt;/p&gt;
+
+&lt;p&gt;The following number of rows were tested:&lt;/p&gt;
+
+&lt;p&gt;100000, 125000, 150000, 175000, 200000&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/greenplum_database/serial_by_INSERTs.jpg&#34; alt=&#34;Overall runtime for the tests&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Looking at the first graph, it instantly becomes clear that &amp;ldquo;CACHE=1&amp;rdquo; - the default, it&amp;rsquo;s the green line - is very slow. Running this test takes almost twice as much time as running the same test with &amp;ldquo;CACHE=2&amp;rdquo; (blue line). However this graph is not broken down by the time per INSERT, it just shows the overall runtime for the tests. The next graph breaks down the numbers on a per-query basis:&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/greenplum_database/serial_total_runtime.jpg&#34; alt=&#34;per-query runtime for the tests&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;Running INSERTs with &amp;ldquo;CACHE=1&amp;rdquo; is several times slower than tuning the &lt;em&gt;CACHE&lt;/em&gt; parameter. The next graph is limited to the CACHE values between &lt;em&gt;0&lt;/em&gt; (no SERIAL, just an INTEGER) and &lt;em&gt;5&lt;/em&gt;. It&amp;rsquo;s clearly visible that using a sequence adds a measurable overhead, compared to the &lt;em&gt;0&lt;/em&gt; value where no SERIAL is used.&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/greenplum_database/serial_runtime_x_5.jpg&#34; alt=&#34;per-query runtime for the tests, limited to CACHE 0-5&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;It&amp;rsquo;s also interesting to see which &lt;em&gt;CACHE&lt;/em&gt; parameters make sense, and at which point they no longer improve the performance. The following graph shows all &lt;em&gt;CACHE&lt;/em&gt; parameters, but limits the view to &lt;em&gt;y=20μs&lt;/em&gt;.&lt;/p&gt;
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/greenplum_database/serial_runtime_y_20.jpg&#34; alt=&#34;per-query runtime for the tests, limited to y=20&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+&lt;p&gt;In this graph, the improvements look big, even between &lt;em&gt;CACHE=500&lt;/em&gt; and &lt;em&gt;CACHE=1000&lt;/em&gt;. However compared in the big picture, &lt;em&gt;CACHE=1&lt;/em&gt; needs around &lt;em&gt;900μs&lt;/em&gt;, &lt;em&gt;CACHE=15&lt;/em&gt; already brings down the query runtime to &lt;em&gt;10μs&lt;/em&gt;, and &lt;em&gt;CACHE=1000&lt;/em&gt; only improves this down to around &lt;em&gt;3μs&lt;/em&gt;. A query without a sequence runs in around &lt;em&gt;1μs&lt;/em&gt;, for comparisation.&lt;/p&gt;
+
+&lt;h2 id=&#34;serial-datatype-in-postgresql:4fe49e2346d31430067989cfa55888c7&#34;&gt;SERIAL Datatype in PostgreSQL&lt;/h2&gt;
+
+&lt;p&gt;How does this compare to PostgreSQL, running the same tests?&lt;/p&gt;
+
+&lt;p&gt;
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/postgresql/serial_total_runtime.jpg&#34; alt=&#34;per-query runtime for the tests&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+&lt;/p&gt;
+
+&lt;p&gt;The query runtime averages around &lt;em&gt;1.5μs&lt;/em&gt;, just the start with &lt;em&gt;CACHE=0&lt;/em&gt; comes down to around  &lt;em&gt;1.1μs&lt;/em&gt;. There is no huge performance loss when using a sequence, compared to the spike in Greenplum Database. Looking into the details:&lt;/p&gt;
+
+&lt;p&gt;
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/postgresql/serial_runtime_x_5.jpg&#34; alt=&#34;per-query runtime for the tests, limited to CACHE 0-5&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+
+
+
+  &lt;figure class=&#34;img-responsive&#34;&gt;
+      
+          &lt;img src=&#34;/images/serial_datatype/postgresql/serial_runtime_y_2.jpg&#34; alt=&#34;per-query runtime for the tests, limited to y=2&#34; class=&#34;img-responsive&#34; /&gt;
+      
+      
+  &lt;/figure&gt;
+
+
+&lt;/p&gt;
+
+&lt;p&gt;The numbers show that there is a small performance loss when using a sequence. The graph goes up for &lt;em&gt;CACHE=1&lt;/em&gt;, comes back down for &lt;em&gt;CACHE=2&lt;/em&gt; and &lt;em&gt;CACHE=3&lt;/em&gt;, and no further improvements for higher &lt;em&gt;CACHE&lt;/em&gt; values.&lt;/p&gt;
+
+&lt;h2 id=&#34;conclusion:4fe49e2346d31430067989cfa55888c7&#34;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;The INSERT performance in Greenplum Database improves greatly, if a sequence uses at least &lt;em&gt;CACHE=5&lt;/em&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Current TransactionID in Greenplum Database</title>
+      <link>/post/Current_TransactionID_in_Greenplum_Database/</link>
+      <pubDate>Sat, 27 Feb 2016 01:58:42 +0100</pubDate>
+      
+      <guid>/post/Current_TransactionID_in_Greenplum_Database/</guid>
+      <description>
+
+&lt;p&gt;Recently, during a training, a colleague asked me how to find out the current TransactionID in a &lt;a href=&#34;http://greenplum.org/&#34;&gt;Greenplum Database&lt;/a&gt; system. This piece of information is important in order to find out if a &lt;a href=&#34;http://gpdb.docs.pivotal.io/4370/ref_guide/sql_commands/VACUUM.html&#34;&gt;VACUUM&lt;/a&gt; run is required on a table.&lt;/p&gt;
+
+&lt;h3 id=&#34;postgresql:73a5860bb147c976ac1f5e05e53b8dca&#34;&gt;PostgreSQL&lt;/h3&gt;
+
+&lt;p&gt;In &lt;a href=&#34;http://www.postgresql.org/&#34;&gt;PostgreSQL&lt;/a&gt; (Greenplum Database is a PostgreSQL fork) this is easy:&lt;/p&gt;
+
+&lt;p&gt;Current TransactionID in PostgreSQL:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;postgres=&amp;gt; SELECT txid_current();
+ txid_current 
+--------------
+          816
+(1 row)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;greenplum:73a5860bb147c976ac1f5e05e53b8dca&#34;&gt;Greenplum&lt;/h3&gt;
+
+&lt;p&gt;Unfortunately, the &lt;a href=&#34;https://github.com/greenplum-db/gpdb&#34;&gt;merge process&lt;/a&gt; with PostgreSQL has not yet merged in this function. Therefore things get a bit more complicated, and a workaround is required. The system table &amp;lsquo;&lt;em&gt;pg_locks&lt;/em&gt;&amp;rsquo; shows, among other information, the TransactionID. Selecting from this table will show at least two records: one &lt;em&gt;AccessShareLock&lt;/em&gt; on &amp;lsquo;&lt;em&gt;pg_locks&lt;/em&gt;&amp;rsquo; itself, and one &lt;em&gt;ExclusiveLock&lt;/em&gt; on the current TransactionID.&lt;/p&gt;
+
+&lt;p&gt;Current TransactionID in Greenplum:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;postgres=&amp;gt; SELECT transactionid FROM pg_locks
+WHERE pid = pg_backend_pid() AND locktype = &#39;transactionid&#39; AND mode = &#39;ExclusiveLock&#39; AND granted = &#39;t&#39;;
+ transactionid
+---------------
+          1325
+(1 row)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In most cases it is enough to just limit the results by &amp;lsquo;&lt;em&gt;pid&lt;/em&gt;&amp;rsquo; and &amp;lsquo;&lt;em&gt;locktype&lt;/em&gt;&amp;rsquo;.&lt;/p&gt;
+
+&lt;p&gt;Current TransactionID in Greenplum (shorter):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;postgres=&amp;gt; SELECT transactionid FROM pg_locks
+WHERE pid = pg_backend_pid() AND locktype = &#39;transactionid&#39;;
+ transactionid
+---------------
+          1325
+(1 row)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On the downside, this query is consuming yet another TransactionID, if run in a separate transaction.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

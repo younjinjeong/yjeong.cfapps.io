@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Running Tests in AWS Lambda &middot; Pivotal Engineering Journal </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal Engineering Journal" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal Engineering Journal</a></h1>
+      <h3 class="type-dark-9 mvn">Technical articles from Pivotal engineers.</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Running Tests in AWS Lambda
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">Quickly and easily run your tests on AWS without the hassle of starting new
+EC2 instances.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Mon, Apr 4, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    Edwin Xie
+                  
+                </li>
+              
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/coreyti">Corey Innis</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/aws-lambda">AWS Lambda</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/testing">Testing</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/running-tests-in-aws-lambda.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="%!s(&lt;nil&gt;) @coreyti ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<h2 id="overview:f7e6d51114d3bfdcf339dc74a707a64d">Overview</h2>
+
+<p>Here at Cloud Foundry, we maintain the
+<a href="https://github.com/pivotal-golang/s3cli"><code>s3cli</code></a> command line wrapper for
+authenticated requests to any S3 bucket or bucket in an S3-compatible storage
+provider. For example, this CLI is used by the
+<a href="https://github.com/cloudfoundry/bosh">BOSH</a> agent and director to write and
+access blobs in an <a href="http://bosh.io/docs/director-configure-blobstore.html">external blobstore</a>.</p>
+
+<p>One of the responsibilities of the <code>s3cli</code> is to be able to make authenticated
+requests inside AWS without the need to provide any access key IDs or secret
+access keys. This works by allowing the <code>s3cli</code> to use a predefined
+<a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html">IAM role</a> that allows services in AWS to access other services in
+your AWS account. For example, you could create an IAM role that allows the AWS
+EC2 service to access S3, create an instance profile as a wrapper for this IAM
+role, and then attach this instance profile to a running EC2 instance to
+automatically allow any AWS SDK call running inside the instance to access S3.</p>
+
+<h2 id="testing-in-aws-ec2:f7e6d51114d3bfdcf339dc74a707a64d">Testing in AWS EC2</h2>
+
+<p>Naturally, the integration testing for this functionality can only run inside
+AWS, so we must come up with a solution to get fast testing for this feature
+while fully testing that utilizing an IAM role works correctly for requests
+to S3.</p>
+
+<p>Previously we have approached this problem of testing the <code>s3cli</code> with the
+following steps:</p>
+
+<ol>
+<li>Run CloudFormation to create the IAM role and instance profile along with
+ a full networking stack and a brand new instance to allow for SSH access
+ from our CI workers.</li>
+<li>SCP the <code>s3cli</code> binary, the tests for the <code>s3cli</code> and its dependencies
+ over to the EC2 instance created.</li>
+<li>SSH to the instance and verify that the tests exited with a non-zero
+ exit status.</li>
+</ol>
+
+<p>One major problem with this approach is that the setup costs are high, as a
+non-trivial amount of resources must be spun up as part of the CloudFormation
+stack which takes a long time to finish. Related to this issue is that the
+CloudFormation stack could fail to create for any reason unrelated to the actual
+functionality of the <code>s3cli</code>, such as hitting the limit on VPCs that could be
+created in an AWS account.</p>
+
+<h2 id="testing-in-aws-lambda:f7e6d51114d3bfdcf339dc74a707a64d">Testing in AWS Lambda</h2>
+
+<p><a href="https://aws.amazon.com/lambda/">AWS Lambda</a> is an appealing alternative for our
+testing purposes that addresses this issue. It completely eliminates the need to
+ask for an entire networking stack and a EC2 instance in our CloudFormation
+stack. This speeds up the time required to run CloudFormation for the testing
+environment and (since it no longer relies on EC2) is completely immune to AWS
+service limits.</p>
+
+<p>Our use case also fits nicely within the intended usage of AWS Lambda in that it
+interacts with other AWS services with an IAM role and that the tests take no
+more than 10 seconds to run, meaning we only pay for 10 seconds of execution
+time rather than paying for AWS EC2 costs.</p>
+
+<p>One limitation of AWS Lambda is that the runtime code can only be one of three
+choices: Node.js, Python, or Java. Although there is no support for BASH, we
+can upload arbitrary assets as part of the deployment package and access these
+assets in a read-only filesystem (but writing to /tmp is OK).</p>
+
+<h3 id="building-the-deployment-package:f7e6d51114d3bfdcf339dc74a707a64d">Building the Deployment Package</h3>
+
+<p>For our approach, we decided to use a Python script as a harness to run a
+compiled <a href="http://onsi.github.io/ginkgo/">Ginkgo</a> test suite against our <code>s3cli</code>
+binary and to grab the console output for the tests:</p>
+
+<pre><code class="language-python">import os
+import logging
+import subprocess
+
+def test_runner_handler(event, context):
+    os.environ['S3_CLI_PATH'] = './s3cli'
+    os.environ['BUCKET_NAME'] = event['bucket_name']
+    os.environ['REGION'] = event['region']
+    os.environ['S3_HOST'] = event['s3_host']
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    try:
+        output = subprocess.check_output(['./integration.test', '-ginkgo.focus', 'AWS STANDARD IAM ROLE'],
+                                env=os.environ, stderr=subprocess.STDOUT)
+        logger.debug(&quot;INTEGRATION TEST OUTPUT:&quot;)
+        logger.debug(output)
+    except subprocess.CalledProcessError as e:
+        logger.debug(&quot;INTEGRATION TEST EXITED WITH STATUS: &quot; + str(e.returncode))
+        logger.debug(e.output)
+        raise
+</code></pre>
+
+<p>This Lambda function handler is fairly simple. First, we pull in environment
+variables from <code>event</code>, which is passed in as part of invocations for this
+Lambda function. We then set up the logger for the <code>STDOUT</code> and <code>STDERR</code> streams
+in order to see the output of our test run. In order to specifically capture the
+exit status from the test suite, we wrap the subprocess call in a <code>try</code> block
+and print the log output in catching the <code>subprocess.CalledProcessError</code>.</p>
+
+<p>Note that we refer to the <code>s3cli</code> and the compiled integration tests as
+executables in the same working directory as the script.</p>
+
+<p>Next, we compile our <code>s3cli</code> binary and integration test suite, specifying the
+target architecture to be 64-bit Linux, as these binaries will be running as
+part of the Lambda function:</p>
+
+<pre><code class="language-bash">git clone https://github.com/pivotal-golang/s3cli
+cd s3cli
+GOOS=linux GOARCH=amd64 go build s3cli/s3cli
+GOOS=linux GOARCH=amd64 ginkgo build src/s3cli/integration
+</code></pre>
+
+<p>We finally package up the deployment in a zip file, specifying <code>-j</code> to strip the
+directory path from the files to get all of the deployment assets in the same
+directory.</p>
+
+<pre><code class="language-bash">zip -j deployment.zip src/s3cli/integration/integration.test s3cli lambda_function.py
+</code></pre>
+
+<h3 id="preparing-the-aws-environment:f7e6d51114d3bfdcf339dc74a707a64d">Preparing the AWS Environment</h3>
+
+<p>The only setup we do outside of the <code>s3cli</code> testing are the following:</p>
+
+<ul>
+<li>Create a bucket in S3 for testing.</li>
+<li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">Create an AWS IAM user</a> with permissions to A) execute a
+basic Lambda Function, and B) read and write to/from CloudWatch logs. Follow
+<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-using.html#attach-managed-policy-console">these instructions</a> for attaching the managed policies.</li>
+<li><a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-service.html#roles-creatingrole-service-console">Create an AWS IAM service role</a> that allows the AWS Lambda
+service to write to CloudWatch and access an S3 bucket with the following
+permissions: <code>s3::GetObject*</code>, <code>s3::PutObject*</code>, <code>s3::List*</code>,
+<code>s3::DeleteObject*</code>. When creating this role, select &ldquo;AWS Lambda&rdquo; to allow
+AWS Lambda to write to CloudWatch and S3. Make sure you save the ARN for
+this newly created role, as we will be using this value as the environment
+variable <code>IAM_ROLE_ARN</code> when creating our Lambda function.</li>
+</ul>
+
+<p>The setup for our testing environment is automated with a CloudFormation
+template, which you can find <a href="https://github.com/pivotal-golang/s3cli/blob/4e8430386451979c65b38b234f34be4ea695c14d/ci/assets/cloudformation-s3cli-iam.template.json">here</a>.</p>
+
+<p>In the steps below, we will be using the <a href="https://aws.amazon.com/cli/">AWS Command Line
+Interface</a> for interacting with AWS. Configure your
+AWS CLI with the access key ID and secret access key for the IAM user that you
+have created as follows:</p>
+
+<pre><code class="language-bash"># example session
+$ aws configure
+
+AWS Access Key ID [****************AAAA]:
+AWS Secret Access Key [****************AAAA]:
+Default region name [us-east-1]:
+Default output format [json]:
+</code></pre>
+
+<h3 id="running-the-lambda-function:f7e6d51114d3bfdcf339dc74a707a64d">Running the Lambda Function</h3>
+
+<p>Now that we have a zipped deployment package, we run the following AWS CLI
+commands to create the Lambda function and invoke this function:</p>
+
+<pre><code class="language-bash">aws lambda create-function \
+  --region us-east-1 \
+  --function-name MY_LAMBDA_FUNCTION \
+  --zip-file fileb://deployment.zip \
+  --role ${IAM_ROLE_ARN} \
+  --timeout 300 \
+  --handler lambda_function.test_runner_handler \
+  --runtime python2.7
+
+aws lambda invoke \
+  --invocation-type RequestResponse \
+  --function-name MY_LAMBDA_FUNCTION \
+  --region us-east-1 \
+  --log-type Tail \
+  --payload '{&quot;region&quot;: &quot;us-east-1&quot;, &quot;bucket_name&quot;: &quot;YOUR_BUCKET_NAME&quot;, &quot;s3_host&quot;: &quot;s3.amazonaws.com&quot;}' \
+  lambda.log
+</code></pre>
+
+<blockquote>
+<p>Note: The <code>fileb://</code> above is <a href="http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-file-binary">not a typo</a>.</p>
+</blockquote>
+
+<p>The output of the <code>aws lambda invoke</code> command will be a JSON document with
+schema</p>
+
+<pre><code class="language-json">{
+  &quot;LogResult&quot;: &quot;&lt;BASE64 ENCODED OUTPUT TRUNCATED TO LAST 4KB&gt;&quot;,
+  &quot;FunctionError&quot;: &quot;(Unhandled|Handled)&quot;,
+  &quot;StatusCode&quot;: 200
+}
+</code></pre>
+
+<p>We noticed a few quirks with testing with this approach.</p>
+
+<p>First, this <code>aws lambda invoke</code> command does not exit with a non-zero status
+when the Lambda function itself exits with an error. The existence of the
+<code>FunctionError</code> key indicates whether or not the Lambda function encountered
+errors, so we used <code>jq</code> to process the JSON and determine if our tests succeeded
+or failed.</p>
+
+<p>Additionally, our tests generate much more than 4KB of log data, so our initial
+approach of decoding the Base64 encoded <code>LogResult</code> still yielded truncated
+console output.</p>
+
+<h3 id="fetching-the-full-log-output:f7e6d51114d3bfdcf339dc74a707a64d">Fetching the Full Log Output</h3>
+
+<p>Fortunately, all of the console output from our <code>logging.Logger</code> is sent
+through AWS CloudWatch Logs if the IAM role we provide to the Lambda function is
+allowed to create log groups, log streams, and log events.</p>
+
+<p>To retrieve our CloudWatch logs, we determine the name of the first log stream
+(for the first invocation of the Lambda function) for the log group that is
+associated with our Lambda function. We then print the message for each log
+event in the log stream to our own command line.</p>
+
+<pre><code class="language-bash">LOG_GROUP_NAME=&quot;/aws/lambda/MY_LAMBDA_FUNCTION&quot;
+LOG_STREAM_NAME=$(
+  aws logs describe-log-streams --log-group-name=${LOG_GROUP_NAME} \
+  | jq -r &quot;.logStreams[0].logStreamName&quot;
+)
+LOG_STREAM_EVENTS_JSON=$(
+  aws logs get-log-events \
+    --log-group-name=${LOG_GROUP_NAME} \
+    --log-stream-name=${LOG_STREAM_NAME}
+)
+
+echo ${LOG_STREAM_EVENTS_JSON} | jq -r &quot;.events | map(.message) | .[]&quot;
+</code></pre>
+
+<h2 id="summary:f7e6d51114d3bfdcf339dc74a707a64d">Summary</h2>
+
+<p>In order to test the IAM role capabilities of our <code>s3cli</code>, we wanted to find a
+low-cost (in time and money) alternative to starting an EC2 networking stack and
+EC2 instance. In this post, we&rsquo;ve shown how to make use of AWS Lambda functions
+to do just that.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

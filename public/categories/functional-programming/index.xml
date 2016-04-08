@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Functional Programming on Pivotal Engineering Journal</title>
+    <link>/categories/functional-programming/</link>
+    <description>Recent content in Functional Programming on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 19 Mar 2016 12:15:15 -0600</lastBuildDate>
+    <atom:link href="/categories/functional-programming/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Algebraic Data Types In Kotlin</title>
+      <link>/post/algebraic-data-types-in-kotlin/</link>
+      <pubDate>Sat, 19 Mar 2016 12:15:15 -0600</pubDate>
+      
+      <guid>/post/algebraic-data-types-in-kotlin/</guid>
+      <description>&lt;p&gt;Lately I have been doing a good amount of reading on functional programming, specifically &lt;a href=&#34;http://haskellbook.com/&#34;&gt;Haskell&lt;/a&gt; and &lt;a href=&#34;http://elm-lang.org/&#34;&gt;Elm&lt;/a&gt;. As part of this reading, I&amp;rsquo;ve been exposed to the wonderful world of type systems more advanced than the ones that I am used to, i.e. the Java type system. Exposure to &lt;a href=&#34;https://en.wikipedia.org/wiki/Algebraic_data_type&#34;&gt;algebraic data types (ADTs)&lt;/a&gt; is one of the things that I&amp;rsquo;ve enjoyed about these readings. In the rest of this article, I will demonstrate how ADTs can be used in the Kotlin type system to assure that you&amp;rsquo;ve handled all of the possible outcomes from a business use case. For those already familiar with the &lt;a href=&#34;https://hackage.haskell.org/package/base-4.8.2.0/docs/Data-Either.html&#34;&gt;&lt;code&gt;Either&lt;/code&gt; type&lt;/a&gt; much of this will be old news to you.&lt;/p&gt;
+
+&lt;p&gt;Algebraic data types allow me to create a closed set of possible options for a specific type in my domain.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;sealed class CreateSubscriptionResult {
+    class Success(val subscription: Subscription): CreateSubscriptionResult()
+    class Failure(val errors: List&amp;lt;String&amp;gt;): CreateSubscriptionResult()
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In this case I am using the &lt;a href=&#34;https://kotlinlang.org/docs/reference/classes.html#sealed-classes&#34;&gt;&lt;code&gt;sealed&lt;/code&gt; keyword&lt;/a&gt; to tell the type system that there will not be any more possible outcomes for a &lt;code&gt;CreateSubscriptionResult&lt;/code&gt;. Now I can use the &lt;code&gt;when&lt;/code&gt; keyword to force the consumer of the &lt;code&gt;CreateSubscriptionResult&lt;/code&gt; to make sure it handles all of the possible outcomes.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;return when (result) {
+    is CreateSubscriptionResult.Success -&amp;gt;
+        // Do something on success
+    is CreateSubscriptionResult.Failure -&amp;gt;
+        // Do something on failure
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Were I to omit one of the possible outcomes,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;return when (result) {
+    is CreateSubscriptionResult.Success -&amp;gt;
+        // Do something on success
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;then the Kotlin compiler will tell me that I&amp;rsquo;ve forgotten something.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;when expression must be exhaustive, add necessary &#39;is Failure&#39; branch or &#39;else&#39; branch instead
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Well isn&amp;rsquo;t that nice. I now can use the type system to remind myself, and my fellow developers, that something is missing and keep those types of bugs from cropping up in my software without a lot of boilerplate code. If another outcome is added at some point, the compiler will tell me that and I can then figure out how to handle it.&lt;/p&gt;
+
+&lt;p&gt;By using the type system to do this, I enable a faster feedback loop than had I written a test for it. Yes I may still need a test for the logic inside of each branch but I would postulate that if I keep it simple enough (like a difference in response code) that a test may be overkill because of the type system assurance. I&amp;rsquo;ll leave that decision up to you.&lt;/p&gt;
+
+&lt;p&gt;One place I have been experimenting with this type of pattern is in my &lt;a href=&#34;https://github.com/mikegehard/user-management-evolution-kotlin/blob/master/applications/ums/src/main/kotlin/com/example/ums/subscriptions/SubscriptionsController.kt#L36-L47&#34;&gt;Spring controllers&lt;/a&gt;. I like how it makes the code that handles the outcomes easy to read and understand. Another benefit is that I now have an explicit contract between the use case and the consumer that outlines all of the possible outcomes for the use case. When I combine this contract with the &lt;code&gt;when&lt;/code&gt; keyword, the compiler will enforce that the client either handles each outcome or decides to explicitly punt on some by using the &lt;code&gt;else&lt;/code&gt; keyword.&lt;/p&gt;
+
+&lt;p&gt;Have some feedback? I&amp;rsquo;d love to hear it. Reach out to me on Twitter @mikegehard and we can have a conversation about it.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

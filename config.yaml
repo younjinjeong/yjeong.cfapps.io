@@ -1,0 +1,9 @@
+languageCode: en-us
+Theme: "pivotal-ui"
+Title: Pivotal 엔지니어링 블로그
+taxonomies:
+  tag: "tags"
+  category: "categories"
+Params:
+  SubTitle: 피보탈 엔지니어들이 전하는 기술 이야기 
+...

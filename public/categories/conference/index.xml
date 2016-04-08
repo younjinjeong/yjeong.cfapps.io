@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Conference on Pivotal Engineering Journal</title>
+    <link>/categories/conference/</link>
+    <description>Recent content in Conference on Pivotal Engineering Journal</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Feb 2016 18:04:43 +0100</lastBuildDate>
+    <atom:link href="/categories/conference/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>PgConf.Russia 2016</title>
+      <link>/post/PgConf.Russia-2016/</link>
+      <pubDate>Thu, 18 Feb 2016 18:04:43 +0100</pubDate>
+      
+      <guid>/post/PgConf.Russia-2016/</guid>
+      <description>
+
+&lt;h2 id=&#34;pgconf-russia-2016:8ac4d6104d3688374c96f128a2d65240&#34;&gt;PgConf.Russia 2016&lt;/h2&gt;
+
+&lt;p&gt;I had the honor to present my talk &amp;ldquo;How we made Greenplum Open Source&amp;rdquo; at &lt;a href=&#34;https://pgconf.ru/en/&#34;&gt;PgConf.Russia 2016&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;You will find a full report &lt;a href=&#34;http://andreas.scherbaum.la/blog/archives/901-PgConf.Russia-2016.html&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
