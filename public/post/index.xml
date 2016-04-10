@@ -19,7 +19,9 @@
 
 &lt;h1 id=&#34;살펴보기:51c7121ae35820a8cc35fc9774cdf96e&#34;&gt;살펴보기&lt;/h1&gt;
 
-&lt;p&gt;Hugo 를 사용한 블로깅은 소개된지 매우 오래되었다.&lt;/p&gt;
+&lt;p&gt;Hugo 를 사용한 블로깅은 소개된지 매우 오래되었다. 이번에는 이 블로그를 Git로 관리하고, 생성 및 수정되는 글을 그때그때 테스트하여 문제가 없는 경우 Staging 환경에 배포하는 것을 목적으로 한다.&lt;/p&gt;
+
+&lt;p&gt;(작성중&amp;hellip; 중략)&lt;/p&gt;
 </description>
     </item>
     
