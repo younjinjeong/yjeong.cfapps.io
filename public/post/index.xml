@@ -2,19 +2,33 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Pivotal 엔지니어링 블로그</title>
-    <link>/post/</link>
+    <link>https://yjeong.cfapps.io/post/</link>
     <description>Recent content in Posts on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Mar 2016 12:15:15 -0600</lastBuildDate>
-    <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 10 Apr 2016 12:15:15 -0600</lastBuildDate>
+    <atom:link href="https://yjeong.cfapps.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>블로깅을 위한 Concourse 와 Cloud Foundry 연동</title>
+      <link>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</link>
+      <pubDate>Sun, 10 Apr 2016 12:15:15 -0600</pubDate>
+      
+      <guid>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</guid>
+      <description>
+
+&lt;h1 id=&#34;살펴보기:51c7121ae35820a8cc35fc9774cdf96e&#34;&gt;살펴보기&lt;/h1&gt;
+
+&lt;p&gt;Hugo 를 사용한 블로깅은 소개된지 매우 오래되었다.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>AWS Lambda 를 이용한 테스트 구현</title>
-      <link>/post/RunningTestsInAWS-Lambda/</link>
+      <link>https://yjeong.cfapps.io/post/RunningTestsInAWS-Lambda/</link>
       <pubDate>Sat, 19 Mar 2016 12:15:15 -0600</pubDate>
       
-      <guid>/post/RunningTestsInAWS-Lambda/</guid>
+      <guid>https://yjeong.cfapps.io/post/RunningTestsInAWS-Lambda/</guid>
       <description>
 
 &lt;h1 id=&#34;살펴보기:a247107e1efee38834051c0eec340447&#34;&gt;살펴보기&lt;/h1&gt;
