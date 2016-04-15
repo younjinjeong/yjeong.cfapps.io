@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Android on Pivotal Engineering Journal</title>
-    <link>/categories/android/</link>
-    <description>Recent content in Android on Pivotal Engineering Journal</description>
+    <title>Android on Pivotal 엔지니어링 블로그</title>
+    <link>https://yjeong.cfapps.io/categories/android/</link>
+    <description>Recent content in Android on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 11 Nov 2015 14:39:05 -0800</lastBuildDate>
-    <atom:link href="/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Apr 2016 12:15:15 -0600</lastBuildDate>
+    <atom:link href="https://yjeong.cfapps.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Setting up Kotlin with Android and tests</title>
-      <link>/post/setting-up-kotlin-with-android-and-tests/</link>
-      <pubDate>Wed, 11 Nov 2015 14:39:05 -0800</pubDate>
+      <link>https://yjeong.cfapps.io/post/Setting-up-Kotlin-with-Android-and-tests/</link>
+      <pubDate>Fri, 15 Apr 2016 12:15:15 -0600</pubDate>
       
-      <guid>/post/setting-up-kotlin-with-android-and-tests/</guid>
+      <guid>https://yjeong.cfapps.io/post/Setting-up-Kotlin-with-Android-and-tests/</guid>
       <description>
 
-&lt;p&gt;I recently heard about &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; with the release of their 1.0 Beta last week. Kotlin is a modern programming language that runs in the JVM and is interoperable with Java. Kotlin can also be used to create Android apps.&lt;/p&gt;
+&lt;p&gt;최근에 저는 &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; 1.0 Beta 버전이 발표 되었다는 소식을 들었습니다. Kotlin 은 JVM과 Java, 그리고 Android 앱을 개발 하는데 사용 가능한 최신의 개발 언어입니다.&lt;/p&gt;
 
-&lt;p&gt;I was curious, so I decided to set up a small Android app using Kotlin and try out some different methods of testing.&lt;/p&gt;
+&lt;p&gt;호기심이 동한 저는 Kotlin을 사용해서 샘플 Android 앱을 만들고 간단한 테스트를 해 보기로 작정했습니다.&lt;/p&gt;
 
-&lt;h2 id=&#34;setting-up-the-app:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Setting up the app&lt;/h2&gt;
+&lt;h2 id=&#34;앱-설정하기:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;앱 설정하기&lt;/h2&gt;
 
-&lt;p&gt;Setting up a hello word Android app in Kotlin was actually quite easy!  The Kotlin plugin for IntelliJ / Android Studo has a tool for converting your Java code to Kotlin, so you can get started really quickly! I was able to follow this &lt;a href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-android.html&#34;&gt;tutorial&lt;/a&gt; to get my Android app set up.&lt;/p&gt;
+&lt;p&gt;Kotlin을 사용해서 Hello world 앱을 사용하는 것은 매우 쉬웠습니다. IntelliJ / Android 스튜디오를 위한 Kotlin 플러그인은 기존의 Java 코드를 Kotlin 코드로 변환해 주는 기능을 포함하고 있어서 매우 빠르게 시작할 수 있었습니다. 처음 시작할때 &lt;a href=&#34;https://kotlinlang.org/docs/tutorials/kotlin-android.html&#34;&gt;여기&lt;/a&gt;을 참조 하였습니다.&lt;/p&gt;
 
-&lt;p&gt;Two points to watch out for:&lt;/p&gt;
+&lt;p&gt;아래의 두가지에 주목 합시다.&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Make sure you have installed the Kotlin plugins in Android Studio before you start&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Android Studio 를 시작하기 전 Kotlin 플러그인을 설치 했는지 확인합니다.&lt;/p&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;I had to highlight the text of my java file before selecting &amp;ldquo;Convert Java File to Kotlin File&amp;rdquo; in order to get the converter to work.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&amp;ldquo;Convert Java File to Kotlin File&amp;rdquo; 을 선택 후 변환 작업을 시작하기전, Java 파일을 하이라이트 할 필요가 있었습니다.&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h2 id=&#34;android-instrumentation-tests:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Android instrumentation tests&lt;/h2&gt;
+&lt;h2 id=&#34;android-인스트루먼트-테스트:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;Android 인스트루먼트 테스트&lt;/h2&gt;
 
-&lt;p&gt;I started by writing a simple Android Instrumentation test in Java (you can freely mix Java files and Kotlin files in your project and it seems to work fine).  Once that was working, I converted it to Kotlin:&lt;/p&gt;
+&lt;p&gt;간단한 테스트를 작성하는 것으로 작업을 시작했습니다. (Java와 Kotlin 파일을 하나의 프로젝트 안에서 혼용하더라도 문제 없이 동작하는 것으로 보입니다.)&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;class MainActivityTest : ActivityInstrumentationTestCase2&amp;lt;MainActivity&amp;gt;(MainActivity::class.java) {
    private var mainActivity: Activity? = null
@@ -54,11 +54,12 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The only trouble I had was that after I converted the file, the Android Studio test runner configuration was broken.  To fix it I had to edit my run configuration in Android Studio by navigating to &lt;code&gt;Run -&amp;gt; Edit Configurations -&amp;gt; Android Tests&lt;/code&gt; and setting the instrumentation runner to &lt;code&gt;android.test.InstrumentationTestRunner&lt;/code&gt;.  After that, lo and behold, the test worked fine in Kotlin!&lt;/p&gt;
+&lt;p&gt;파일을 변환하는 동안 한가지 문제가 있었는데, 바로 Android Studio의 테스트 runner 설정이 깨진것 입니다. 해결을 위해, Android Studio 에서 &lt;code&gt;Run -&amp;gt; Edit Configurations -&amp;gt; Android Tests&lt;/code&gt; 로 진입하여 테스트 설정을 &lt;code&gt;android.test.InstrumentationTestRunner&lt;/code&gt; 로 변경해야 했습니다.
+이 부분만 수정해 주면 별 문제 없이 Kotlin 을 사용한 테스트가 동작 했습니다.&lt;/p&gt;
 
-&lt;h2 id=&#34;robolectric-tests:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Robolectric tests&lt;/h2&gt;
+&lt;h2 id=&#34;robolectric-테스트:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;Robolectric 테스트&lt;/h2&gt;
 
-&lt;p&gt;After my resounding success at getting the Android Instrumentation Tests to work, I decided to try my luck at Robolectric.  It turns out, Robolectric pretty much Just Worked too.  Here&amp;rsquo;s a Robolectric test written in Kotlin, equivalent to the instrumentation test above:&lt;/p&gt;
+&lt;p&gt;처음 수행했던 Android 인스투르먼트 테스트가 문제 없이 성공한 뒤에, Robolectric 테스트를 수행해 보기로 마음먹었습니다. 이 역시 별 문제 없이 잘 작동했으며, 아래의 코드는 Kotlin 을 사용한 Robolectric 테스트이고, 위에 진행했던 테스트와 동일합니다.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;@RunWith(RobolectricGradleTestRunner::class)
 @Config(constants = BuildConfig::class)
@@ -74,23 +75,25 @@ class ExampleRobolectricTest {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;unit-tests-with-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Unit tests with Spek&lt;/h2&gt;
+&lt;h2 id=&#34;spek을-사용한-유닛-테스트:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;Spek을 사용한 유닛 테스트&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://jetbrains.github.io/spek/&#34;&gt;Spek&lt;/a&gt; is a testing framwork written in Kotlin with a pretty, rspec-like syntax. I would love to be able to write my Android tests using something like Spek, so I decided to try!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://jetbrains.github.io/spek/&#34;&gt;Spek&lt;/a&gt; 은 rspec 과 유사한 형태의 문법을 사용한 Kotlin 기반 테스트 프레임웍 입니다. Spek 과 같은 도구를 찾고 있었던 저는 바로 사용해 보기로 했습니다.&lt;/p&gt;
 
-&lt;h3 id=&#34;bad-news-1-android-instrumentation-tests-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Bad news #1: Android Instrumentation tests + Spek&lt;/h3&gt;
+&lt;h3 id=&#34;나쁜-소식-1-android-instrumentation-test-spek:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;나쁜 소식 #1: Android Instrumentation test + Spek&lt;/h3&gt;
 
-&lt;p&gt;Spek requires your tests to inherit from a base class called &lt;code&gt;Spek&lt;/code&gt;.  Android instrumentation tests require your tests to inherit from &lt;code&gt;InstrumentationTestCase&lt;/code&gt;.  As far as I can tell, this is a deal-breaker for using the two systems together, for the moment.&lt;/p&gt;
+&lt;p&gt;Spek 을 사용한 테스트를 사용하려면  &lt;code&gt;Spek&lt;/code&gt; 베이스 클래스를 상속해야 할 필요가 있습니다. Android Instrument 테스트는 &lt;code&gt;InstrumentationTestCase&lt;/code&gt; 클래스가 필요합니다. 제가 아는 바로는, 두개의 시스템을 한꺼번에 사용하도록 함으로서 문제가 됩니다.&lt;/p&gt;
 
-&lt;h3 id=&#34;bad-news-2-robolectric-tests-spek:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Bad news #2: Robolectric tests + Spek&lt;/h3&gt;
+&lt;h3 id=&#34;나쁜-소식-2-robolectric-tests-spek:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;나쁜 소식 #2: Robolectric tests + Spek&lt;/h3&gt;
 
-&lt;p&gt;Robolectric doesn&amp;rsquo;t specifically require your tests to inherit from any particular class, which theoretically opens the door to using it together with Spek.  However, naively combining them doesn&amp;rsquo;t work as expected, as the test runner cannot find any tests.  I think the reason for this is that Robolectric relies on using the RobolectricTestRunner, which extends the &lt;code&gt;BlockJUnit4ClassRunner&lt;/code&gt; (which identifies tests based on annotations), while Spek runs with it&amp;rsquo;s own &lt;code&gt;JUnitClassRunner&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Robolectric 은 테스트를 위해 기본적으로 클래스 상속을 요구하지 않으며, 이는 이론 적으로는 Spek과 함께 적절하게 동작해야 합니다. 하지만 실제로는 기대한 대로 동작하지 않았는데, 문제는 테스트 런너가 테스트를 찾지 못했기 때문입니다. 아마도 원인은
+Robolectric 은 RobolectricTestRunner 에 의존성을 가지고 있는데 이는 &lt;code&gt;BlockJUnit4ClassRunner&lt;/code&gt;(어노테이션에 기반해서 테스트를 찾아내는)의 확장이며, Spek은 그 나름대로의 &lt;code&gt;JUnitClassRunner&lt;/code&gt; 와 함께 동작하기 때문인 것으로 보입니다.&lt;/p&gt;
 
-&lt;p&gt;In the future I may look into writing a RobolectricSpek test runner, but for now, it looks like these two systems do not play nicely together.&lt;/p&gt;
+&lt;p&gt;조만간 RobolectricSpek 테스트 런너에 대해 더 깊이 살펴볼 예정이긴 하지만, 현재로서는 두개가 한꺼번에 잘 동작하지는 않는것으로 보입니다.&lt;/p&gt;
 
-&lt;h3 id=&#34;finally-the-good-news:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Finally, the good news&lt;/h3&gt;
+&lt;h3 id=&#34;마지막으로-좋은-소식:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;마지막으로, 좋은 소식&lt;/h3&gt;
 
-&lt;p&gt;Although Spek does not seem to be compatible with either Robolectric or Android instrumentation tests, it actually works fine as a replacement for vanilla JUnit tests.  I think this kind of test is of dubious utility in a typical Android project, since there&amp;rsquo;s usually not a lot of code that can be tested purely with JUnit, but if you have these kinds of tests, you could easily convert them to use Spek.  Here&amp;rsquo;s a sample test I wrote in my hello world app:&lt;/p&gt;
+&lt;p&gt;위의 사례로 보았을때 Spek은 Android instrumatation 테스트나 Robolectric 테스트와 잘 동작하지 않지만, vanilla JUnit 테스트의 대체로서는 훌륭하게 동작합니다. 개인적으로 일반적인 Android 프로젝트에서 이는 매우 미심쩍은 도구로 생각하는데, 이는 JUnit 을 사용해서 코드를 테스트 하는 경우가 별로 없기 때문입니다. 다만, 이 글을 읽고 있는 여러분이
+만약 이런 테스트를 사용하고 있다면, 쉽게 Spek으로 변환할 수 있을것 입니다. 아래 간단한 Hello world 앱 테스트 코드가 있으므로 참고 해 보세요.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-kotlin&#34;&gt;import org.jetbrains.spek.api.Spek
 import kotlin.test.assertEquals
@@ -111,9 +114,10 @@ class ExampleUnitTest : Spek() {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&#34;conclusion:c9e70ab1157400281b960b0c57a0d8d8&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;h2 id=&#34;결론:b104e8806e702cdcf9ce6aa2b52b4a7f&#34;&gt;결론&lt;/h2&gt;
 
-&lt;p&gt;Kotlin seems like a promising new language with a lot of features that make it nicer to use than Java.  Setting up a &amp;ldquo;Hello World&amp;rdquo; Android app was extremely simple, and getting tests to run with Robolectric or the Android instrumentation runner was no problem.  I look forward to trying it out more in the future!&lt;/p&gt;
+&lt;p&gt;Kotlin 은 기본의 Java 를 그대로 사용하는 것 보다는 훨씬 좋은 언어인것 같습니다. &amp;ldquo;Hello World&amp;rdquo; Android 앱을 설정하는 것은 매우 쉬웠으며, Android Instrumentation 테스트와 Robolectric 테스트 모두 쉽게 구성할 수 있었습니다.
+앞으로도 더 사용해 보아야 겠는걸요?&lt;/p&gt;
 </description>
     </item>
     
