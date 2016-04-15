@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Setting up Kotlin with Android and tests &middot; Pivotal 엔지니어링 블로그 </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal 엔지니어링 블로그" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal 엔지니어링 블로그</a></h1>
+      <h3 class="type-dark-9 mvn">피보탈 엔지니어들이 전하는 기술 이야기</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Setting up Kotlin with Android and tests
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">First impressions of Kotlin</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Fri, Apr 15, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+                <li>
+                  
+                    <a href="https://twitter.com/lauraallora">Laura Kogler</a>
+                  
+                </li>
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/kotlin">Kotlin</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/android">Android</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/Setting-Kotlin-for-Android-tests.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="lauraallora ">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<p>최근에 저는 <a href="https://kotlinlang.org/">Kotlin</a> 1.0 Beta 버전이 발표 되었다는 소식을 들었습니다. Kotlin 은 JVM과 Java, 그리고 Android 앱을 개발 하는데 사용 가능한 최신의 개발 언어입니다.</p>
+
+<p>호기심이 동한 저는 Kotlin을 사용해서 샘플 Android 앱을 만들고 간단한 테스트를 해 보기로 작정했습니다.</p>
+
+<h2 id="앱-설정하기:548d595358a3d3941ccfc52ffe81b887">앱 설정하기</h2>
+
+<p>Kotlin을 사용해서 Hello world 앱을 사용하는 것은 매우 쉬웠습니다. IntelliJ / Android 스튜디오를 위한 Kotlin 플러그인은 기존의 Java 코드를 Kotlin 코드로 변환해 주는 기능을 포함하고 있어서 매우 빠르게 시작할 수 있었습니다. 처음 시작할때 <a href="https://kotlinlang.org/docs/tutorials/kotlin-android.html">여기</a>을 참조 하였습니다.</p>
+
+<p>아래의 두가지에 주목 합시다.</p>
+
+<ol>
+<li><p>Android Studio 를 시작하기 전 Kotlin 플러그인을 설치 했는지 확인합니다.</p></li>
+
+<li><p>&ldquo;Convert Java File to Kotlin File&rdquo; 을 선택 후 변환 작업을 시작하기전, Java 파일을 하이라이트 할 필요가 있었습니다.</p></li>
+</ol>
+
+<h2 id="android-인스트루먼트-테스트:548d595358a3d3941ccfc52ffe81b887">Android 인스트루먼트 테스트</h2>
+
+<p>간단한 테스트를 작성하는 것으로 작업을 시작했습니다. (Java와 Kotlin 파일을 하나의 프로젝트 안에서 혼용하더라도 문제 없이 동작하는 것으로 보입니다.)</p>
+
+<pre><code class="language-kotlin">class MainActivityTest : ActivityInstrumentationTestCase2&lt;MainActivity&gt;(MainActivity::class.java) {
+   private var mainActivity: Activity? = null
+
+   @Throws(Exception::class)
+   override fun setUp() {
+       super.setUp()
+       mainActivity = activity
+   }
+
+   fun test_itDisplaysHelloWorld() {
+       val textView = mainActivity!!.findViewById(R.id.main_text) as TextView
+       val actual = textView.text.toString()
+       Assert.assertEquals(&quot;Hello World!&quot;, actual)
+   }
+}
+</code></pre>
+
+<p>파일을 변환하는 동안 한가지 문제가 있었는데, 바로 Android Studio의 테스트 runner 설정이 깨진것 입니다. 해결을 위해, Android Studio 에서 <code>Run -&gt; Edit Configurations -&gt; Android Tests</code> 로 진입하여 테스트 설정을 <code>android.test.InstrumentationTestRunner</code> 로 변경해야 했습니다.
+이 부분만 수정해 주면 별 문제 없이 Kotlin 을 사용한 테스트가 동작 했습니다.</p>
+
+<h2 id="robolectric-테스트:548d595358a3d3941ccfc52ffe81b887">Robolectric 테스트</h2>
+
+<p>처음 수행했던 Android 인스투르먼트 테스트가 문제 없이 성공한 뒤에, Robolectric 테스트를 수행해 보기로 마음먹었습니다. 이 역시 별 문제 없이 잘 작동했으며, 아래의 코드는 Kotlin 을 사용한 Robolectric 테스트이고, 위에 진행했던 테스트와 동일합니다.</p>
+
+<pre><code class="language-kotlin">@RunWith(RobolectricGradleTestRunner::class)
+@Config(constants = BuildConfig::class)
+class ExampleRobolectricTest {
+
+    @Test
+    fun itShouldDisplayHelloWorld() {
+        val activity = Robolectric.setupActivity(MainActivity::class.java)
+        val textView = activity.findViewById(R.id.main_text) as TextView
+
+        assertThat(textView.text).isEqualTo(&quot;Hello World!&quot;)
+    }
+}
+</code></pre>
+
+<h2 id="spek을-사용한-유닛-테스트:548d595358a3d3941ccfc52ffe81b887">Spek을 사용한 유닛 테스트</h2>
+
+<p><a href="https://jetbrains.github.io/spek/">Spek</a> 은 rspec 과 유사한 형태의 문법을 사용한 Kotlin 기반 테스트 프레임웍 입니다. Spek 과 같은 도구를 찾고 있었던 저는 바로 사용해 보기로 했습니다.</p>
+
+<h3 id="나쁜-소식-1-android-instrumentation-test-spek:548d595358a3d3941ccfc52ffe81b887">나쁜 소식 #1: Android Instrumentation test + Spek</h3>
+
+<p>Spek 을 사용한 테스트를 사용하려면  <code>Spek</code> 베이스 클래스를 상속해야 할 필요가 있습니다. Android Instrument 테스트는 <code>InstrumentationTestCase</code> 클래스가 필요합니다. 제가 아는 바로는, 두개의 시스템을 한꺼번에 사용하도록 함으로서 문제가 됩니다.</p>
+
+<h3 id="나쁜-소식-2-robolectric-tests-spek:548d595358a3d3941ccfc52ffe81b887">나쁜 소식 #2: Robolectric tests + Spek</h3>
+
+<p>Robolectric 은 테스트를 위해 기본적으로 클래스 상속을 요구하지 않으며, 이는 이론 적으로는 Spek과 함께 적절하게 동작해야 합니다. 하지만 실제로는 기대한 대로 동작하지 않았는데, 문제는 테스트 런너가 테스트를 찾지 못했기 때문입니다. 아마도 원인은
+Robolectric 은 RobolectricTestRunner 에 의존성을 가지고 있는데 이는 <code>BlockJUnit4ClassRunner</code>(어노테이션에 기반해서 테스트를 찾아내는)의 확장이며, Spek은 그 나름대로의 <code>JUnitClassRunner</code> 와 함께 동작하기 때문인 것으로 보입니다.</p>
+
+<p>조만간 RobolectricSpek 테스트 런너에 대해 더 깊이 살펴볼 예정이긴 하지만, 현재로서는 두개가 한꺼번에 잘 동작하지는 않는것으로 보입니다.</p>
+
+<h3 id="마지막으로-좋은-소식:548d595358a3d3941ccfc52ffe81b887">마지막으로, 좋은 소식</h3>
+
+<p>위의 사례로 보았을때 Spek은 Android instrumatation 테스트나 Robolectric 테스트와 잘 동작하지 않지만, vanilla JUnit 테스트의 대체로서는 훌륭하게 동작합니다. 개인적으로 일반적인 Android 프로젝트에서 이는 매우 미심쩍은 도구로 생각하는데, 이는 JUnit 을 사용해서 코드를 테스트 하는 경우가 별로 없기 때문입니다. 다만, 이 글을 읽고 있는 여러분이
+만약 이런 테스트를 사용하고 있다면, 쉽게 Spek으로 변환할 수 있을것 입니다. 아래 간단한 Hello world 앱 테스트 코드가 있으므로 참고 해 보세요.</p>
+
+<pre><code class="language-kotlin">import org.jetbrains.spek.api.Spek
+import kotlin.test.assertEquals
+
+class ExampleUnitTest : Spek() {
+    init {
+        given(&quot;Two numbers&quot;) {
+            val firstNumber = 3
+            val secondNumber = 5
+            on(&quot;adding the numbers&quot;) {
+                val result = firstNumber + secondNumber
+                it(&quot;should return the correct sum&quot;) {
+                    assertEquals(8, result)
+                }
+            }
+        }
+    }
+}
+</code></pre>
+
+<h2 id="결론:548d595358a3d3941ccfc52ffe81b887">결론</h2>
+
+<p>Kotlin 은 기본의 Java 를 그대로 사용하는 것 보다는 훨씬 좋은 언어인것 같습니다. &ldquo;Hello World&rdquo; Android 앱을 설정하는 것은 매우 쉬웠으며, Android Instrumentation 테스트와 Robolectric 테스트 모두 쉽게 구성할 수 있었습니다.
+앞으로도 더 사용해 보아야 겠는걸요?</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
