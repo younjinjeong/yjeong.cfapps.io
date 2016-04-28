@@ -196,6 +196,8 @@ echo ${LOG_STREAM_EVENTS_JSON} | jq -r &amp;quot;.events | map(.message) | .[]&a
 
 &lt;p&gt;원문: &lt;a href=&#34;http://engineering.pivotal.io/post/running-tests-in-aws-lambda/&#34;&gt;http://engineering.pivotal.io/post/running-tests-in-aws-lambda/&lt;/a&gt;
 번역: Younjin Jeong, Principal Technologist, Pivotal Labs.&lt;/p&gt;
+
+&lt;p&gt;쿠팡데모&lt;/p&gt;
 </description>
     </item>
     
