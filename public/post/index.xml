@@ -6,8 +6,22 @@
     <description>Recent content in Posts on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 15 Apr 2016 12:15:15 -0600</lastBuildDate>
+    <lastBuildDate>Tue, 10 May 2016 12:16:15 -0600</lastBuildDate>
     <atom:link href="https://yjeong.cfapps.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>데모 블로그 for DevOps</title>
+      <link>https://yjeong.cfapps.io/post/DevOps/</link>
+      <pubDate>Tue, 10 May 2016 12:16:15 -0600</pubDate>
+      
+      <guid>https://yjeong.cfapps.io/post/DevOps/</guid>
+      <description>
+
+&lt;h1 id=&#34;살펴보기:99c9919f0ba2753582d3f233ea09eaec&#34;&gt;살펴보기&lt;/h1&gt;
+
+&lt;p&gt;DevOps Days&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Setting up Kotlin with Android and tests</title>
@@ -118,6 +132,8 @@ class ExampleUnitTest : Spek() {
 
 &lt;p&gt;Kotlin 은 기본의 Java 를 그대로 사용하는 것 보다는 훨씬 좋은 언어인것 같습니다. &amp;ldquo;Hello World&amp;rdquo; Android 앱을 설정하는 것은 매우 쉬웠으며, Android Instrumentation 테스트와 Robolectric 테스트 모두 쉽게 구성할 수 있었습니다.
 앞으로도 더 사용해 보아야 겠는걸요?&lt;/p&gt;
+
+&lt;p&gt;번역: 정윤진 (yjeong@pivotal.io)&lt;/p&gt;
 </description>
     </item>
     
@@ -325,7 +341,12 @@ echo ${LOG_STREAM_EVENTS_JSON} | jq -r &amp;quot;.events | map(.message) | .[]&a
 &lt;p&gt;원문: &lt;a href=&#34;http://engineering.pivotal.io/post/running-tests-in-aws-lambda/&#34;&gt;http://engineering.pivotal.io/post/running-tests-in-aws-lambda/&lt;/a&gt;
 번역: Younjin Jeong, Principal Technologist, Pivotal Labs.&lt;/p&gt;
 
-&lt;p&gt;쿠팡데모&lt;/p&gt;
+&lt;p&gt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD&lt;/p&gt;
+
+&lt;h1 id=&#34;쿠팡데모:a247107e1efee38834051c0eec340447&#34;&gt;쿠팡데모&lt;/h1&gt;
+
+&lt;p&gt;카카오 데모
+&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; 72eccefbd81ebc985475ee9a82f67fa80e6612ad&lt;/p&gt;
 </description>
     </item>
     
