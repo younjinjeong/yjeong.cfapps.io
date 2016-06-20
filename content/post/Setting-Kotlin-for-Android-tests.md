@@ -111,3 +111,9 @@ Kotlin 은 기본의 Java 를 그대로 사용하는 것 보다는 훨씬 좋은
 앞으로도 더 사용해 보아야 겠는걸요? 
 
 번역: 정윤진 (yjeong@pivotal.io) 
+
+
+Demo for AmorePacific 
+add concourse 
+
+
