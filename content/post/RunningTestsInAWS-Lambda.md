@@ -203,9 +203,4 @@ echo ${LOG_STREAM_EVENTS_JSON} | jq -r ".events | map(.message) | .[]"
 [cloudformation]:  https://github.com/pivotal-golang/s3cli/blob/4e8430386451979c65b38b234f34be4ea695c14d/ci/assets/cloudformation-s3cli-iam.template.json
 [fileb]:           http://docs.aws.amazon.com/cli/latest/userguide/cli-using-param.html#cli-using-param-file-binary
 
-<<<<<<< HEAD
-쿠팡데모 
-=======
-
-카카오 데모 
->>>>>>> 72eccefbd81ebc985475ee9a82f67fa80e6612ad
+개북이 데모 
