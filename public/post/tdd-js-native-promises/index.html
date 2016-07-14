@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="bg-dark-10">
+
+
+
+
+<head>
+  <meta charset="utf-8">
+  <title> Testing JavaScript&#39;s native Promises &middot; Pivotal 엔지니어링 블로그 </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/pivotal-ui.css">
+  <link rel="stylesheet" href="/styleguide.css">
+  <link rel="stylesheet" href="/github.css">
+  <link rel="stylesheet" href="/local.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  
+  <link href="http://feeds.feedburner.com/PivotalEngineeringJournal" rel="alternate" type="application/rss+xml" title="Pivotal 엔지니어링 블로그" />
+</head>
+
+
+<body>
+  <div class="container">
+  <div id="single-banner" class="pbxxl">
+    <div class="single-banner-inner"></div>
+    <p class="txt-c mvn">
+      <a href="/">
+        <svg x="0px" y="0px" width="200px" viewBox="0 0 435 180">
+          <rect fill="#01786E" width="435" height="180"/>
+          <path fill="#FFFFFF" d="M138.9,65h-11V54.4h11V65z M138.9,125.5h-11V72.8h11V125.5z"/>
+          <path fill="#FFFFFF" d="M202.2,72.8l-15.3,45.5c-2.6,7.4-7.3,8.4-11.1,8.4c-5.6,0-9-2.6-11-8.4l-12.7-37.8h-5v-7.7h13.2
+          l13.1,42.3c0.6,1.8,0.9,2.9,2.5,2.9c1.7,0,2-1.1,2.5-2.9l13.4-42.3H202.2z"/>
+          <path fill="#FFFFFF" d="M229.3,72.8c14.2,0,24.1,9.4,24.1,22.8v8.3c0,13.4-9.9,22.8-24.1,22.8c-14.2,0-24.1-9.4-24.1-22.8
+          v-8.3C205.1,82.2,215.1,72.8,229.3,72.8 M229.3,118c8.5,0,13.8-6.4,13.8-14.1v-8.3c0-7.7-5.2-14.1-13.8-14.1
+          c-9,0-13.8,6.4-13.8,14.1v8.3C215.5,111.6,220.5,118,229.3,118"/>
+          <path fill="#FFFFFF" d="M341,74.5c-5.5-1.4-14-2.4-20.3-2.4c-14.4,0-23.4,9.1-23.4,23.7v5.8c0,14.6,8.9,23.9,23.4,23.9
+          c0.3,0,2.9,0,4.1-0.1v-8.8c-0.4,0-3.7,0.1-4.1,0.1c-7.8,0-13.1-6-13.1-15v-5.8c0-9,5.3-15,13.1-15c3.5,0,8.9,0.3,10.8,0.7
+          l0.6,0.1l0,43.9h11V76.3C343,75.4,343,75,341,74.5"/>
+          <rect x="353.6" y="54.4" fill="#FFFFFF" width="11" height="71"/>
+          <path fill="#FFFFFF" d="M89.7,54.4H70.5v71h11.4V64.3h6.7c1.4,0,2.6,0.1,3.8,0.1c9.9,0.2,14.7,4.1,14.7,11.8
+          c0,0.3,0,0.5,0,0.8c0,7.1-3.9,11.8-14.7,11.8c-1,0-2.1,0-3.2,0c0,2.7,0,7.8,0,9.5c1.1,0.1,2.2,0.1,3.2,0.1
+          c15.5,0,26.4-6.1,26.4-21.4c0-0.3,0-0.6,0-0.9C118.9,60.4,107,54.4,89.7,54.4"/>
+          <path fill="#FFFFFF" d="M272.8,61.5v11.3h17.9v8.5h-17.9V112c0,4.8,3.1,4.9,7.5,4.9h10.4v8.5h-14c-10.4,0-15-4.1-15-13.5V63
+          L272.8,61.5z"/>
+          <path fill="#FFFFFF" d="M369.6,120.9c0-2.5,2-4.6,4.6-4.6c2.5,0,4.6,2.1,4.6,4.6c0,2.5-2,4.6-4.6,4.6
+          C371.6,125.5,369.6,123.4,369.6,120.9z M374.2,116.9c-2.2,0-3.9,1.8-3.9,3.9c0,2.1,1.7,3.9,3.9,3.9c2.2,0,3.9-1.8,3.9-3.9
+          C378.1,118.7,376.3,116.9,374.2,116.9z M373.2,123.3h-0.5v-5c0,0,1.4,0,1.4,0c1.3,0,1.9,0.6,1.9,1.5c0,0.7-0.4,1.2-1,1.4l1.3,2.1
+          h-0.6l-1.2-1.9l-1.2,0.1V123.3z M374.1,120.9c0.8,0,1.3-0.4,1.3-1.1c0-0.7-0.4-1.1-1.4-1.1c0,0-0.8,0-0.8,0v2.2L374.1,120.9z"/>
+        </svg>
+      </a>
+    </p>
+    <div class="container txt-c mvxl">
+      <h1 class="title type-dark-9 mvn" id="main-title"><a href="/" class="type-dark-11 em-low title">Pivotal 엔지니어링 블로그</a></h1>
+      <h3 class="type-dark-9 mvn">피보탈 엔지니어들이 전하는 기술 이야기</h3>
+      
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+    <div id="post" class="bg-neutral-11 pbxxxl">
+      <div class="post-header">
+        <div class="phxxl pvl">
+          <h1 class="title em-low type-dark-1 mvn">
+            
+            Testing JavaScript&#39;s native Promises
+          </h1>
+          <h2 class="h3 type-dark-3 em-default mvn post-summary">A straightforward look at how to apply test-driven development to native JavaScript promises.</h2>
+          <div class="type-dark-5 em-default">
+            Posted on
+            <span class="post-date"> Tue, Apr 19, 2016 </span>
+            
+            
+            by
+            <ul class="authors">
+            
+              
+            
+            </ul>
+            <br>
+            
+              Categories: &nbsp;
+                
+                  <a href="/categories/tdd">TDD</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/javascript">JavaScript</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/promises">Promises</a> &nbsp;&nbsp;
+                
+                  <a href="/categories/testing">Testing</a> &nbsp;&nbsp;
+                
+                <br/>
+              </span>
+            
+            <a href="https://github.com/pivotal-cf/blog/edit/master/content/post/tdd-js-native-promises.md" class="type-sm">Edit this post on GitHub.</a>
+            <div class="pull-right">
+              <a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="">Tweet</a>
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="panel-body phxxl pvn">
+        
+
+<h2 id="testing-javascript-s-native-promises:2239ddc89ae86336aeb097cdde84eb01">Testing JavaScript&rsquo;s native Promises</h2>
+
+<p>Promises are not a new concept to JavaScript, with popular implementations already provided by <a href="https://api.jquery.com/promise/">jQuery</a> and <a href="https://github.com/kriskowal/q">Q</a>. However, with the Promise abstraction now a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">built-in object</a> in ECMAScript and appreciating more widespread browser support, it makes sense to start shifting towards this new interface.</p>
+
+<p>Because of their asynchronous nature, promises can often be confusing to unit test. The purpose of this post will be to demonstrate a simple example of how one might apply TDD and build a test suite around a simple JavaScript service which returns a promise.</p>
+
+<p>In the spirit of using new JS interfaces, we&rsquo;ll also be using the new <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">Fetch API</a> as our asynchronous behavior, and we&rsquo;ll be writing our unit tests in <a href="http://jasmine.github.io/2.0/introduction.html">Jasmine</a>.</p>
+
+<p>For more information about the Fetch API, check out these links:</p>
+
+<ul>
+<li><a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a></li>
+<li><a href="https://jakearchibald.com/2015/thats-so-fetch/">https://jakearchibald.com/2015/thats-so-fetch/</a></li>
+</ul>
+
+<h4 id="getting-started:2239ddc89ae86336aeb097cdde84eb01"><strong>Getting started</strong></h4>
+
+<p>For this example, let&rsquo;s pretend we&rsquo;re writing some WeatherService, and we want our service to have a method <code>fetchCurrentTemperature</code>, which will hit an API and pull out the current temperature.</p>
+
+<p>So, what do we know getting started?</p>
+
+<h4 id="we-know-what-url-we-want-to-hit:2239ddc89ae86336aeb097cdde84eb01"><strong>We know what URL we want to hit</strong></h4>
+
+<p>At the very least, we want to make sure we&rsquo;re hitting the right endpoint. So let&rsquo;s make sure that we are calling fetch to the right URL.</p>
+
+<pre><code class="language-js">describe('.fetchCurrentTemperature', function() {
+	beforeEach(function() {
+		spyOn(window, 'fetch').and.callThrough();
+		WeatherService.fetchCurrentTemperature();
+	});
+
+	it('fetches from the weather API', function() {
+		expect(window.fetch).toHaveBeenCalledWith('someweatherapi.com');
+	});
+});
+</code></pre>
+
+<p>This one is pretty straightforward.</p>
+
+<pre><code class="language-js">// There's lots of ways we can define this service -- let's just keep it simple for now
+var WeatherService = {
+	fetchCurrentTemperature: fetchCurrentTemperature
+};
+
+// This will be our actual function under test
+function fetchCurrentTemperature() {
+	fetch('someweatherapi.com');
+}
+</code></pre>
+
+<p>What do we know next?</p>
+
+<h4 id="we-know-we-are-async-and-should-return-a-promise:2239ddc89ae86336aeb097cdde84eb01"><strong>We know we are async, and should return a promise</strong></h4>
+
+<p>Since we are performing an asynchronous operation, we should be returning a promise from this function. At this point, we just want to guarantee that the user gets back a promise when invoking the function.</p>
+
+<pre><code class="language-js">describe('.fetchCurrentTemperature', function() {
+	var temperaturePromise;
+
+	beforeEach(function() {
+		spyOn(window, 'fetch').and.callThrough();
+		temperaturePromise = WeatherService.fetchCurrentTemperature();
+	});
+
+	...
+
+	it('returns a promise', function() {
+		expect(temperaturePromise).toEqual(jasmine.any(Promise));
+	});
+});
+</code></pre>
+
+<p>Note that we now keep a reference to the return value of our <code>fetchCurrentTemperature</code> invocation as <code>temperaturePromise</code>.</p>
+
+<p>And all we have to do is return the call to <code>fetch</code>.</p>
+
+<pre><code class="language-js">function fetchCurrentTemperature() {
+	return fetch('someweatherapi.com');
+}
+</code></pre>
+
+<h4 id="we-know-fetches-can-be-successful:2239ddc89ae86336aeb097cdde84eb01"><strong>We know fetches can be successful</strong></h4>
+
+<p>Here is where our tests get a little more interesting. We have a particular context in which our <code>fetchCurrentTemperature</code> can run, which is that the network request has been successful. But how do we simulate this?</p>
+
+<pre><code class="language-js">describe('.fetchCurrentTemperature', function() {
+
+	...
+
+	describe('on successful fetch', function() {
+		beforeEach(function() {
+			// We need to simulate a succesful network response
+		});
+
+		it('resolves its promise with the current temperature', function() {
+			// We need our returned promise to have passed along the temperature
+		});
+	});
+});
+</code></pre>
+
+<p>First, let&rsquo;s build a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response">Response</a> object. This is what the <code>.fetch</code> method&rsquo;s promise is resolved with. Its first argument is the body, which is a string. So let&rsquo;s put an example response together that looks like what the API would actually return.</p>
+
+<pre><code class="language-js">describe('on successful fetch', function() {
+	beforeEach(function() {
+		var response = new Response(JSON.stringify({
+			temperature: 78
+		}));
+		// Now we need to resolve our fetch promise with this response
+	});
+	...
+});
+</code></pre>
+
+<p>Now we know what our sample response looks like: let&rsquo;s throw together our assertion which takes advantage of Jasmine&rsquo;s asynchronous <code>done</code> function. (For more info on how done works, <a href="http://jasmine.github.io/2.0/introduction.html#section-Asynchronous_Support">read here</a>)</p>
+
+<pre><code class="language-js">describe('on successful fetch', function() {
+	...
+
+	it('resolves its promise with the current temperature', function(done) {
+		temperaturePromise.then(function(temperature) {
+			expect(temperature).toEqual(78);
+			done();
+		});
+	});
+});
+</code></pre>
+
+<p>We&rsquo;ve simply chained that returned promise and made sure that our passed in value matches the temperature.</p>
+
+<p>But, we still need to actually use our test Response. In order for us to resolve the fetch with our own response, we need to hook into the fetch and provide our own promise that we can resolve at will.</p>
+
+<pre><code class="language-js">describe('.fetchCurrentTemperature', function() {
+	var temperaturePromise;
+	var promiseHelper;
+
+	beforeEach(function() {
+		var fetchPromise = new Promise(function(resolve, reject) {
+			promiseHelper = {
+				resolve: resolve
+			};
+		});
+		spyOn(window, 'fetch').and.returnValue(fetchPromise);
+		temperaturePromise = WeatherService.fetchCurrentTemperature();
+	});
+
+	...
+});
+</code></pre>
+
+<p>We are now creating our own promise, and having all calls to <code>fetch</code> return it. Because of the Promise constructor, the only way we can get access to the resolve function is to store a reference to it. You can see we are doing that with this new <code>promiseHelper</code> variable.</p>
+
+<p>Let&rsquo;s use this helper in our successful context:</p>
+
+<pre><code class="language-js">describe('on successful fetch', function() {
+	beforeEach(function() {
+		var response = new Response(JSON.stringify({
+			temperature: 78
+		}));
+		promiseHelper.resolve(response);
+	});
+
+	it('resolves its promise with the current temperature', function(done) {
+		temperaturePromise.then(function(temperature) {
+			expect(temperature).toEqual(78);
+			done();
+		});
+	});
+});
+</code></pre>
+
+<p>Great! Now we have a test that builds a response and simulates resolving a fetch with that response. Let&rsquo;s try to write an implementation:</p>
+
+<pre><code class="language-js">function fetchCurrentTemperature() {
+	return fetch('someweatherapi.com')
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(data) {
+			return data.temperature;
+		});
+}
+</code></pre>
+
+<h4 id="we-know-fetches-can-fail:2239ddc89ae86336aeb097cdde84eb01"><strong>We know fetches can fail</strong></h4>
+
+<p>We also want to define what should happen in the event that our fetching fails. In this case, we just want whatever error was initially raised to be catchable from the returned promise. Let&rsquo;s use a similar strategy as above to write a failure context test.</p>
+
+<pre><code class="language-js">describe('.fetchCurrentTemperature', function() {
+	var temperaturePromise;
+	var promiseHelper;
+
+	beforeEach(function() {
+		var fetchPromise = new Promise(function(resolve, reject) {
+			promiseHelper = {
+				resolve: resolve,
+				reject: reject
+			};
+		});
+		spyOn(window, 'fetch').and.returnValue(fetchPromise);
+		temperaturePromise = WeatherService.fetchCurrentTemperature();
+	});
+
+	...
+
+	describe('on unsuccessful fetch', function() {
+		var errorObj = { msg: 'Wow, this really failed!' };
+
+		beforeEach(function() {
+			promiseHelper.reject(errorObj);
+		});
+
+		it('resolves its promise with the current temperature', function(done) {
+			temperaturePromise.catch(function(error) {
+				expect(error).toEqual(errorObj);
+				done();
+			});
+		});
+	});
+});
+</code></pre>
+
+<p>This just makes sure that we still catch whatever error the fetch is rejected with. Because we don&rsquo;t intercept any failures, this should already be passing.</p>
+
+<pre><code class="language-js">// No changes need to be made to our function!
+</code></pre>
+
+<h4 id="putting-it-all-together:2239ddc89ae86336aeb097cdde84eb01"><strong>Putting it all together</strong></h4>
+
+<p>Here&rsquo;s a look at the final spec and implementation.</p>
+
+<pre><code class="language-js">describe('.fetchCurrentTemperature', function() {
+	var temperaturePromise;
+	var promiseHelper;
+
+	beforeEach(function() {
+		var fetchPromise = new Promise(function(resolve, reject) {
+			promiseHelper = {
+				resolve: resolve,
+				reject: reject
+			};
+		});
+		spyOn(window, 'fetch').and.returnValue(fetchPromise);
+		temperaturePromise = WeatherService.fetchCurrentTemperature();
+	});
+
+	it('fetches from the weather API', function() {
+		expect(window.fetch).toHaveBeenCalledWith('someweatherapi.com');
+	});
+
+	it('returns a promise', function() {
+		expect(temperaturePromise).toEqual(jasmine.any(Promise));
+	});
+
+	describe('on successful fetch', function() {
+		beforeEach(function() {
+			var response = new Response(JSON.stringify({
+				temperature: 78
+			}));
+			promiseHelper.resolve(response);
+		});
+
+		it('resolves its promise with the current temperature', function(done) {
+			temperaturePromise.then(function(temperature) {
+				expect(temperature).toEqual(78);
+				done();
+			});
+		});
+	});
+
+	describe('on unsuccessful fetch', function() {
+		var errorObj = { msg: 'Wow, this really failed!' };
+
+		beforeEach(function() {
+			promiseHelper.reject(errorObj);
+		});
+
+		it('resolves its promise with the current temperature', function(done) {
+			temperaturePromise.catch(function(error) {
+				expect(error).toEqual(errorObj);
+				done();
+			});
+		});
+	});
+});
+</code></pre>
+
+<pre><code class="language-js">var WeatherService = {
+	fetchCurrentTemperature: fetchCurrentTemperature
+};
+
+function fetchCurrentTemperature() {
+	return fetch('someweatherapi.com')
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(data) {
+			return data.temperature;
+		});
+}
+</code></pre>
+
+<h3 id="next-steps:2239ddc89ae86336aeb097cdde84eb01">Next Steps</h3>
+
+<p>That&rsquo;s it! You made it. We now have a working, tested JS service. There&rsquo;s still some things we can improve upon &ndash; for example, creating a nicer abstraction around our <code>promiseHelper</code>, but we can leave that for another post.</p>
+
+<p>Have any questions or comments? Follow up with any discussion over on the corresponding <a href="https://gist.github.com/pmeskers/2530773be429d522db17f224973c8654">gist</a>.</p>
+
+      </div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="/css/highlight-github.css">
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>
