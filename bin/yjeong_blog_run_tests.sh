@@ -15,6 +15,6 @@ set -e
 
 
 # Test blog with Hugo, create output as stag
-cd ./yjeong-blog-git
+#cd ./yjeong-blog-git
 hugo 
 pwd 
