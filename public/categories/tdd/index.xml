@@ -17,6 +17,8 @@
       <guid>http://myblog.local.pcfdev.io/post/tdd-js-native-promises/</guid>
       <description>
 
+&lt;h2 id=&#34;한글-테스트:2239ddc89ae86336aeb097cdde84eb01&#34;&gt;한글 테스트&lt;/h2&gt;
+
 &lt;h2 id=&#34;testing-javascript-s-native-promises:2239ddc89ae86336aeb097cdde84eb01&#34;&gt;Testing JavaScript&amp;rsquo;s native Promises&lt;/h2&gt;
 
 &lt;p&gt;Promises are not a new concept to JavaScript, with popular implementations already provided by &lt;a href=&#34;https://api.jquery.com/promise/&#34;&gt;jQuery&lt;/a&gt; and &lt;a href=&#34;https://github.com/kriskowal/q&#34;&gt;Q&lt;/a&gt;. However, with the Promise abstraction now a &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise&#34;&gt;built-in object&lt;/a&gt; in ECMAScript and appreciating more widespread browser support, it makes sense to start shifting towards this new interface.&lt;/p&gt;

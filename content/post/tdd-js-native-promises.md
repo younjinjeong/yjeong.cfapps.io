@@ -12,6 +12,8 @@ short: |
   A straightforward look at how to apply test-driven development to native JavaScript promises.
 title: Testing JavaScript's native Promises
 ---
+## 한글 테스트 
+
 ## Testing JavaScript's native Promises
 
 Promises are not a new concept to JavaScript, with popular implementations already provided by [jQuery](https://api.jquery.com/promise/) and [Q](https://github.com/kriskowal/q). However, with the Promise abstraction now a [built-in object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) in ECMAScript and appreciating more widespread browser support, it makes sense to start shifting towards this new interface.
