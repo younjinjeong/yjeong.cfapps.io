@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Concourse on Pivotal 엔지니어링 블로그</title>
-    <link>http://myblog.local.pcfdev.io/categories/concourse/</link>
+    <link>https://yjeong.cfapps.io/categories/concourse/</link>
     <description>Recent content in Concourse on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 May 2016 12:16:15 -0600</lastBuildDate>
-    <atom:link href="http://myblog.local.pcfdev.io/categories/concourse/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://yjeong.cfapps.io/categories/concourse/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>데모 블로그 for DevOps</title>
-      <link>http://myblog.local.pcfdev.io/post/DevOps/</link>
+      <link>https://yjeong.cfapps.io/post/DevOps/</link>
       <pubDate>Tue, 10 May 2016 12:16:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/DevOps/</guid>
+      <guid>https://yjeong.cfapps.io/post/DevOps/</guid>
       <description>
 
 &lt;h1 id=&#34;살펴보기:99c9919f0ba2753582d3f233ea09eaec&#34;&gt;살펴보기&lt;/h1&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>블로깅을 위한 Concourse 와 Cloud Foundry 연동</title>
-      <link>http://myblog.local.pcfdev.io/post/MakingHugoBaseBlog-with_Concourse/</link>
+      <link>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</link>
       <pubDate>Sun, 10 Apr 2016 12:15:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/MakingHugoBaseBlog-with_Concourse/</guid>
+      <guid>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</guid>
       <description>
 
 &lt;h1 id=&#34;살펴보기:51c7121ae35820a8cc35fc9774cdf96e&#34;&gt;살펴보기&lt;/h1&gt;

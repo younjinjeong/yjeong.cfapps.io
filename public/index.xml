@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pivotal 엔지니어링 블로그</title>
-    <link>http://myblog.local.pcfdev.io/</link>
+    <link>https://yjeong.cfapps.io/</link>
     <description>Recent content on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 May 2016 12:16:15 -0600</lastBuildDate>
-    <atom:link href="http://myblog.local.pcfdev.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://yjeong.cfapps.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>데모 블로그 for DevOps</title>
-      <link>http://myblog.local.pcfdev.io/post/DevOps/</link>
+      <link>https://yjeong.cfapps.io/post/DevOps/</link>
       <pubDate>Tue, 10 May 2016 12:16:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/DevOps/</guid>
+      <guid>https://yjeong.cfapps.io/post/DevOps/</guid>
       <description>
 
 &lt;h1 id=&#34;살펴보기:99c9919f0ba2753582d3f233ea09eaec&#34;&gt;살펴보기&lt;/h1&gt;
@@ -27,13 +27,13 @@
     
     <item>
       <title>Testing JavaScript&#39;s native Promises</title>
-      <link>http://myblog.local.pcfdev.io/post/tdd-js-native-promises/</link>
+      <link>https://yjeong.cfapps.io/post/tdd-js-native-promises/</link>
       <pubDate>Tue, 19 Apr 2016 10:19:36 -0400</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/tdd-js-native-promises/</guid>
+      <guid>https://yjeong.cfapps.io/post/tdd-js-native-promises/</guid>
       <description>
 
-&lt;h2 id=&#34;한글-테스트-3:2239ddc89ae86336aeb097cdde84eb01&#34;&gt;한글 테스트  3&lt;/h2&gt;
+&lt;h2 id=&#34;한글-테스트-4:2239ddc89ae86336aeb097cdde84eb01&#34;&gt;한글 테스트  4&lt;/h2&gt;
 
 &lt;h2 id=&#34;testing-javascript-s-native-promises:2239ddc89ae86336aeb097cdde84eb01&#34;&gt;Testing JavaScript&amp;rsquo;s native Promises&lt;/h2&gt;
 
@@ -347,10 +347,10 @@ function fetchCurrentTemperature() {
     
     <item>
       <title>Setting up Kotlin with Android and tests</title>
-      <link>http://myblog.local.pcfdev.io/post/Setting-Kotlin-for-Android-tests/</link>
+      <link>https://yjeong.cfapps.io/post/Setting-Kotlin-for-Android-tests/</link>
       <pubDate>Fri, 15 Apr 2016 12:15:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/Setting-Kotlin-for-Android-tests/</guid>
+      <guid>https://yjeong.cfapps.io/post/Setting-Kotlin-for-Android-tests/</guid>
       <description>
 
 &lt;p&gt;최근에 저는 &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; 1.0 Beta 버전이 발표 되었다는 소식을 들었습니다. Kotlin 은 JVM과 Java, 그리고 Android 앱을 개발 하는데 사용 가능한 최신의 개발 언어입니다.&lt;/p&gt;
@@ -464,10 +464,10 @@ add concourse&lt;/p&gt;
     
     <item>
       <title>블로깅을 위한 Concourse 와 Cloud Foundry 연동</title>
-      <link>http://myblog.local.pcfdev.io/post/MakingHugoBaseBlog-with_Concourse/</link>
+      <link>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</link>
       <pubDate>Sun, 10 Apr 2016 12:15:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/MakingHugoBaseBlog-with_Concourse/</guid>
+      <guid>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</guid>
       <description>
 
 &lt;h1 id=&#34;살펴보기:51c7121ae35820a8cc35fc9774cdf96e&#34;&gt;살펴보기&lt;/h1&gt;
@@ -480,10 +480,10 @@ add concourse&lt;/p&gt;
     
     <item>
       <title>AWS Lambda 를 이용한 테스트 구현</title>
-      <link>http://myblog.local.pcfdev.io/post/RunningTestsInAWS-Lambda/</link>
+      <link>https://yjeong.cfapps.io/post/RunningTestsInAWS-Lambda/</link>
       <pubDate>Sat, 19 Mar 2016 12:15:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/RunningTestsInAWS-Lambda/</guid>
+      <guid>https://yjeong.cfapps.io/post/RunningTestsInAWS-Lambda/</guid>
       <description>
 
 &lt;h1 id=&#34;살펴보기:a247107e1efee38834051c0eec340447&#34;&gt;살펴보기&lt;/h1&gt;

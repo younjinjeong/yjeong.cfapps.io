@@ -1,5 +1,5 @@
-#baseurl: "https://yjeong.cfapps.io"
-baseurl: "http://myblog.local.pcfdev.io"
+baseurl: "https://yjeong.cfapps.io"
+#baseurl: "http://myblog.local.pcfdev.io"
 languageCode: en-us
 Theme: "pivotal-ui"
 Title: Pivotal 엔지니어링 블로그

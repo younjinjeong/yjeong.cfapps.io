@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Android on Pivotal 엔지니어링 블로그</title>
-    <link>http://myblog.local.pcfdev.io/categories/android/</link>
+    <link>https://yjeong.cfapps.io/categories/android/</link>
     <description>Recent content in Android on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 15 Apr 2016 12:15:15 -0600</lastBuildDate>
-    <atom:link href="http://myblog.local.pcfdev.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://yjeong.cfapps.io/categories/android/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Setting up Kotlin with Android and tests</title>
-      <link>http://myblog.local.pcfdev.io/post/Setting-Kotlin-for-Android-tests/</link>
+      <link>https://yjeong.cfapps.io/post/Setting-Kotlin-for-Android-tests/</link>
       <pubDate>Fri, 15 Apr 2016 12:15:15 -0600</pubDate>
       
-      <guid>http://myblog.local.pcfdev.io/post/Setting-Kotlin-for-Android-tests/</guid>
+      <guid>https://yjeong.cfapps.io/post/Setting-Kotlin-for-Android-tests/</guid>
       <description>
 
 &lt;p&gt;최근에 저는 &lt;a href=&#34;https://kotlinlang.org/&#34;&gt;Kotlin&lt;/a&gt; 1.0 Beta 버전이 발표 되었다는 소식을 들었습니다. Kotlin 은 JVM과 Java, 그리고 Android 앱을 개발 하는데 사용 가능한 최신의 개발 언어입니다.&lt;/p&gt;
