@@ -12,7 +12,7 @@ short: |
   A straightforward look at how to apply test-driven development to native JavaScript promises.
 title: Testing JavaScript's native Promises
 ---
-## 한글 테스트  2
+## 한글 테스트  3
 
 ## Testing JavaScript's native Promises
 
