@@ -1,0 +1,9 @@
+applications:
+- buildpack: staticfile_buildpack
+  disk_quota: 1024M
+  domain: local.pcfdev.io
+  host: myblog
+  instances: 1
+  memory: 256M
+  name: myblog
+  stack: cflinuxfs2
