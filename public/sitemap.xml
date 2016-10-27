@@ -2,33 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://yjeong.cfapps.io/</loc>
+    <loc>http://myblog.local.pcfdev.io/</loc>
     <lastmod>2016-05-10T12:16:15-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://yjeong.cfapps.io/post/DevOps/</loc>
+    <loc>http://myblog.local.pcfdev.io/post/DevOps/</loc>
     <lastmod>2016-05-10T12:16:15-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yjeong.cfapps.io/post/tdd-js-native-promises/</loc>
+    <loc>http://myblog.local.pcfdev.io/post/tdd-js-native-promises/</loc>
     <lastmod>2016-04-19T10:19:36-04:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yjeong.cfapps.io/post/Setting-Kotlin-for-Android-tests/</loc>
+    <loc>http://myblog.local.pcfdev.io/post/Setting-Kotlin-for-Android-tests/</loc>
     <lastmod>2016-04-15T12:15:15-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yjeong.cfapps.io/post/MakingHugoBaseBlog-with_Concourse/</loc>
+    <loc>http://myblog.local.pcfdev.io/post/MakingHugoBaseBlog-with_Concourse/</loc>
     <lastmod>2016-04-10T12:15:15-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://yjeong.cfapps.io/post/RunningTestsInAWS-Lambda/</loc>
+    <loc>http://myblog.local.pcfdev.io/post/RunningTestsInAWS-Lambda/</loc>
     <lastmod>2016-03-19T12:15:15-06:00</lastmod>
   </url>
   

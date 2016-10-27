@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Javascript on Pivotal 엔지니어링 블로그</title>
-    <link>https://yjeong.cfapps.io/categories/javascript/</link>
+    <link>http://myblog.local.pcfdev.io/categories/javascript/</link>
     <description>Recent content in Javascript on Pivotal 엔지니어링 블로그</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 19 Apr 2016 10:19:36 -0400</lastBuildDate>
-    <atom:link href="https://yjeong.cfapps.io/categories/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://myblog.local.pcfdev.io/categories/javascript/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Testing JavaScript&#39;s native Promises</title>
-      <link>https://yjeong.cfapps.io/post/tdd-js-native-promises/</link>
+      <link>http://myblog.local.pcfdev.io/post/tdd-js-native-promises/</link>
       <pubDate>Tue, 19 Apr 2016 10:19:36 -0400</pubDate>
       
-      <guid>https://yjeong.cfapps.io/post/tdd-js-native-promises/</guid>
+      <guid>http://myblog.local.pcfdev.io/post/tdd-js-native-promises/</guid>
       <description>
 
 &lt;h2 id=&#34;testing-javascript-s-native-promises:2239ddc89ae86336aeb097cdde84eb01&#34;&gt;Testing JavaScript&amp;rsquo;s native Promises&lt;/h2&gt;
