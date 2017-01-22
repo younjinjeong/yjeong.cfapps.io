@@ -113,7 +113,3 @@ Kotlin 은 기본의 Java 를 그대로 사용하는 것 보다는 훨씬 좋은
 번역: 정윤진 (yjeong@pivotal.io) 
 
 
-Demo for AmorePacific 
-add concourse 
-
-
